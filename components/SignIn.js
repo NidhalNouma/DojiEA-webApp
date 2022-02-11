@@ -3,19 +3,24 @@ import { useRouter } from "next/router";
 import { Button4Spin, ButtonT4 } from "./utils/Buttons";
 import { Input } from "./utils/Inputs";
 import SignUp from "./SignUp";
+import ResetLink from "./ResetLink";
 import User, { useUserContext } from "../hooks/Users";
+import { ErrorI } from "./utils/Alert";
 
 function SignIn() {
   const router = useRouter();
   const [dis, setDis] = useState(0);
   const { SignInHook } = User();
-  const { email, password, setPassword, setEmail, submit } = SignInHook();
-  const { setUser } = useUserContext();
+  const { error, email, password, setPassword, setEmail, submit } =
+    SignInHook();
+  // const { setUser } = useUserContext();
 
   return (
     <React.Fragment>
       {dis === 1 ? (
         <SignUp back={() => setDis(0)} />
+      ) : dis === -1 ? (
+        <ResetLink back={() => setDis(0)} />
       ) : (
         <React.Fragment>
           <div className="px-6 pb-4 space-y-6 lg:px-8 sm:pb-6 xl:pb-8">
@@ -56,12 +61,10 @@ function SignIn() {
               <ButtonT4
                 className=""
                 label="Lost Password?"
-                onClick={async () => {
-                  const r = await submit();
-                  console.log(r);
-                }}
+                onClick={() => setDis(-1)}
               />
             </div>
+            <div className="">{error && <ErrorI message={error} />}</div>
             <Button4Spin
               className="w-full rounded-lg"
               label="Login to your account"
@@ -69,7 +72,7 @@ function SignIn() {
                 const r = await submit();
                 console.log(r);
                 if (!r.err) {
-                  setUser(r.user);
+                  // setUser(r.user);
                   router.push("/Dashboard");
                 }
               }}

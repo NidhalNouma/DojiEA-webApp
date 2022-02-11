@@ -25,6 +25,31 @@ export function ButtonT4({ className, label, onClick }) {
   );
 }
 
+export function ButtonT4Spin({ className, label, onClick }) {
+  const [spin, setSpin] = useState(false);
+
+  return (
+    <React.Fragment>
+      {spin ? (
+        <Spinner4 />
+      ) : (
+        <div className="flex justify-center items-center">
+          <button
+            className={className + " text-sm text-c4 hover:underline"}
+            onClick={async () => {
+              setSpin(true);
+              await onClick();
+              setSpin(false);
+            }}
+          >
+            {label}
+          </button>
+        </div>
+      )}
+    </React.Fragment>
+  );
+}
+
 export function Button4Spin({ className, label, onClick }) {
   const [spin, setSpin] = useState(false);
 

@@ -23,6 +23,7 @@ module.exports = {
       gray: colors.gray,
       teal: colors.teal,
       green: colors.green,
+      red: colors.red,
       c1: "#082032",
       c2: "#2C394B",
       c3: "#334756",

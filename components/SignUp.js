@@ -3,12 +3,14 @@ import { useRouter } from "next/router";
 import { Button4Spin, ButtonT4 } from "./utils/Buttons";
 import { Input } from "./utils/Inputs";
 import User, { useUserContext } from "../hooks/Users";
+import { ErrorI } from "./utils/Alert";
 
 function SignIn({ back }) {
   const { SignUpHook } = User();
-  const { setUser } = useUserContext();
+  // const { setUser } = useUserContext();
   const router = useRouter();
   const {
+    error,
     email,
     password,
     cpassword,
@@ -45,13 +47,14 @@ function SignIn({ back }) {
           value={cpassword}
           setValue={setCPassword}
         />
+        <div className="">{error && <ErrorI message={error} />}</div>
         <Button4Spin
           className="w-full rounded-lg"
           label="Login to your account"
           onClick={async () => {
             const r = await submit();
             if (!r.err) {
-              setUser(r.user);
+              // setUser(r.user);
               router.push("/Dashboard");
             }
           }}

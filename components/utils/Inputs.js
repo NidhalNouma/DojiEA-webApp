@@ -5,13 +5,15 @@ export function Input({
   placeholder,
   value,
   setValue,
+  disabled = false,
 }) {
   return (
     <div>
-      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+      <label className="block mb-2 text-sm font-medium text-slate-400">
         {label}
       </label>
       <input
+        disabled={disabled}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         type={type}

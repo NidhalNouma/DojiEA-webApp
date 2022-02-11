@@ -10,7 +10,7 @@ function Pricing() {
     >
       <div className="w-full bg-blue pt-24">
         <div className="flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
-          <Item Title="Free" Price="0" No="0" />
+          {/* <Item Title="Free" Price="0" No="0" /> */}
           <Item Title="Basic" Price="97" No="2" />
           <Item Title="Advanced" Price="189" No="6" show={!true} />
           <Item Title="Pro" Price="259" No="18" />
@@ -72,7 +72,7 @@ function Item({ Title, Price, No, show = false, top = true }) {
           <span className="ml-1 text-slate-300 text-base">/ Month</span>
         </span>
       </div>
-      <div className="w-full text-center mb-8 mt-auto">
+      <div className="w-full text-center mb-8 mt-auto px-10 sm:px-0">
         <button className="px-8 py-3 rounded-full text-c2 font-medium bg-slate-100 w-full sm:w-auto sm:ml-4">
           {top ? "Sign Up" : "Select"}
         </button>
@@ -127,7 +127,7 @@ function ItemLimit({
           ${Price}
         </span>
       </div>
-      <div className="text-center pt-8 mb-8 mt-auto">
+      <div className="text-center pt-8 mb-8 mt-auto px-10 sm:px-0">
         <button className="px-8 py-3 rounded-full text-c2 font-medium bg-slate-100 w-full sm:w-auto sm:ml-4">
           {top ? "Sign Up" : "Select"}
         </button>

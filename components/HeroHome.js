@@ -15,7 +15,7 @@ function HeroHome() {
               data-aos="zoom-y-out"
             >
               Make your trading{" "}
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r to-slate-300 from-teal-400">
                 wonderful
               </span>
             </h1>
