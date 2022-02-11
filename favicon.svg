@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="35" viewBox="0 0 34 35">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.725" y1="0.062" x2="0.056" y2="1.357" gradientUnits="objectBoundingBox">
+          <stop offset="0" stop-color="#082032" />
+          <stop offset="1" stop-color="#082032" />
+    </linearGradient>
+  </defs>
+  <g id="Group_35" data-name="Group 35" transform="translate(-1258 -6081.956)">
+    <ellipse id="Ellipse_1" data-name="Ellipse 1" cx="17" cy="17.5" rx="17" ry="17.5" transform="translate(1258 6081.956)" fill="url(#linear-gradient)"/>
+    <g id="_9043935_chart_candlestick_icon" data-name="9043935_chart_candlestick_icon" transform="translate(1262.582 6086.848)">
+      <path id="Path_37" data-name="Path 37" d="M24.8,9.2H23.2V6H21.6V9.2H20v9.59h1.6v3.2h1.6v-3.2h1.6Zm-1.6,7.992H21.6V10.8h1.6Z" transform="translate(-6.217 -1.263)" fill="#71b7a6"/>
+      <path id="Path_38" data-name="Path 38" d="M12.8,7.2H11.2V4H9.6V7.2H8v7.992H9.6v3.2h1.6v-3.2h1.6ZM11.2,13.59H9.6V8.8h1.6Z" transform="translate(-2.807 -0.362)" fill="#d64d30"/>
+      <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" width="25" height="25" transform="translate(0.418 0.109)" fill="none"/>
+    </g>
+  </g>
+</svg>
