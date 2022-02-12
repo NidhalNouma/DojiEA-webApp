@@ -1,13 +1,72 @@
-export default function Card({ i, set, pm }) {
+import React, { useState, useEffect } from "react";
+import { useUserContext } from "../hooks/Users";
+import { P1 } from "./utils/Text";
+import { ButtonT4 } from "./utils/Buttons";
+import { TrashIcon } from "@heroicons/react/outline";
+import AddPaymentCard from "./AddPaymentCard";
+import CancelMessage from "./CancelMessage";
+import Overlay from "./utils/Overlay";
+import { detachPaymentMethod } from "../hooks/Stripe";
+
+export default function PaymentMethods({
+  onSelect = (e) => {},
+  selected,
+  opend,
+}) {
+  const [open, setOpen] = useState(false);
+  const { user, setUser } = useUserContext();
+  const data = user?.stripe?.paymentMethods?.data;
+
+  useEffect(() => {
+    if (data?.length > 0) onSelect(data[data.length - 1]);
+  }, [data]);
+
+  useEffect(() => {
+    if (opend > 0) setOpen(true);
+  }, [opend]);
+
+  return (
+    <React.Fragment>
+      {data?.length > 0 ? (
+        data.map((paymentMethod, i) => (
+          <Card
+            key={i}
+            i={paymentMethod}
+            onClick={onSelect}
+            pm={selected}
+            user={user}
+            setUser={setUser}
+          />
+        ))
+      ) : (
+        <P1>You have no active payment method. </P1>
+      )}
+      <P1>
+        Click <ButtonT4 label="here" onClick={() => setOpen(true)} /> to add new
+        payment card.
+      </P1>
+      <Overlay open={open} setOpen={setOpen}>
+        <AddPaymentCard
+          user={user}
+          setUser={setUser}
+          close={() => setOpen(false)}
+        />
+      </Overlay>
+    </React.Fragment>
+  );
+}
+
+function Card({ i, onClick, pm, user, setUser }) {
+  const [open, setOpen] = useState(false);
   return (
     <div
-      onClick={() => set(i.id)}
+      onClick={() => onClick(i)}
       className={
-        (pm === i.id ? "bg-gray-300" : "") +
-        " py-2 px-1 border border-gray-300 rounded my-2 cursor cursor-pointer hover:bg-gray-300 flex items-center"
+        (pm?.id === i.id ? "bg-c1" : "") +
+        " py-1 px-1 border border-slate-500 rounded my-3 cursor cursor-pointer hover:bg-c1 flex items-center"
       }
     >
-      <span className="ml-1 my-2 py-2 px-3 bg-gray-500 text-white rounded">
+      <span className="ml-1 my-2 py-2 px-3 bg-slate-500 text-white rounded">
         {i.card.brand === "visa" ? (
           <Visa />
         ) : i.card.brand === "mastercard" ? (
@@ -17,12 +76,41 @@ export default function Card({ i, set, pm }) {
         )}
       </span>
 
-      <div className="flex flex-col mx-4 items-start">
-        <span className="text-sm"> ****{i.card.last4} </span>
-        <span className="text-gray-400">
+      <div className="flex flex-col mx-4 items-start w-full">
+        <div className="flex items-center justify-between min-w-full">
+          <span className="text-sm text-slate-400"> ****{i.card.last4} </span>
+          {/* <ButtonT4Spin label="Retrive" /> */}
+          <TrashIcon
+            className="w-4 h-4 text-c2"
+            onClick={() => setOpen(true)}
+          />
+        </div>
+        <span className="text-slate-300 text-sm font-medium">
           Expire on {i.card.exp_month}/{i.card.exp_year}
         </span>
       </div>
+      <Overlay open={open} setOpen={setOpen}>
+        <CancelMessage
+          title="Detach payment card"
+          message="Are you sure you want to detach your payment card? All of your data will be permanently removed. This action cannot be undone."
+          close={() => setOpen(false)}
+          onAgree={async () => {
+            let paymentMethods = await detachPaymentMethod(
+              i.id,
+              user.customerId
+            );
+
+            if (paymentMethods) {
+              const nu = {
+                ...user,
+                stripe: { ...user.stripe, paymentMethods },
+              };
+              setUser(nu);
+              setOpen(false);
+            }
+          }}
+        />
+      </Overlay>
     </div>
   );
 }
@@ -34,7 +122,7 @@ function Mastercard() {
       id="Capa_1"
       x="0px"
       y="0px"
-      width="35px"
+      width="30px"
       viewBox="0 0 504 504"
       style={{ enableBackground: "new 0 0 504 504" }}
     >
@@ -217,7 +305,7 @@ function Visa() {
       id="Capa_1"
       x="0px"
       y="0px"
-      width="35px"
+      width="30px"
       viewBox="0 0 504 504"
       style={{ enableBackground: "new 0 0 504 504" }}
     >

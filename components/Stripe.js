@@ -1,49 +1,28 @@
-import { useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  CardElement,
-  Elements,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
+import React, { useEffect, useState } from "react";
 import { Button4Spin } from "./utils/Buttons";
 import { H4 } from "./utils/Titles";
+import PaymentMethods from "./PaymentCard";
 
-const CheckoutForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
+import { createSub } from "../hooks/Stripe";
 
-  const handleSubmit = async (event) => {
-    if (elements == null) {
+export const Form = (props) => {
+  const { title, price, id, user, done } = props;
+  const [pm, setPm] = useState(null);
+  const [open, setOpen] = useState(0);
+
+  const submit = async () => {
+    console.log(pm);
+    if (!pm) {
+      setOpen(open + 1);
       return;
     }
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
+    const sub = await createSub(user.uid, user.customerId, pm.id, id);
 
-    console.log(paymentMethod);
+    console.log(sub);
+    if (!sub.err) done();
   };
 
-  return (
-    <div className="flex flex-col">
-      <CardElement
-        className="p-4 rounded-lg bg-slate-100"
-        options={{ hidePostalCode: true }}
-      />
-      <Button4Spin
-        label="Pay"
-        className="rounded-lg mt-4"
-        onClick={async () => await handleSubmit()}
-      />
-    </div>
-  );
-};
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
-
-export const CheckoutForm1 = ({ price = 0, title = "None" }) => {
   useEffect(() => {
     window.scroll({
       top: document.body.scrollHeight,
@@ -66,9 +45,18 @@ export const CheckoutForm1 = ({ price = 0, title = "None" }) => {
           <span className="text-slate-300 font-bold">{title}</span>
         </p>
       </div>
-      <Elements stripe={stripePromise}>
-        <CheckoutForm />
-      </Elements>
+
+      <div className="flex flex-col">
+        <PaymentMethods opend={open} selected={pm} onSelect={(e) => setPm(e)} />
+        <Button4Spin
+          label={pm ? "Pay" : "Add Payment Card"}
+          className="rounded-lg mt-5"
+          onClick={async () => {
+            if (!pm) setOpen(true);
+            else await submit();
+          }}
+        />
+      </div>
     </div>
   );
 };

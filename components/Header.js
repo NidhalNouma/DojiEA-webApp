@@ -46,9 +46,7 @@ function Header({ copen = false }) {
               {/* Site branding */}
               <div className="flex-shrink-0 mr-4">
                 {/* Logo */}
-                <Link href="/" className="block" passHref={true}>
-                  <IconSvg />
-                </Link>
+                <IconSvg to={user ? "/Dashboard" : "/"} />
               </div>
 
               {/* Site navigation */}
@@ -127,9 +125,9 @@ function Header({ copen = false }) {
 
 export default Header;
 
-function IconSvg() {
+function IconSvg({ to }) {
   return (
-    <Link href="/" className="block" passHref={true}>
+    <Link href={to} className="block" passHref={true}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         // xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -153,12 +151,12 @@ function IconSvg() {
         </defs>
         <g
           id="Group_35"
-          dataName="Group 35"
+          // dataName="Group 35"
           transform="translate(-1258 -6081.956)"
         >
           <ellipse
             id="Ellipse_1"
-            dataName="Ellipse 1"
+            // dataName="Ellipse 1"
             cx="17"
             cy="17.5"
             rx="17"
@@ -168,26 +166,26 @@ function IconSvg() {
           />
           <g
             id="_9043935_chart_candlestick_icon"
-            dataName="9043935_chart_candlestick_icon"
+            // dataName="9043935_chart_candlestick_icon"
             transform="translate(1262.582 6086.848)"
           >
             <path
               id="Path_37"
-              dataName="Path 37"
+              // dataName="Path 37"
               d="M24.8,9.2H23.2V6H21.6V9.2H20v9.59h1.6v3.2h1.6v-3.2h1.6Zm-1.6,7.992H21.6V10.8h1.6Z"
               transform="translate(-6.217 -1.263)"
               fill="#71b7a6"
             />
             <path
               id="Path_38"
-              dataName="Path 38"
+              // dataName="Path 38"
               d="M12.8,7.2H11.2V4H9.6V7.2H8v7.992H9.6v3.2h1.6v-3.2h1.6ZM11.2,13.59H9.6V8.8h1.6Z"
               transform="translate(-2.807 -0.362)"
               fill="#d64d30"
             />
             <rect
               id="_Transparent_Rectangle_"
-              data-name="&lt;Transparent Rectangle&gt;"
+              // data-name="&lt;Transparent Rectangle&gt;"
               width="25"
               height="25"
               transform="translate(0.418 0.109)"

@@ -10,7 +10,7 @@ export const createSub = async (
 ) => {
   console.log("Create Subscription ...");
   try {
-    const r = await axios.post("/create-subscription", {
+    const r = await axios.post("/api/stripe/createSubscription", {
       userId,
       customerId,
       paymentMethodId,
@@ -18,10 +18,11 @@ export const createSub = async (
       coupon,
     });
     console.log(r);
-    if (r.data && r.data.newUser && r.data.newUser.res)
-      setUser(r.data.newUser.res);
+    return r.data;
+    // if (r?.data?.newUser?.res) setUser(r.data.newUser.res);
   } catch (e) {
     console.error("Create Subscription .", e);
+    return { error: e };
   }
 };
 
@@ -33,8 +34,10 @@ export const cancelSub = async (subscriptionId, user, setUser) => {
       subscriptionId,
     });
     console.log(r);
+    return r;
   } catch (e) {
     console.error("cancel Subscription .", e);
+    return { error: e };
   }
 };
 
@@ -73,19 +76,36 @@ export const checkCoupon = async (coupon, setCoupon, price, setPrice) => {
   setCoupon({ ...coupon, load: false, err: "" });
 };
 
-export const addPaymMethod = async function (paymentMethod, user, setUser) {
+export const addPaymMethod = async function (paymentMethodId, customerId) {
   console.log("Adding Payment Method ...");
   try {
-    const r = await axios.post("/add-payment-method", {
-      customerId: user.customerId,
-      paymentMethodId: paymentMethod.id,
+    const r = await axios.post("/api/stripe/addPaymentMethod", {
+      customerId,
+      paymentMethodId,
     });
     console.log(r);
-    setUser({
-      ...user,
-      paymentMethods: [paymentMethod, ...user.paymentMethods],
-    });
+    return r?.data?.paymentMethods;
   } catch (e) {
     console.error("Adding Payment Method Subscription .", e);
   }
+
+  return null;
+};
+
+export const detachPaymentMethod = async (id, customerId) => {
+  console.log("Retriving Payment Method ... ");
+  let r = null;
+
+  try {
+    const req = await axios.post("/api/stripe/detachPaymentMethod", {
+      id,
+      customerId,
+    });
+    r = req?.data?.paymentMethods;
+    console.log(r);
+  } catch (e) {
+    console.error("Adding Payment Method Subscription .", e);
+  }
+
+  return r;
 };

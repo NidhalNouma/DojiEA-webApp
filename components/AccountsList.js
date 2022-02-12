@@ -1,4 +1,6 @@
-/* This example requires Tailwind CSS v2.0+ */
+import { RefreshIcon } from "@heroicons/react/outline";
+import { useState } from "react";
+
 const people = [
   {
     name: "Jane Cooper",
@@ -24,6 +26,8 @@ const people = [
 ];
 
 export default function AccountsList() {
+  const [spin, setSpin] = useState(false);
+
   return (
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -52,18 +56,24 @@ export default function AccountsList() {
                   </th>
                   <th
                     scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
+                    className="px-6 py-3 text-right text-xs font-medium text-slate-100 uppercase tracking-wider"
                   >
-                    Role
+                    <RefreshIcon
+                      className={`text-slate-300 inline h-5 w-5 cursor-pointer ${
+                        spin && "animate-spin"
+                      }`}
+                      aria-hidden="true"
+                      onClick={() => setSpin(!spin)}
+                    />
                   </th>
-                  <th scope="col" className="relative px-6 py-3">
+                  {/* <th scope="col" className="relative px-6 py-3">
                     <span className="sr-only">Edit</span>
-                  </th>
+                  </th> */}
                 </tr>
               </thead>
               <tbody className="bg-c1 divide-y divide-c2">
-                {people.map((person) => (
-                  <tr key={person.email}>
+                {people.map((person, i) => (
+                  <tr key={i}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="">
@@ -82,9 +92,6 @@ export default function AccountsList() {
                       <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-c1">
                         Active
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
-                      {person.role}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <a href="#" className="text-c4 hover:text-indigo-900">

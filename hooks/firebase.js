@@ -19,15 +19,7 @@ import {
   setDoc,
   getDoc,
 } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCNboygqhiVSCRWZ-RGAhgwityFtLdJgOQ",
-  authDomain: "ea-website-5968a.firebaseapp.com",
-  projectId: "ea-website-5968a",
-  storageBucket: "ea-website-5968a.appspot.com",
-  messagingSenderId: "555783767028",
-  appId: "1:555783767028:web:fed6f60d92a9216597afa1",
-};
+import { firebaseConfig } from "../Constants";
 
 const collName = "users";
 const app = initializeApp(firebaseConfig);
@@ -168,6 +160,7 @@ async function addUser(user) {
     console.log(req);
     const docRef = await setDoc(doc(db, collName, user.uid), {
       email: user.email,
+      uid: user.uid,
       customerId: customer.id,
       accounts: [],
       membership: null,

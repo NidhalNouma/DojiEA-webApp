@@ -31,7 +31,7 @@ export function ButtonT4Spin({ className, label, onClick }) {
   return (
     <React.Fragment>
       {spin ? (
-        <Spinner4 />
+        <Spinner4 className={className} />
       ) : (
         <div className="flex justify-center items-center">
           <button

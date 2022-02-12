@@ -1,37 +1,5 @@
-import { confirmPasswordReset } from "firebase/auth";
 import React from "react";
-
-export const prices = [
-  {
-    name: "Basic",
-    Price: 97,
-    accounts: 2,
-    id: process.env.NEXT_PUBLIC_PRICE_BASIC,
-    limit: false,
-  },
-  {
-    name: "Advanced",
-    Price: 189,
-    accounts: 6,
-    id: process.env.NEXT_PUBLIC_PRICE_ADVANCED,
-    limit: false,
-  },
-  {
-    name: "Pro",
-    Price: 259,
-    accounts: 18,
-    id: process.env.NEXT_PUBLIC_PRICE_PRO,
-    limit: false,
-  },
-  {
-    name: "Life Time",
-    Price: 959,
-    accounts: 10,
-    id: process.env.NEXT_PUBLIC_PRICE_LIFETIME,
-    limit: true,
-    expire: 10,
-  },
-];
+import { prices } from "../Constants";
 
 export default function Pricing({ select, selected, top = false }) {
   return (
@@ -39,12 +7,8 @@ export default function Pricing({ select, selected, top = false }) {
       {prices.map((val, i) => (
         <Item
           key={i}
-          Price={val.Price}
-          Title={val.name}
-          No={val.accounts}
+          val={val}
           top={top}
-          expire={val.expire}
-          show={val.show}
           selected={
             val.id === selected?.id
               ? true
@@ -59,13 +23,12 @@ export default function Pricing({ select, selected, top = false }) {
   );
 }
 
-function Item({ Title, Price, No, expire, selected, onClick, top }) {
+function Item({ val, selected, onClick, top }) {
+  const { name: Title, Price, accounts: No, expire, show, lifetime } = val;
   const className =
     (selected ? `${top ? "sm:-mt-4" : "sm:-mb-4"} shadow-lg z-10 ` : " ") +
     (top ? "rounded-t-lg" : "rounded-b-lg") +
     " flex-1 lg:flex-initial lg:w-1/4 bg-c2 mt-4 flex flex-col ";
-
-  console.log(Title, className);
 
   return (
     <div className={className}>
@@ -103,7 +66,9 @@ function Item({ Title, Price, No, expire, selected, onClick, top }) {
       <div className="mt-auto text-center pt-8 pb-10">
         <span className="text-teal-500 border-slate-300 border-b-4 text-center text-xl px-2 py-4 pb-1 rounded">
           ${Price}
-          <span className="ml-1 text-slate-300 text-base">/ Month</span>
+          <span className="ml-1 text-slate-300 text-base">
+            {!lifetime ? "/ Month" : "life time"}
+          </span>
         </span>
       </div>
       <div className="w-full text-center mb-8 mt-auto px-10 sm:px-0">

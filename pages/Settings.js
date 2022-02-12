@@ -8,6 +8,7 @@ import { LinkT4 } from "../components/utils/Links";
 import User, { useUserContext } from "../hooks/Users";
 import { Input } from "../components/utils/Inputs";
 import { Label, P1 } from "../components/utils/Text";
+import PaymentCards from "../components/PaymentCard";
 
 function Settings() {
   const { signOutf } = User();
@@ -46,8 +47,8 @@ function Settings() {
             </P1>
           </Sect>
 
-          <Sect label="Payment & Financials">
-            <P1>You have no active payment method</P1>
+          <Sect label="Payment methods">
+            <PaymentCards />
           </Sect>
 
           <ButtonT4Spin label="Sign out" onClick={signOutf} />
