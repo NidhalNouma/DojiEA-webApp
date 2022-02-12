@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }) {
     <UserContext.Provider value={{ user, setUser }}>
       <Head>
         <link rel="shortcut icon" href="/favicon.svg" />
-        <title>FirstBot EA</title>
+        <title>Doji Bot</title>
       </Head>
       <Component {...pageProps} />
     </UserContext.Provider>

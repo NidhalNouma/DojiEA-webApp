@@ -7,9 +7,9 @@ import ResetLink from "./ResetLink";
 import User, { useUserContext } from "../hooks/Users";
 import { ErrorI } from "./utils/Alert";
 
-function SignIn() {
+function SignIn({ start = 0 }) {
   const router = useRouter();
-  const [dis, setDis] = useState(0);
+  const [dis, setDis] = useState(start);
   const { SignInHook } = User();
   const { error, email, password, setPassword, setEmail, submit } =
     SignInHook();

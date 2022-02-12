@@ -1,3 +1,4 @@
+import axios from "axios";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -160,8 +161,14 @@ export async function resetPassword(email) {
 
 async function addUser(user) {
   try {
+    const req = await axios.post("/api/stripe/createCustomer", {
+      email: user.email,
+    });
+    const customer = req.data.customer;
+    console.log(req);
     const docRef = await setDoc(doc(db, collName, user.uid), {
       email: user.email,
+      customerId: customer.id,
       accounts: [],
       membership: null,
       created_at: Date.now(),
@@ -188,7 +195,14 @@ async function getUser(uid) {
 
   if (docSnap.exists()) {
     //console.log("Document data:", docSnap.data());
-    return docSnap.data();
+    const user = docSnap.data();
+    const stripe = await axios.post("/api/stripe/getCustomer", {
+      email: user.email,
+      customerId: user.customerId,
+    });
+    user["stripe"] = stripe.data;
+    console.log(user);
+    return user;
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");

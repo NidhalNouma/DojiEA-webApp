@@ -56,7 +56,7 @@ export function Button4Spin({ className, label, onClick }) {
   return (
     <React.Fragment>
       {spin ? (
-        <Spinner4 />
+        <Spinner4 className={className} />
       ) : (
         <button
           className={
@@ -76,9 +76,9 @@ export function Button4Spin({ className, label, onClick }) {
   );
 }
 
-function Spinner4({}) {
+function Spinner4({ className }) {
   return (
-    <div className="flex justify-center items-center">
+    <div className={className + " flex justify-center items-center"}>
       <svg
         role="status"
         className="inline h-8 w-8 animate-spin mr-2 text-c4 fill-white"

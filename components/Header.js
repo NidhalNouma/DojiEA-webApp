@@ -19,10 +19,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Header() {
+function Header({ copen = false }) {
   const { user } = useUserContext();
   const [top, setTop] = useState(true);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(copen);
 
   // detect whether user has scrolled the page down by 10px
   useEffect(() => {
@@ -34,10 +34,10 @@ function Header() {
   }, [top]);
 
   return (
-    <Disclosure as="nav" className="bg-gray-800">
+    <Disclosure as="nav" className="bg-gray-800 z-20">
       {({ openm }) => (
         <header
-          className={`fixed w-full z-10 md:bg-opacity-90 transition duration-300 ease-in-out ${
+          className={`fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out bg-c1 ${
             !top && "bg-c1 backdrop-blur-sm shadow-lg"
           }`}
         >
