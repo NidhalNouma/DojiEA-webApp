@@ -3,6 +3,8 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
 
 export default async function handler(req, res) {
   // Set the default payment method on the customer
+  if (req.method !== "POST")
+    return res.status(405).end(`Method ${method} Not Allowed`);
   const { paymentMethodId, customerId } = req.body;
 
   let r = { upm: null, udpm: null };

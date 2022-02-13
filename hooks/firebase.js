@@ -14,7 +14,11 @@ import {
   getFirestore,
   doc,
   addDoc,
+  updateDoc,
   collection,
+  query,
+  where,
+  serverTimestamp,
   getDocs,
   setDoc,
   getDoc,
@@ -68,7 +72,7 @@ export async function signUp(email, password) {
     );
     const user = userCredential.user;
     // await addUser(user);
-    await sendEmailVerification(auth.currentUser);
+    // await sendEmailVerification(auth.currentUser);
     return { user, error: null };
   } catch (error) {
     const errorCode = error.code;
@@ -89,9 +93,9 @@ export async function signIn(email, password) {
       email,
       password
     );
-    const usr = userCredential.user;
+    const user = userCredential.user;
     // const user = await getUser(usr.uid);
-    return { usr, user, error: null };
+    return { user, error: null };
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
@@ -161,29 +165,17 @@ async function addUser(user) {
       email: user.email,
     });
     const customer = req.data.customer;
-    console.log(req);
+
     const docRef = await setDoc(doc(db, collName, user.uid), {
       email: user.email,
       uid: user.uid,
       customerId: customer.id,
-      accounts: [],
-      membership: null,
-      created_at: Date.now(),
+      created_at: serverTimestamp(),
     });
     console.log("Document written with: ", docRef);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-}
-
-async function getUsers() {
-  const querySnapshot = await getDocs(collection(db, collName));
-  const r = [];
-  querySnapshot.forEach((doc) => {
-    //console.log(`${doc.id} => ${doc.data()}`);
-    r.push({ [doc.id]: doc.data() });
-  });
-  return r;
 }
 
 async function getUser(uid) {
@@ -200,11 +192,93 @@ async function getUser(uid) {
       customerId: user.customerId,
     });
     user["stripe"] = stripe.data;
-    console.log(user);
+    user["accounts"] = await getAccounts(uid);
+    // console.log(user);
     return user;
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
     return null;
   }
+}
+
+export async function getUserByEmail(email) {
+  const q = query(collection(db, collName), where("email", "==", email));
+  console.log("Getting user by email ...");
+
+  const querySnapshot = await getDocs(q);
+  const r = [];
+  querySnapshot.forEach((doc) => {
+    //console.log(`${doc.id} => ${doc.data()}`);
+    r.push(doc.data());
+  });
+  if (r.length === 0) return null;
+
+  let user = r[0];
+
+  user["accounts"] = await getAccounts(user.uid);
+
+  return user;
+}
+
+export async function addAccount(accountServer, accountNumber, email, id) {
+  let uid = id;
+  console.log("Add account to user by email ...");
+
+  if (!uid) {
+    const q = query(collection(db, collName), where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    const r = [];
+    querySnapshot.forEach((doc) => {
+      //console.log(`${doc.id} => ${doc.data()}`);
+      r.push(doc.data());
+    });
+
+    if (r.length === 0) return null;
+
+    uid = r[0]?.uid;
+  }
+
+  const ref = doc(
+    db,
+    collName,
+    uid,
+    "accounts",
+    `${accountNumber}.${accountServer}`
+  );
+
+  const res = await setDoc(
+    ref,
+    {
+      accountNumber,
+      accountServer,
+      isActive: true,
+      created_at: serverTimestamp(),
+      data: [],
+    },
+    { merge: true }
+  );
+
+  return res;
+}
+
+export async function getAccounts(uid) {
+  const coll = collection(db, collName, uid, "accounts");
+  const querySnapshot = await getDocs(coll);
+  const r = [];
+  querySnapshot.forEach((doc) => {
+    r.push({ ...doc.data(), id: doc.id });
+  });
+  return r;
+}
+
+export async function disableOrEnableAccount(uid, accountId, active) {
+  const docRef = doc(db, collName, uid, "accounts", accountId);
+
+  const upd = await updateDoc(docRef, { isActive: active });
+  console.log(upd);
+
+  const acc = await getAccounts(uid);
+  return acc;
 }

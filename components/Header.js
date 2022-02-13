@@ -10,6 +10,7 @@ import { useUserContext } from "../hooks/Users";
 
 const navigation = [
   { name: "Dashboard", href: "/Dashboard", current: false },
+  { name: "Accounts", href: "/Accounts", current: false },
   { name: "Membership", href: "/Membership", current: false },
   { name: "How to use", href: "/HowToUse", current: false },
   { name: "Settings", href: "/Settings", current: false },
@@ -54,18 +55,11 @@ function Header({ copen = false }) {
                 <ul className="flex flex-grow justify-end flex-wrap items-center">
                   {user ? (
                     <React.Fragment>
-                      <li className="pl-8 hidden sm:block">
-                        <LinkT4 href="/Dashboard" label="Dashbord" />
-                      </li>
-                      <li className="pl-8 hidden sm:block">
-                        <LinkT4 href="Membership" label="Membership" />
-                      </li>
-                      <li className="pl-8 hidden sm:block">
-                        <LinkT4 href="HowToUse" label="How to use" />
-                      </li>
-                      <li className="pl-8 hidden sm:block">
-                        <LinkT4 href="Settings" label="Settings" />
-                      </li>
+                      {navigation.map((item) => (
+                        <li key={item.name} className="pl-8 hidden sm:block">
+                          <LinkT4 href={item.href} label={item.name} />
+                        </li>
+                      ))}
 
                       <Disclosure.Button className="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                         <span className="sr-only">Open main menu</span>

@@ -3,13 +3,14 @@ import { useRouter } from "next/router";
 import { Button4Spin, ButtonT4 } from "./utils/Buttons";
 import { Input } from "./utils/Inputs";
 import User, { useUserContext } from "../hooks/Users";
-import { ErrorI } from "./utils/Alert";
+import { ErrorI, SuccessI } from "./utils/Alert";
 
 function SignIn({ back }) {
   const { SignUpHook } = User();
   // const { setUser } = useUserContext();
   const router = useRouter();
   const {
+    msg,
     error,
     email,
     password,
@@ -47,18 +48,29 @@ function SignIn({ back }) {
           value={cpassword}
           setValue={setCPassword}
         />
-        <div className="">{error && <ErrorI message={error} />}</div>
-        <Button4Spin
-          className="w-full rounded-lg"
-          label="Login to your account"
-          onClick={async () => {
-            const r = await submit();
-            if (!r.err) {
-              // setUser(r.user);
-              router.push("/Dashboard");
-            }
-          }}
-        />
+        {error && (
+          <div className="">
+            <ErrorI message={error} />
+          </div>
+        )}
+        {msg && (
+          <div className="">
+            <SuccessI message={msg} />
+          </div>
+        )}
+        {!msg && (
+          <Button4Spin
+            className="w-full rounded-lg !mt-10"
+            label="Login to your account"
+            onClick={async () => {
+              const r = await submit();
+              // if (!r.err) {
+              //   // setUser(r.user);
+              //   router.push("/Dashboard");
+              // }
+            }}
+          />
+        )}
         <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
           You have an account?{" "}
           <ButtonT4

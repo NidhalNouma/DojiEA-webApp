@@ -22,8 +22,10 @@ function User() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [msg, setMsg] = useState("");
 
     async function submit() {
+      setError("");
       if (!email) {
         const err = "Please enter a valid email address";
         setError(err);
@@ -37,11 +39,14 @@ function User() {
       const r = await signIn(email, password);
       if (r.err) {
         setError(r.err);
+      } else {
+        setError("");
+        setMsg("You successfully signed in, you will be redirect in a sec!");
       }
       return r;
     }
 
-    return { error, email, password, setPassword, setEmail, submit };
+    return { msg, error, email, password, setPassword, setEmail, submit };
   }
 
   function SignUpHook() {
@@ -49,8 +54,10 @@ function User() {
     const [password, setPassword] = useState("");
     const [cpassword, setCPassword] = useState("");
     const [error, setError] = useState("");
+    const [msg, setMsg] = useState("");
 
     async function submit() {
+      setError("");
       if (!email) {
         const err = "Please enter a valid email address";
         setError(err);
@@ -69,11 +76,15 @@ function User() {
       const r = await signUp(email, password);
       if (r.err) {
         setError(r.err);
+      } else {
+        setError("");
+        setMsg("You successfully signed up, you will be redirect in a sec!");
       }
       return r;
     }
 
     return {
+      msg,
       error,
       email,
       password,

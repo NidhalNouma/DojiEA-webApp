@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAccountsByPriceId } from "../Constants";
 
 export const createSub = async (
   userId,
@@ -110,3 +111,12 @@ export const detachPaymentMethod = async (id, customerId) => {
 
   return r;
 };
+
+export function allowedAccounts(subscriptions) {
+  let r = 0;
+  subscriptions.forEach((v) => {
+    r += getAccountsByPriceId(v.plan?.id);
+  });
+
+  return r;
+}

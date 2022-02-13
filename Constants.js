@@ -31,19 +31,38 @@ export const prices = [
   },
 ];
 
-export const firebaseConfig = {
-  apiKey: "AIzaSyCNboygqhiVSCRWZ-RGAhgwityFtLdJgOQ",
-  authDomain: "ea-website-5968a.firebaseapp.com",
-  projectId: "ea-website-5968a",
-  storageBucket: "ea-website-5968a.appspot.com",
-  messagingSenderId: "555783767028",
-  appId: "1:555783767028:web:fed6f60d92a9216597afa1",
-};
+export const firebaseConfig =
+  process.env.NEXT_PUBLIC_MODE === "Live"
+    ? {
+        apiKey: "AIzaSyD4MgfC1xAiy8w57ppsh4I0QRRXNH62u2U",
+        authDomain: "dojibot-29cb7.firebaseapp.com",
+        projectId: "dojibot-29cb7",
+        storageBucket: "dojibot-29cb7.appspot.com",
+        messagingSenderId: "496467423343",
+        appId: "1:496467423343:web:d1e8082b746de8bbc35d9a",
+      }
+    : {
+        apiKey: "AIzaSyCNboygqhiVSCRWZ-RGAhgwityFtLdJgOQ",
+        authDomain: "ea-website-5968a.firebaseapp.com",
+        projectId: "ea-website-5968a",
+        storageBucket: "ea-website-5968a.appspot.com",
+        messagingSenderId: "555783767028",
+        appId: "1:555783767028:web:fed6f60d92a9216597afa1",
+      };
 
 export function getNameByPriceId(id) {
   let r = null;
   prices.forEach((v) => {
     if (v.id == id) r = v.name;
+  });
+
+  return r;
+}
+
+export function getAccountsByPriceId(id) {
+  let r = null;
+  prices.forEach((v) => {
+    if (v.id == id) r = v.accounts;
   });
 
   return r;
