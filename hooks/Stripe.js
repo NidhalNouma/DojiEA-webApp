@@ -5,7 +5,6 @@ export const createSub = async (
   customerId,
   paymentMethodId,
   priceId,
-  setUser,
   coupon = ""
 ) => {
   console.log("Create Subscription ...");
@@ -18,27 +17,29 @@ export const createSub = async (
       coupon,
     });
     console.log(r);
-    return r.data;
+    return r?.data?.subscriptions;
     // if (r?.data?.newUser?.res) setUser(r.data.newUser.res);
   } catch (e) {
     console.error("Create Subscription .", e);
-    return { error: e };
   }
+
+  return null;
 };
 
-export const cancelSub = async (subscriptionId, user, setUser) => {
+export const cancelSubscription = async (subscriptionId, customerId) => {
   console.log("cancel Subscription ...");
-  setUser({ ...user, subs: user.subs.filter((i) => i.id !== subscriptionId) });
+
   try {
-    const r = await axios.post("/cancel-subscription", {
+    const r = await axios.post("/api/stripe/cancelSubscription", {
       subscriptionId,
+      customerId,
     });
     console.log(r);
-    return r;
+    return r?.data?.subscriptions;
   } catch (e) {
     console.error("cancel Subscription .", e);
-    return { error: e };
   }
+  return null;
 };
 
 export const checkCoupon = async (coupon, setCoupon, price, setPrice) => {

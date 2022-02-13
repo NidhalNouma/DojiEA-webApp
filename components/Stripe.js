@@ -3,10 +3,12 @@ import { Button4Spin } from "./utils/Buttons";
 import { H4 } from "./utils/Titles";
 import PaymentMethods from "./PaymentCard";
 
+import { useUserContext } from "../hooks/Users";
 import { createSub } from "../hooks/Stripe";
 
 export const Form = (props) => {
-  const { title, price, id, user, done } = props;
+  const { user, setUser } = useUserContext();
+  const { title, price, id, done } = props;
   const [pm, setPm] = useState(null);
   const [open, setOpen] = useState(0);
 
@@ -17,10 +19,16 @@ export const Form = (props) => {
       return;
     }
 
-    const sub = await createSub(user.uid, user.customerId, pm.id, id);
+    const subscription = await createSub(user.uid, user.customerId, pm.id, id);
 
-    console.log(sub);
-    if (!sub.err) done();
+    if (subscription) {
+      const nu = {
+        ...user,
+        stripe: { ...user.stripe, subscription },
+      };
+      setUser(nu);
+      done(false);
+    }
   };
 
   useEffect(() => {

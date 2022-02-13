@@ -29,13 +29,15 @@ export function checkUser(setUser) {
   const auth = getAuth();
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
       const uid = user.uid;
-      const usr = await getUser(uid);
-      setUser(usr);
+      let usr = await getUser(uid);
 
-      // ...
+      if (!usr) {
+        await addUser(user);
+        usr = await getUser(uid);
+      }
+      // console.log("user=> . ", usr, user);
+      setUser(usr);
     } else {
       setUser(null);
     }
@@ -65,7 +67,7 @@ export async function signUp(email, password) {
       password
     );
     const user = userCredential.user;
-    await addUser(user);
+    // await addUser(user);
     await sendEmailVerification(auth.currentUser);
     return { user, error: null };
   } catch (error) {
@@ -88,7 +90,7 @@ export async function signIn(email, password) {
       password
     );
     const usr = userCredential.user;
-    const user = await getUser(usr.uid);
+    // const user = await getUser(usr.uid);
     return { usr, user, error: null };
   } catch (error) {
     const errorCode = error.code;
@@ -152,6 +154,8 @@ export async function resetPassword(email) {
 }
 
 async function addUser(user) {
+  console.log("Adding user ...");
+
   try {
     const req = await axios.post("/api/stripe/createCustomer", {
       email: user.email,
@@ -185,6 +189,8 @@ async function getUsers() {
 async function getUser(uid) {
   const docRef = doc(db, collName, uid);
   const docSnap = await getDoc(docRef);
+
+  console.log("Getting user ...");
 
   if (docSnap.exists()) {
     //console.log("Document data:", docSnap.data());

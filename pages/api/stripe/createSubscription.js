@@ -2,16 +2,26 @@ import { Stripe } from "stripe";
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
 
 export default async function handler(req, res) {
-  let r = null;
+  let subscription = null;
+  let subscriptions = null;
   const { paymentMethodId, customerId, priceId, coupon } = req.body;
 
   try {
-    r = await createSubscription(paymentMethodId, customerId, priceId, coupon);
+    subscription = await createSubscription(
+      paymentMethodId,
+      customerId,
+      priceId,
+      coupon
+    );
+
+    subscriptions = await stripe.subscriptions.list({
+      customer: customerId,
+    });
   } catch (error) {
     return res.status("402").json({ error: { message: error.message } });
   }
 
-  res.status(200).json(r);
+  res.status(200).json({ subscriptions, subscription });
 }
 
 async function createSubscription(

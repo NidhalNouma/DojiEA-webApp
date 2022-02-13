@@ -39,3 +39,12 @@ export const firebaseConfig = {
   messagingSenderId: "555783767028",
   appId: "1:555783767028:web:fed6f60d92a9216597afa1",
 };
+
+export function getNameByPriceId(id) {
+  let r = null;
+  prices.forEach((v) => {
+    if (v.id == id) r = v.name;
+  });
+
+  return r;
+}

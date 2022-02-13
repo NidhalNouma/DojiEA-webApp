@@ -9,6 +9,7 @@ import User, { useUserContext } from "../hooks/Users";
 import { Input } from "../components/utils/Inputs";
 import { Label, P1 } from "../components/utils/Text";
 import PaymentCards from "../components/PaymentCard";
+import MembershipList from "../components/MembershipList";
 
 function Settings() {
   const { signOutf } = User();
@@ -41,10 +42,7 @@ function Settings() {
           </Sect>
 
           <Sect label="Membership">
-            <P1>
-              You have no active membership click{" "}
-              <LinkT4 label="here" href="/Membership" /> to make a new one
-            </P1>
+            <MembershipList />
           </Sect>
 
           <Sect label="Payment methods">
