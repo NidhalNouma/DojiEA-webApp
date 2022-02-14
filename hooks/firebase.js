@@ -221,7 +221,13 @@ export async function getUserByEmail(email) {
   return user;
 }
 
-export async function addAccount(accountServer, accountNumber, email, id) {
+export async function addAccount(
+  accountServer,
+  accountNumber,
+  accountName,
+  email,
+  id
+) {
   let uid = id;
   console.log("Add account to user by email ...");
 
@@ -253,6 +259,7 @@ export async function addAccount(accountServer, accountNumber, email, id) {
     {
       accountNumber,
       accountServer,
+      accountName,
       isActive: true,
       created_at: serverTimestamp(),
       data: [],

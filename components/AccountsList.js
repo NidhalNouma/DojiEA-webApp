@@ -44,6 +44,12 @@ function Table() {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
+              Number
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
+            >
               Server
             </th>
             <th
@@ -89,12 +95,13 @@ function Raw({ val }) {
   return (
     <tr>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="flex items-center">
-          <div className="">
-            <div className="text-sm font-medium text-slate-400">
-              {val.accountNumber}
-            </div>
-          </div>
+        <div className="text-sm font-medium text-slate-400">
+          {val.accountName}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="text-sm font-medium text-slate-400">
+          {val.accountNumber}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">

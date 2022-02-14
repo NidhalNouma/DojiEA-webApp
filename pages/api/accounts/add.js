@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   if (req.method !== "POST")
     return res.status(405).end(`Method ${req.method} Not Allowed`);
 
-  let { accountNumber, accountServer, email } = req.body;
+  let { accountNumber, accountServer, accountName, email } = req.body;
   // email = "nidhal.nouma.0@gmail.com";
   // accountNumber = 111151008;
   // accountServer = "bbbbbb";
@@ -28,7 +28,13 @@ export default async function handler(req, res) {
         .json({ error: "You reach the maximum of acoounts" });
 
     if (!findAccount(accountNumber, accountServer, user.accounts))
-      await addAccount(accountServer, accountNumber, user.email, user.uid);
+      await addAccount(
+        accountServer,
+        accountNumber,
+        accountName,
+        user.email,
+        user.uid
+      );
 
     return res.status(200).json({ error: "", accounts: user.accounts, ac });
   } else return res.status(200).json({ error: "Account not exist!" });

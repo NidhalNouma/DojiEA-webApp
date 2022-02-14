@@ -1,6 +1,5 @@
 import React from "react";
-
-// import HeroImage from "../images/hero-image.png";
+import { files } from "../Constants";
 
 function HeroHome() {
   return (
@@ -38,6 +37,7 @@ function HeroHome() {
                   <button
                     className="px-10 py-4 rounded-full text-c2 font-semibold bg-slate-100 w-full mb-4 sm:w-auto sm:mb-0"
                     href="#0"
+                    onClick={files.ex4}
                   >
                     Get Free version
                   </button>

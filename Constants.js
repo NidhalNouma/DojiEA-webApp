@@ -67,3 +67,7 @@ export function getAccountsByPriceId(id) {
 
   return r;
 }
+
+export const files = {
+  ex4: () => (window.location = "/robot/DojiBot.ex4"),
+};
