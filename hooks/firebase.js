@@ -29,7 +29,7 @@ const collName = "users";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 
-export function checkUser(setUser) {
+export function checkUser(setUser, setDone) {
   const auth = getAuth();
   onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -45,6 +45,8 @@ export function checkUser(setUser) {
     } else {
       setUser(null);
     }
+
+    setDone(1);
   });
 }
 
@@ -55,7 +57,7 @@ export async function getActiveUser(setUser) {
   // console.log("auth ", usr);
   if (usr) {
     const user = await getUser(usr.uid);
-    setUser(user);
+    if (setUser) setUser(user);
     //  console.log("auth ", user);
     return user;
   }

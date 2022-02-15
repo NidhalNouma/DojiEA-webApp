@@ -47,7 +47,7 @@ function Header({ copen = false }) {
               {/* Site branding */}
               <div className="flex-shrink-0 mr-4">
                 {/* Logo */}
-                <IconSvg to={user ? "/Dashboard" : "/"} />
+                <IconSvg to={user ? "/" : "/"} />
               </div>
 
               {/* Site navigation */}

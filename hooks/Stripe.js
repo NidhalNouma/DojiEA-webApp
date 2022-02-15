@@ -114,8 +114,17 @@ export const detachPaymentMethod = async (id, customerId) => {
 
 export function allowedAccounts(subscriptions) {
   let r = 0;
-  subscriptions.forEach((v) => {
+  subscriptions?.forEach((v) => {
     r += getAccountsByPriceId(v.plan?.id);
+  });
+
+  return r;
+}
+
+export function getNoStatus(accounts, status) {
+  let r = 0;
+  accounts?.forEach((v) => {
+    if (v.isActive === status) r++;
   });
 
   return r;

@@ -4,6 +4,8 @@ import { useUserContext } from "../hooks/Users";
 import { P1 } from "../components/utils/Text";
 import { ButtonT4Spin, Spinner4 } from "../components/utils/Buttons";
 import { disableOrEnableAccount, getAccounts } from "../hooks/firebase";
+import CardInfo from "./CardInfo";
+import { allowedAccounts, getNoStatus } from "../hooks/Stripe";
 
 export default function AccountsList() {
   const { user } = useUserContext();
@@ -13,11 +15,28 @@ export default function AccountsList() {
     <div className="flex flex-col">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          {accounts?.length > 0 ? (
-            <Table />
-          ) : (
-            <P1 className="text-center pt-8">No active account available</P1>
-          )}
+          <div className="mb-6 flex">
+            <CardInfo
+              color="text-slate-100 bg-slate-400"
+              value={
+                allowedAccounts(user?.stripe?.subscription?.data) -
+                getNoStatus(accounts, true)
+              }
+              title="Availble to use"
+            />
+            <CardInfo
+              color="bg-teal-400 text-teal-400"
+              value={getNoStatus(accounts, true)}
+              title="Active account"
+              className="mx-4"
+            />
+            <CardInfo
+              color="text-red-400 bg-red-400"
+              value={getNoStatus(accounts, false)}
+              title="Inactive account"
+            />
+          </div>
+          <Table />
         </div>
       </div>
     </div>
@@ -63,7 +82,7 @@ function Table() {
               className="px-6 py-3 text-right text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
               {spin ? (
-                <Spinner4 classNameSpin="mr-0 ml-auto !h-5 !w-5 !text-slate-500" />
+                <Spinner4 classNameSpin="!mr-0 ml-auto !h-5 !w-5 !text-slate-500" />
               ) : (
                 <RefreshIcon
                   className="text-slate-300 inline h-5 w-5 cursor-pointer"
@@ -85,6 +104,9 @@ function Table() {
           ))}
         </tbody>
       </table>
+      {accounts.length === 0 && (
+        <P1 className="text-center py-3">No account are being used</P1>
+      )}
     </div>
   );
 }

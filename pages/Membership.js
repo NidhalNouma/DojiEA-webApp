@@ -9,9 +9,11 @@ import { P1 } from "../components/utils/Text";
 import { LinkT4 } from "../components/utils/Links";
 import Pricing from "../components/Pricing";
 import { Form } from "../components/Stripe";
+import MembershipList from "../components/MembershipList";
 
 function Membership() {
   const { user } = useUserContext();
+  const data = user?.stripe?.subscription?.data;
 
   const [selectedPricing, setSelected] = useState(null);
   const [done, setDone] = useState(false);
@@ -23,6 +25,15 @@ function Membership() {
         {/* Hero content */}
         <div className="pt-12 pb-12 md:pt-20 md:pb-20">
           <H1 label="Membership" />
+          {data?.length > 0 && (
+            <main>
+              <div className="max-w-7xl mx-auto py-3 sm:px-6 lg:px-8">
+                <H4 label={`You have ${data?.length} available plan`} />
+                <MembershipList hideDelete={true} />
+                <P1>Feel free to select and add more if you need</P1>
+              </div>
+            </main>
+          )}
           <Pricing
             select={(e) => {
               setSelected(e);

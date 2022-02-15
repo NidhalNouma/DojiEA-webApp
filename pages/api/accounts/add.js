@@ -11,6 +11,7 @@ export default async function handler(req, res) {
   // email = "nidhal.nouma.0@gmail.com";
   // accountNumber = 111151008;
   // accountServer = "bbbbbb";
+  // accountName = "test";
   const user = await getUserByEmail(email);
 
   if (user) {

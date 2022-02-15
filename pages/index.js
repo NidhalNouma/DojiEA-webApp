@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/Header";
 import HeroHome from "../components/HeroHome";
 import FeaturesBlocks from "../components/FeaturesBlocks";
@@ -7,8 +7,11 @@ import Pricing from "../components/Pricing";
 import Overlay from "../components/utils/Overlay";
 import SignIn from "../components/SignIn";
 
-function Index() {
+function Index({ fuser, stars }) {
   const [open, setOpen] = useState(false);
+  useEffect(() => {
+    console.log(stars, fuser);
+  });
 
   return (
     <div>

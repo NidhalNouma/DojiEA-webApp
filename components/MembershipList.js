@@ -9,7 +9,7 @@ import Overlay from "./utils/Overlay";
 import { cancelSubscription } from "../hooks/Stripe";
 import { getNameByPriceId } from "../Constants";
 
-export default function MembershipList({}) {
+export default function MembershipList({ hideDelete }) {
   const { user, setUser } = useUserContext();
   const data = user?.stripe?.subscription?.data;
 
@@ -17,7 +17,13 @@ export default function MembershipList({}) {
     <React.Fragment>
       {data?.length > 0 ? (
         data.map((sub, i) => (
-          <Subscription key={i} i={sub} user={user} setUser={setUser} />
+          <Subscription
+            key={i}
+            i={sub}
+            user={user}
+            setUser={setUser}
+            hideDelete={hideDelete}
+          />
         ))
       ) : (
         <P1>
@@ -29,7 +35,7 @@ export default function MembershipList({}) {
   );
 }
 
-function Subscription({ i, user, setUser }) {
+function Subscription({ i, user, setUser, hideDelete }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="py-2 px-1 border border-slate-500 rounded my-3 cursor cursor-pointer hover:bg-c1 flex items-center">
@@ -38,10 +44,12 @@ function Subscription({ i, user, setUser }) {
           <span className="text-lg font-bold text-teal-400 py-1">
             {getNameByPriceId(i.plan.id)} Membership
           </span>
-          <TrashIcon
-            className="w-4 h-4 text-c2"
-            onClick={() => setOpen(true)}
-          />
+          {!hideDelete && (
+            <TrashIcon
+              className="w-4 h-4 text-c2"
+              onClick={() => setOpen(true)}
+            />
+          )}
         </div>
         <span className="text-slate-300 text-sm font-medium">
           Renew{" "}
