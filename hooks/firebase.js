@@ -7,6 +7,8 @@ import {
   sendPasswordResetEmail,
   sendEmailVerification,
   signOut,
+  signInWithPopup,
+  GoogleAuthProvider,
   onAuthStateChanged,
   updatePassword,
 } from "firebase/auth";
@@ -14,6 +16,7 @@ import {
   getFirestore,
   doc,
   addDoc,
+  writeBatch,
   updateDoc,
   collection,
   query,
@@ -28,11 +31,12 @@ import { firebaseConfig } from "../Constants";
 const collName = "users";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
+const provider = new GoogleAuthProvider();
 
-export function checkUser(setUser, setDone) {
+export function checkUser(setUser, setDone, done) {
   const auth = getAuth();
   onAuthStateChanged(auth, async (user) => {
-    if (user) {
+    if (user && done === 0) {
       const uid = user.uid;
       let usr = await getUser(uid);
 
@@ -46,22 +50,29 @@ export function checkUser(setUser, setDone) {
       setUser(null);
     }
 
-    setDone(1);
+    setDone((d) => (d === 0 ? 1 : d));
   });
 }
 
-export async function getActiveUser(setUser) {
+export async function getActiveUser(setUser, setDone) {
   const auth = getAuth();
   const usr = auth.currentUser;
 
-  // console.log("auth ", usr);
+  let user = null;
+
+  console.log("auth ", usr);
   if (usr) {
-    const user = await getUser(usr.uid);
+    user = await getUser(usr.uid);
+    if (!user) {
+      await addUser(user);
+      user = await getUser(usr.uid);
+    }
+    // console.log("user=> ", user);
     if (setUser) setUser(user);
     //  console.log("auth ", user);
-    return user;
   }
-  return null;
+  setDone((d) => (d === 0 ? 1 : d));
+  return user;
 }
 
 export async function signUp(email, password) {
@@ -95,12 +106,44 @@ export async function signIn(email, password) {
       email,
       password
     );
-    const user = userCredential.user;
-    // const user = await getUser(usr.uid);
+    const usr = userCredential.user;
+    const user = await getUser(usr.uid);
     return { user, error: null };
   } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
+    return {
+      user: null,
+      err: "User doesn't exists",
+      error,
+    };
+  }
+}
+
+export async function continueWithGoogle() {
+  const auth = getAuth();
+  try {
+    const result = await signInWithPopup(auth, provider);
+
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    const usr = result.user;
+
+    let user = await getUser(usr.uid);
+    if (user === null) {
+      await addUser(usr);
+      user = await getUser(usr.uid);
+    }
+
+    return { user, error: null };
+  } catch (error) {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
     return {
       user: null,
       err: "User doesn't exists",
@@ -204,7 +247,7 @@ async function getUser(uid) {
   }
 }
 
-export async function getUserByEmail(email) {
+export async function getUserByEmail(email, withAccounts = true) {
   const q = query(collection(db, collName), where("email", "==", email));
   console.log("Getting user by email ...");
 
@@ -218,7 +261,7 @@ export async function getUserByEmail(email) {
 
   let user = r[0];
 
-  user["accounts"] = await getAccounts(user.uid);
+  if (withAccounts) user["accounts"] = await getAccounts(user.uid);
 
   return user;
 }
@@ -234,19 +277,10 @@ export async function addAccount(
   console.log("Add account to user by email ...");
 
   if (!uid) {
-    const q = query(collection(db, collName), where("email", "==", email));
-    const querySnapshot = await getDocs(q);
-
-    const r = [];
-    querySnapshot.forEach((doc) => {
-      //console.log(`${doc.id} => ${doc.data()}`);
-      r.push(doc.data());
-    });
-
-    if (r.length === 0) return null;
-
-    uid = r[0]?.uid;
+    const user = getUserByEmail(email);
+    uid = user?.uid;
   }
+  if (!uid) return null;
 
   const ref = doc(
     db,
@@ -282,6 +316,24 @@ export async function getAccounts(uid) {
   return r;
 }
 
+export async function getAccount(uid, accountServer, accountNumber, email) {
+  if (!uid) {
+    const user = await getUserByEmail(email);
+    uid = user?.uid;
+  }
+  if (!uid) return null;
+  const docRef = doc(
+    db,
+    collName,
+    uid,
+    "accounts",
+    `${accountNumber}.${accountServer}`
+  );
+  const acc = await getDoc(docRef);
+
+  return acc?.data();
+}
+
 export async function disableOrEnableAccount(uid, accountId, active) {
   const docRef = doc(db, collName, uid, "accounts", accountId);
 
@@ -290,4 +342,58 @@ export async function disableOrEnableAccount(uid, accountId, active) {
 
   const acc = await getAccounts(uid);
   return acc;
+}
+
+export async function addData(
+  data,
+  lastOrder,
+  accountServer,
+  accountNumber,
+  email,
+  id
+) {
+  let uid = id;
+  console.log("Add data to user account ...");
+  if (data?.length === 0) return null;
+
+  if (!uid) {
+    const user = await getUserByEmail(email);
+    uid = user?.uid;
+  }
+  if (!uid) return null;
+
+  const batch = writeBatch(db);
+
+  data.forEach((val) => {
+    var docRef = doc(
+      db,
+      collName,
+      uid,
+      "accounts",
+      `${accountNumber}.${accountServer}`,
+      "data",
+      val.orderTicket
+    );
+    batch.set(docRef, val);
+  });
+
+  const res = await batch.commit();
+
+  const ref = doc(
+    db,
+    collName,
+    uid,
+    "accounts",
+    `${accountNumber}.${accountServer}`
+  );
+
+  await setDoc(
+    ref,
+    {
+      lastOrder,
+    },
+    { merge: true }
+  );
+
+  return res;
 }

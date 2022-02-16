@@ -10,7 +10,7 @@ import SignIn from "../components/SignIn";
 function Index({ fuser, stars }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    console.log(stars, fuser);
+    // console.log(stars, fuser);
   });
 
   return (

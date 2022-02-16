@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Router from "next/router";
 import Header from "../components/Header";
 import Overlay from "../components/utils/Overlay";
 import ChangePassword from "../components/ChangePassword";
@@ -49,7 +50,13 @@ function Settings() {
             <PaymentCards />
           </Sect>
 
-          <ButtonT4Spin label="Sign out" onClick={signOutf} />
+          <ButtonT4Spin
+            label="Sign out"
+            onClick={async () => {
+              await signOutf();
+              Router.push("/");
+            }}
+          />
         </div>
       </div>
     </div>

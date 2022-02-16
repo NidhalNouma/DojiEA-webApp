@@ -5,9 +5,10 @@ import AOS from "aos";
 import "../styles/globals.css";
 import "aos/dist/aos.css";
 import User, { UserContext } from "../hooks/Users";
+import { paths } from "../Constants";
 
 function MyApp({ Component, pageProps }) {
-  const { user, setUser, checkUser } = User();
+  const { user, setUser, checkUser, getActiveUser } = User();
   const [done, setDone] = useState(0);
 
   useEffect(() => {
@@ -18,15 +19,15 @@ function MyApp({ Component, pageProps }) {
       easing: "ease-out-cubic",
     });
 
-    checkUser(setUser, setDone);
+    checkUser(setUser, setDone, done);
   }, []);
 
   useEffect(() => {
     if (done === 1) {
       const { pathname } = Router;
-      if (pathname !== "/" && !user) Router.push("/");
+      if (pathname !== paths.home && !user) Router.push(paths.home);
+      else if (pathname === paths.home && user) Router.push(paths.dashboard);
     }
-    // else if (pathname === "/" && user) Router.push("/Dashboard");
   }, [user, done]);
 
   return (
@@ -61,9 +62,9 @@ function Loading({ done, setDone }) {
 
   return (
     <div className="flex w-full h-full fixed top-0 left-0 bg-c1">
-      <div className="mx-auto w-5/12 bg-slate-500 rounded-full h-2.5 my-auto">
+      <div className="mx-auto w-5/12 bg-slate-500 rounded-full h-1 my-auto">
         <div
-          className="bg-c4 h-2.5 rounded-full"
+          className="bg-c4 h-1 rounded-full"
           style={{
             width: `${completed}%`,
             transition: "width 0.5s ease-in-out",

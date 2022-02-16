@@ -8,6 +8,7 @@ import CancelMessage from "./CancelMessage";
 import Overlay from "./utils/Overlay";
 import { cancelSubscription } from "../hooks/Stripe";
 import { getNameByPriceId } from "../Constants";
+import { paths } from "../Constants";
 
 export default function MembershipList({ hideDelete }) {
   const { user, setUser } = useUserContext();
@@ -28,7 +29,7 @@ export default function MembershipList({ hideDelete }) {
       ) : (
         <P1>
           You have no active membership click{" "}
-          <LinkT4 label="here" href="/Membership" /> to make a new one
+          <LinkT4 label="here" href={paths.membership} /> to make a new one
         </P1>
       )}
     </React.Fragment>

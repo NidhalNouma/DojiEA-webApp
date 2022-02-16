@@ -7,13 +7,14 @@ import SignIn from "./SignIn";
 import { Button4 } from "./utils/Buttons";
 import { LinkT4 } from "./utils/Links";
 import { useUserContext } from "../hooks/Users";
+import { paths } from "../Constants";
 
 const navigation = [
-  { name: "Dashboard", href: "/Dashboard", current: false },
-  { name: "Accounts", href: "/Accounts", current: false },
-  { name: "Membership", href: "/Membership", current: false },
-  { name: "How to use", href: "/HowToUse", current: false },
-  { name: "Settings", href: "/Settings", current: false },
+  { name: "Dashboard", href: paths.dashboard, current: false },
+  { name: "Accounts", href: paths.accounts, current: false },
+  { name: "Membership", href: paths.membership, current: false },
+  { name: "How to use", href: paths.howtouse, current: false },
+  { name: "Settings", href: paths.settings, current: false },
 ];
 
 function classNames(...classes) {
@@ -47,7 +48,7 @@ function Header({ copen = false }) {
               {/* Site branding */}
               <div className="flex-shrink-0 mr-4">
                 {/* Logo */}
-                <IconSvg to={user ? "/" : "/"} />
+                <IconSvg to={user ? paths.home : paths.home} />
               </div>
 
               {/* Site navigation */}
@@ -74,15 +75,23 @@ function Header({ copen = false }) {
                       </Disclosure.Button>
                     </React.Fragment>
                   ) : (
-                    <li>
-                      <Button4
-                        className="cursor-pointer rounded-full"
-                        onClick={() => {
-                          setOpen(true);
-                        }}
-                        label="Sign In"
-                      />
-                    </li>
+                    <React.Fragment>
+                      <li className="hidden sm:block">
+                        <LinkT4 href={paths.membership} label="Membership" />
+                      </li>
+                      <li className="px-8 hidden sm:block">
+                        <LinkT4 href={paths.howtouse} label="How to use" />
+                      </li>
+                      <li>
+                        <Button4
+                          className="cursor-pointer rounded-full"
+                          onClick={() => {
+                            setOpen(true);
+                          }}
+                          label="Sign In"
+                        />
+                      </li>
+                    </React.Fragment>
                   )}
                 </ul>
               </nav>

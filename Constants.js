@@ -1,3 +1,12 @@
+export const paths = {
+  home: "/",
+  dashboard: "/Dashboard",
+  accounts: "/Accounts",
+  membership: "/Membership",
+  howtouse: "/HowToUse",
+  settings: "/Settings",
+};
+
 export const prices = [
   {
     name: "Basic",

@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { Button4Spin, ButtonT4 } from "./utils/Buttons";
+import { Button4Spin, ButtonT4, GoogleBtn } from "./utils/Buttons";
 import { Input } from "./utils/Inputs";
 import SignUp from "./SignUp";
 import ResetLink from "./ResetLink";
 import User, { useUserContext } from "../hooks/Users";
 import { ErrorI, SuccessI } from "./utils/Alert";
+import { paths } from "../Constants";
 
 function SignIn({ start = 0 }) {
   const router = useRouter();
   const [dis, setDis] = useState(start);
-  const { SignInHook } = User();
+  const { SignInHook, continueWithGoogle } = User();
   const { msg, error, email, password, setPassword, setEmail, submit } =
     SignInHook();
-  // const { setUser } = useUserContext();
+  const { setUser } = useUserContext();
 
   return (
     <React.Fragment>
@@ -75,18 +76,33 @@ function SignIn({ start = 0 }) {
               </div>
             )}
             {!msg && (
-              <Button4Spin
-                className="w-full rounded-lg mt-3"
-                label="Login to your account"
-                onClick={async () => {
-                  const r = await submit();
-                  console.log(r);
-                  // if (!r.err) {
-                  //   // setUser(r.user);
-                  //   router.push("/Dashboard");
-                  // }
-                }}
-              />
+              <React.Fragment>
+                <Button4Spin
+                  className="w-full rounded-lg mt-3"
+                  label="Login to your account"
+                  onClick={async () => {
+                    const r = await submit();
+                    console.log(r);
+                    if (!r.err) {
+                      setUser(r.user);
+                      router.push(paths.dashboard);
+                    }
+                  }}
+                />
+                <p className="text-center text-slate-300 mt-0">Or</p>
+                <GoogleBtn
+                  onClick={async () => {
+                    const r = await continueWithGoogle();
+                    console.log(r);
+                    if (!r.err) {
+                      setUser(r.user);
+                      router.push(paths.dashboard);
+                    }
+                  }}
+                  label="Continue with google"
+                  className="rounded-lg w-full"
+                />
+              </React.Fragment>
             )}
             <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?{" "}

@@ -7,6 +7,7 @@ import {
   getActiveUser,
   resetPassword,
   checkUser,
+  continueWithGoogle,
 } from "./firebase";
 
 export const UserContext = createContext(null);
@@ -172,6 +173,7 @@ function User() {
     useUserContext,
     getActiveUser,
     checkUser,
+    continueWithGoogle,
   };
 }
 

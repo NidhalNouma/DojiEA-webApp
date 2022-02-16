@@ -10,6 +10,10 @@ import { LinkT4 } from "../components/utils/Links";
 import Pricing from "../components/Pricing";
 import { Form } from "../components/Stripe";
 import MembershipList from "../components/MembershipList";
+import Overlay from "../components/utils/Overlay";
+import SignIn from "../components/SignIn";
+
+import { paths } from "../Constants";
 
 function Membership() {
   const { user } = useUserContext();
@@ -17,6 +21,7 @@ function Membership() {
 
   const [selectedPricing, setSelected] = useState(null);
   const [done, setDone] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <div>
@@ -36,8 +41,12 @@ function Membership() {
           )}
           <Pricing
             select={(e) => {
-              setSelected(e);
-              setDone(false);
+              if (user) {
+                setSelected(e);
+                setDone(false);
+              } else {
+                setOpen(true);
+              }
             }}
             selected={selectedPricing}
           />
@@ -53,6 +62,10 @@ function Membership() {
         </div>
         {done && selectedPricing && <Done title={selectedPricing.name} />}
       </div>
+
+      <Overlay open={open} setOpen={setOpen}>
+        <SignIn start={1} />
+      </Overlay>
     </div>
   );
 }
@@ -76,8 +89,8 @@ function Done({ title = "Membership" }) {
               .
             </P1>
             <P1 className="!text-slate-300 font-bold text-medium">
-              Click <LinkT4 label="here" href="/HowToUse" /> to see how to use
-              our bot.
+              Click <LinkT4 label="here" href={paths.howtouse} /> to see how to
+              use our bot.
             </P1>
           </div>
         </div>
