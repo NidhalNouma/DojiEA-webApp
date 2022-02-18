@@ -12,6 +12,7 @@ export default function PaymentMethods({
   onSelect = (e) => {},
   selected,
   opend,
+  hideDelete = false,
 }) {
   const [open, setOpen] = useState(false);
   const { user, setUser } = useUserContext();
@@ -36,6 +37,7 @@ export default function PaymentMethods({
             pm={selected}
             user={user}
             setUser={setUser}
+            hideDelete={hideDelete}
           />
         ))
       ) : (
@@ -56,7 +58,7 @@ export default function PaymentMethods({
   );
 }
 
-function Card({ i, onClick, pm, user, setUser }) {
+function Card({ i, onClick, pm, user, setUser, hideDelete }) {
   const [open, setOpen] = useState(false);
   return (
     <div
@@ -80,10 +82,12 @@ function Card({ i, onClick, pm, user, setUser }) {
         <div className="flex items-center justify-between min-w-full">
           <span className="text-sm text-slate-400"> ****{i.card.last4} </span>
           {/* <ButtonT4Spin label="Retrive" /> */}
-          <TrashIcon
-            className="w-4 h-4 text-c2"
-            onClick={() => setOpen(true)}
-          />
+          {!hideDelete && (
+            <TrashIcon
+              className="w-4 h-4 text-c2"
+              onClick={() => setOpen(true)}
+            />
+          )}
         </div>
         <span className="text-slate-300 text-sm font-medium">
           Expire on {i.card.exp_month}/{i.card.exp_year}

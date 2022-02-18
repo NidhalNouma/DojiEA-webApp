@@ -1,7 +1,10 @@
 import { Stripe } from "stripe";
 const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_PRIVATE_KEY);
 import { getUserByEmail, addAccount } from "../../../hooks/firebase";
-import { allowedAccounts } from "../../../hooks/Stripe";
+import {
+  allowedAccounts,
+  allowedAccountsLifeMember,
+} from "../../../hooks/Stripe";
 
 export default async function handler(req, res) {
   if (req.method !== "POST")
@@ -18,10 +21,16 @@ export default async function handler(req, res) {
     const subscriptions = await stripe.subscriptions.list({
       customer: user.customerId,
     });
-    if (subscriptions?.data?.length === 0)
+
+    const intents = await stripe.paymentIntents.list({
+      customer: user.customerId,
+    });
+    if (subscriptions?.data?.length + intents?.data?.length === 0)
       return res.status(200).json({ error: "No valid subscriptiom" });
 
-    let ac = allowedAccounts(subscriptions.data);
+    let ac =
+      allowedAccounts(subscriptions.data) +
+      allowedAccountsLifeMember(intents.data);
 
     if (ac <= user.accounts.length)
       return res

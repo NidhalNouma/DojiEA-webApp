@@ -107,7 +107,10 @@ export function GoogleBtn({ className, classNameSpin, label, onClick }) {
   return (
     <React.Fragment>
       {spin ? (
-        <Spinner4 className={className} classNameSpin={classNameSpin} />
+        <Spinner4
+          className={className}
+          classNameSpin={classNameSpin + " !text-slate-100 !fill-c2"}
+        />
       ) : (
         <div className="flex justify-center items-center">
           <button

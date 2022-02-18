@@ -18,6 +18,7 @@ import { paths } from "../Constants";
 function Membership() {
   const { user } = useUserContext();
   const data = user?.stripe?.subscription?.data;
+  const data1 = user?.stripe?.intent?.data;
 
   const [selectedPricing, setSelected] = useState(null);
   const [done, setDone] = useState(false);
@@ -30,10 +31,14 @@ function Membership() {
         {/* Hero content */}
         <div className="pt-12 pb-12 md:pt-20 md:pb-20">
           <H1 label="Membership" />
-          {data?.length > 0 && (
+          {data?.length + data1?.length > 0 && (
             <main>
               <div className="max-w-7xl mx-auto py-3 sm:px-6 lg:px-8">
-                <H4 label={`You have ${data?.length} available plan`} />
+                <H4
+                  label={`You have ${
+                    data?.length + data1?.length
+                  } available plan`}
+                />
                 <MembershipList hideDelete={true} />
                 <P1>Feel free to select and add more if you need</P1>
               </div>
@@ -54,6 +59,8 @@ function Membership() {
             <Form
               price={selectedPricing.Price}
               title={selectedPricing.name}
+              type={selectedPricing.type}
+              accounts={selectedPricing.accounts}
               id={selectedPricing.id}
               user={user}
               done={() => setDone(true)}

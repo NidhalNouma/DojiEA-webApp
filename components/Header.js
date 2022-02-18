@@ -10,7 +10,7 @@ import { useUserContext } from "../hooks/Users";
 import { paths } from "../Constants";
 
 const navigation = [
-  { name: "Dashboard", href: paths.dashboard, current: false },
+  // { name: "Dashboard", href: paths.dashboard, current: false },
   { name: "Accounts", href: paths.accounts, current: false },
   { name: "Membership", href: paths.membership, current: false },
   { name: "How to use", href: paths.howtouse, current: false },
@@ -24,7 +24,7 @@ function classNames(...classes) {
 function Header({ copen = false }) {
   const { user } = useUserContext();
   const [top, setTop] = useState(true);
-  const [open, setOpen] = useState(copen);
+  const [openi, setOpen] = useState(copen);
 
   // detect whether user has scrolled the page down by 10px
   useEffect(() => {
@@ -37,7 +37,7 @@ function Header({ copen = false }) {
 
   return (
     <Disclosure as="nav" className="bg-gray-800 z-20">
-      {({ openm }) => (
+      {({ open }) => (
         <header
           className={`fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out bg-c1 ${
             !top && "bg-c1 backdrop-blur-sm shadow-lg"
@@ -64,7 +64,7 @@ function Header({ copen = false }) {
 
                       <Disclosure.Button className="sm:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                         <span className="sr-only">Open main menu</span>
-                        {openm ? (
+                        {open ? (
                           <XIcon className="block h-6 w-6" aria-hidden="true" />
                         ) : (
                           <MenuIcon
@@ -97,7 +97,7 @@ function Header({ copen = false }) {
               </nav>
             </div>
           </div>
-          <Overlay open={open} setOpen={setOpen}>
+          <Overlay open={openi} setOpen={setOpen}>
             <SignIn />{" "}
           </Overlay>
 
@@ -133,7 +133,6 @@ function IconSvg({ to }) {
     <Link href={to} className="block" passHref={true}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        // xmlns:xlink="http://www.w3.org/1999/xlink"
         width="45"
         height="45"
         viewBox="0 0 34 35"

@@ -6,6 +6,10 @@ export const createSub = async (
   customerId,
   paymentMethodId,
   priceId,
+  price,
+  name,
+  type,
+  accounts,
   coupon = ""
 ) => {
   console.log("Create Subscription ...");
@@ -16,10 +20,17 @@ export const createSub = async (
       paymentMethodId,
       priceId,
       coupon,
+      price,
+      name,
+      accounts,
+      type,
     });
-    console.log(r);
-    return r?.data?.subscriptions;
-    // if (r?.data?.newUser?.res) setUser(r.data.newUser.res);
+    return {
+      subscriptions: r?.data?.subscriptions,
+      intents: r?.data?.intents,
+      r: r?.data?.r,
+      error: r?.error,
+    };
   } catch (e) {
     console.error("Create Subscription .", e);
   }
@@ -85,7 +96,7 @@ export const addPaymMethod = async function (paymentMethodId, customerId) {
       customerId,
       paymentMethodId,
     });
-    console.log(r);
+    // console.log(r);
     return r?.data?.paymentMethods;
   } catch (e) {
     console.error("Adding Payment Method Subscription .", e);
@@ -104,7 +115,7 @@ export const detachPaymentMethod = async (id, customerId) => {
       customerId,
     });
     r = req?.data?.paymentMethods;
-    console.log(r);
+    // console.log(r);
   } catch (e) {
     console.error("Adding Payment Method Subscription .", e);
   }
@@ -116,6 +127,15 @@ export function allowedAccounts(subscriptions) {
   let r = 0;
   subscriptions?.forEach((v) => {
     r += getAccountsByPriceId(v.plan?.id);
+  });
+
+  return r;
+}
+
+export function allowedAccountsLifeMember(intents) {
+  let r = 0;
+  intents?.forEach((v) => {
+    r += getAccountsByPriceId(v.metadata?.priceId);
   });
 
   return r;

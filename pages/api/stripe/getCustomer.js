@@ -12,16 +12,22 @@ export default async function handler(req, res) {
     const subscriptionsP = stripe.subscriptions.list({
       customer: customerId,
     });
+    const intentsP = stripe.paymentIntents.list({
+      customer: customerId,
+    });
     const paymethP = stripe.paymentMethods.list({
       customer: customerId,
       type: "card",
     });
-    const [customer, subscription, paymentMethods] = await Promise.all([
+    const [customer, subscription, intent, paymentMethods] = await Promise.all([
       cusP,
       subscriptionsP,
+      intentsP,
       paymethP,
     ]);
 
-    return res.status(200).json({ customer, subscription, paymentMethods });
+    return res
+      .status(200)
+      .json({ customer, intent, subscription, paymentMethods });
   }
 }

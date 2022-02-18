@@ -269,7 +269,7 @@ function FeaturesBlocks() {
             frameBorder="no"
             height="750"
           >
-            <a href="//www.fxblue.com">
+            <a href="//www.fxblue.com/users/30895597">
               FX Blue - free tools and services for FX and CFD traders
             </a>
           </iframe>

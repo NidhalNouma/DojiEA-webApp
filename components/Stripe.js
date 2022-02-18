@@ -5,26 +5,47 @@ import PaymentMethods from "./PaymentCard";
 
 import { useUserContext } from "../hooks/Users";
 import { createSub } from "../hooks/Stripe";
+import { ErrorI } from "./utils/Alert";
 
 export const Form = (props) => {
   const { user, setUser } = useUserContext();
-  const { title, price, id, done } = props;
+  const { title, price, id, done, type, accounts } = props;
   const [pm, setPm] = useState(null);
   const [open, setOpen] = useState(0);
+  const [error, setError] = useState("");
 
   const submit = async () => {
-    console.log(pm);
+    setError("");
     if (!pm) {
       setOpen(open + 1);
       return;
     }
 
-    const subscription = await createSub(user.uid, user.customerId, pm.id, id);
+    const { subscriptions, intents, r, error } = await createSub(
+      user.uid,
+      user.customerId,
+      pm.id,
+      id,
+      price,
+      title,
+      type,
+      accounts
+    );
 
-    if (subscription) {
+    if (error) {
+      setError(error.message);
+      return;
+    } else if (r.error) {
+      setError(r.error.raw.message);
+      return;
+    } else {
       const nu = {
         ...user,
-        stripe: { ...user.stripe, subscription },
+        stripe: {
+          ...user.stripe,
+          subscription: subscriptions,
+          intent: intents,
+        },
       };
       setUser(nu);
       done(false);
@@ -55,7 +76,19 @@ export const Form = (props) => {
       </div>
 
       <div className="flex flex-col">
-        <PaymentMethods opend={open} selected={pm} onSelect={(e) => setPm(e)} />
+        <PaymentMethods
+          opend={open}
+          selected={pm}
+          onSelect={(e) => setPm(e)}
+          hideDelete={true}
+        />
+
+        {error && (
+          <div className="mt-2">
+            <ErrorI message={error} />
+          </div>
+        )}
+
         <Button4Spin
           label={pm ? "Pay" : "Add Payment Card"}
           className="rounded-lg mt-5"

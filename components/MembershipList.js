@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import { useUserContext } from "../hooks/Users";
 import { P1 } from "./utils/Text";
@@ -13,19 +13,25 @@ import { paths } from "../Constants";
 export default function MembershipList({ hideDelete }) {
   const { user, setUser } = useUserContext();
   const data = user?.stripe?.subscription?.data;
+  const data1 = user?.stripe?.intent?.data;
 
   return (
     <React.Fragment>
-      {data?.length > 0 ? (
-        data.map((sub, i) => (
-          <Subscription
-            key={i}
-            i={sub}
-            user={user}
-            setUser={setUser}
-            hideDelete={hideDelete}
-          />
-        ))
+      {data?.length + data1?.length > 0 ? (
+        <React.Fragment>
+          {data.map((sub, i) => (
+            <Subscription
+              key={i}
+              i={sub}
+              user={user}
+              setUser={setUser}
+              hideDelete={hideDelete}
+            />
+          ))}
+          {data1.map((int, i) => (
+            <Intent key={i} i={int} />
+          ))}
+        </React.Fragment>
       ) : (
         <P1>
           You have no active membership click{" "}
@@ -79,6 +85,22 @@ function Subscription({ i, user, setUser, hideDelete }) {
           }}
         />
       </Overlay>
+    </div>
+  );
+}
+
+function Intent({ i }) {
+  console.log(i);
+  return (
+    <div className="py-2 px-1 border border-slate-500 rounded my-3 cursor cursor-pointer hover:bg-c1 flex items-center">
+      <div className="flex flex-col mx-4 items-start w-full">
+        <div className="flex items-center justify-between min-w-full">
+          <span className="text-lg font-bold text-teal-400 py-1">
+            {i.metadata?.name} Membership
+          </span>
+        </div>
+        <span className="text-slate-300 text-sm font-medium">Life time</span>
+      </div>
     </div>
   );
 }

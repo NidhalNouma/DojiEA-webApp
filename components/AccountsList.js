@@ -5,7 +5,11 @@ import { P1 } from "../components/utils/Text";
 import { ButtonT4Spin, Spinner4 } from "../components/utils/Buttons";
 import { disableOrEnableAccount, getAccounts } from "../hooks/firebase";
 import CardInfo from "./CardInfo";
-import { allowedAccounts, getNoStatus } from "../hooks/Stripe";
+import {
+  allowedAccounts,
+  getNoStatus,
+  allowedAccountsLifeMember,
+} from "../hooks/Stripe";
 
 export default function AccountsList() {
   const { user } = useUserContext();
@@ -19,7 +23,8 @@ export default function AccountsList() {
             <CardInfo
               color="text-slate-100 bg-slate-400"
               value={
-                allowedAccounts(user?.stripe?.subscription?.data) -
+                allowedAccounts(user?.stripe?.subscription?.data) +
+                allowedAccountsLifeMember(user?.stripe?.intent?.data) -
                 getNoStatus(accounts, true)
               }
               title="Availble to use"
