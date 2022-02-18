@@ -35,7 +35,8 @@ export const prices = [
   },
   {
     name: "Life Time",
-    Price: 959,
+    Price: 989,
+    OldPrice: 1589,
     accounts: 8,
     id: process.env.NEXT_PUBLIC_PRICE_LIFETIME,
     limit: true,

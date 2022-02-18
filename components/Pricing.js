@@ -24,7 +24,16 @@ export default function Pricing({ select, selected, top = false }) {
 }
 
 function Item({ val, selected, onClick, top }) {
-  const { name: Title, Price, accounts: No, expire, show, lifetime } = val;
+  const {
+    name: Title,
+    Price,
+    accounts: No,
+    expire,
+    show,
+    lifetime,
+    OldPrice,
+  } = val;
+
   const className =
     (selected ? `${top ? "sm:-mt-4" : "sm:-mb-4"} shadow-lg z-10 ` : " ") +
     (top ? "rounded-t-lg" : "rounded-b-lg") +
@@ -37,9 +46,9 @@ function Item({ val, selected, onClick, top }) {
           <div className="text-c4 p-8 pb-2 text-3xl font-bold text-center">
             {Title}
           </div>
-          <div className="text-c4 p-2 pt-0 text-center">
+          {/* <div className="text-c4 p-2 pt-0 text-center">
             Offer Expire in {expire} days
-          </div>
+          </div> */}
         </React.Fragment>
       ) : (
         <div className="text-slate-100 w-full p-8 text-3xl font-bold text-center">
@@ -63,7 +72,12 @@ function Item({ val, selected, onClick, top }) {
           All Desktop Support
         </div>
       </div>
-      <div className="mt-auto text-center pt-8 pb-10">
+      <div className="mt-auto text-center pt-7 pb-10">
+        {OldPrice && (
+          <h1 className="text-slate-400 line-through decoration-c4 text-lg font-bold mb-1 decoration-wavy">
+            ${OldPrice}
+          </h1>
+        )}
         <span className="text-teal-500 border-slate-300 border-b-4 text-center text-xl px-2 py-4 pb-1 rounded">
           ${Price}
           <span className="ml-1 text-slate-300 text-base">

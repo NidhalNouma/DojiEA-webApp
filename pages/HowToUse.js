@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Header from "../components/Header";
+// import Image from "next/image";
 import { files } from "../Constants";
 import { H1, H4 } from "../components/utils/Titles";
 import { P1 } from "../components/utils/Text";
@@ -271,7 +272,7 @@ function Managment() {
 
       <img
         className="my-6 rounded"
-        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FAddingEAtoChart.gif?alt=media&token=2d0ad9f2-37d6-4a2f-853a-22a5b600f34c"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FRefreshAccounts.gif?alt=media&token=ed6c3710-5113-46e4-b9e2-68e08d22172b"
         alt="Copy EA to clipboard"
       />
 
@@ -283,6 +284,12 @@ function Managment() {
           enable it.
         </span>
       </P1>
+
+      <img
+        className="my-6 rounded"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
+        alt="Copy EA to clipboard"
+      />
     </React.Fragment>
   );
 }

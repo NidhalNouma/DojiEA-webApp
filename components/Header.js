@@ -98,7 +98,7 @@ function Header({ copen = false }) {
             </div>
           </div>
           <Overlay open={openi} setOpen={setOpen}>
-            <SignIn />{" "}
+            <SignIn close={() => setOpen(false)} />{" "}
           </Overlay>
 
           <Disclosure.Panel className="sm:hidden">

@@ -1,15 +1,16 @@
 import React from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { Button4Spin, ButtonT4, GoogleBtn } from "./utils/Buttons";
 import { Input } from "./utils/Inputs";
 import User, { useUserContext } from "../hooks/Users";
 import { ErrorI, SuccessI } from "./utils/Alert";
 import { paths } from "../Constants";
 
-function SignIn({ back }) {
+function SignIn({ back, close }) {
   const { SignUpHook, continueWithGoogle } = User();
   const { setUser } = useUserContext();
   const router = useRouter();
+  const { pathname } = Router;
   const {
     msg,
     error,
@@ -68,7 +69,12 @@ function SignIn({ back }) {
                 const r = await submit();
                 if (!r.err) {
                   setUser(r.user);
-                  router.push(paths.dashboard);
+                  if (
+                    pathname !== paths.membership &&
+                    pathname !== paths.howtouse
+                  )
+                    router.push(paths.dashboard);
+                  close();
                 }
               }}
             />
@@ -79,7 +85,12 @@ function SignIn({ back }) {
                 console.log(r);
                 if (!r.err) {
                   setUser(r.user);
-                  router.push(paths.dashboard);
+                  if (
+                    pathname !== paths.membership &&
+                    pathname !== paths.howtouse
+                  )
+                    router.push(paths.dashboard);
+                  close();
                 }
               }}
               label="Continue with google"

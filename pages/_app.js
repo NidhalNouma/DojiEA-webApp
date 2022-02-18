@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import Router from "next/router";
 import Head from "next/head";
-import AOS from "aos";
 import "../styles/globals.css";
-import "aos/dist/aos.css";
 import User, { UserContext } from "../hooks/Users";
 import { paths } from "../Constants";
 
@@ -12,13 +10,6 @@ function MyApp({ Component, pageProps }) {
   const [done, setDone] = useState(0);
 
   useEffect(() => {
-    AOS.init({
-      once: true,
-      // disable: "phone",
-      duration: 700,
-      easing: "ease-out-cubic",
-    });
-
     checkUser(setUser, setDone, done);
   }, []);
 

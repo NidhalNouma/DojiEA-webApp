@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { Button4Spin, ButtonT4, GoogleBtn } from "./utils/Buttons";
 import { Input } from "./utils/Inputs";
 import SignUp from "./SignUp";
@@ -8,18 +8,19 @@ import User, { useUserContext } from "../hooks/Users";
 import { ErrorI, SuccessI } from "./utils/Alert";
 import { paths } from "../Constants";
 
-function SignIn({ start = 0 }) {
+function SignIn({ start = 0, close }) {
   const router = useRouter();
   const [dis, setDis] = useState(start);
   const { SignInHook, continueWithGoogle } = User();
   const { msg, error, email, password, setPassword, setEmail, submit } =
     SignInHook();
   const { setUser } = useUserContext();
+  const { pathname } = Router;
 
   return (
     <React.Fragment>
       {dis === 1 ? (
-        <SignUp back={() => setDis(0)} />
+        <SignUp back={() => setDis(0)} close={close} />
       ) : dis === -1 ? (
         <ResetLink back={() => setDis(0)} />
       ) : (
@@ -85,7 +86,12 @@ function SignIn({ start = 0 }) {
                     console.log(r);
                     if (!r.err) {
                       setUser(r.user);
-                      router.push(paths.dashboard);
+                      if (
+                        pathname !== paths.membership &&
+                        pathname !== paths.howtouse
+                      )
+                        router.push(paths.dashboard);
+                      close();
                     }
                   }}
                 />
@@ -96,7 +102,12 @@ function SignIn({ start = 0 }) {
                     console.log(r);
                     if (!r.err) {
                       setUser(r.user);
-                      router.push(paths.dashboard);
+                      if (
+                        pathname !== paths.membership &&
+                        pathname !== paths.howtouse
+                      )
+                        router.push(paths.dashboard);
+                      close();
                     }
                   }}
                   label="Continue with google"

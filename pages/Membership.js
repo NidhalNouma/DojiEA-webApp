@@ -71,7 +71,7 @@ function Membership() {
       </div>
 
       <Overlay open={open} setOpen={setOpen}>
-        <SignIn start={1} />
+        <SignIn start={1} close={() => setOpen(false)} />
       </Overlay>
     </div>
   );
