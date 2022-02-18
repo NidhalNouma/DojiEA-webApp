@@ -3,6 +3,8 @@ import Header from "../components/Header";
 import { files } from "../Constants";
 import { H1, H4 } from "../components/utils/Titles";
 import { P1 } from "../components/utils/Text";
+import { LinkT4 } from "../components/utils/Links";
+import { paths } from "../Constants";
 
 function HowToUse() {
   const [etap, setEtap] = useState(0);
@@ -65,7 +67,7 @@ function HowToUse() {
                       active={etap === 2}
                       onClick={() => handleScroll(managmentRef)}
                     >
-                      Managment
+                      Accounts
                     </Ha>
                   </div>
 
@@ -74,10 +76,10 @@ function HowToUse() {
                       <Instalation />
                     </div>
                     <div className="mb-20" ref={setupRef}>
-                      {/* <Setup /> */}
+                      <Setup />
                     </div>
                     <div className="mb-20" ref={managmentRef}>
-                      {/* <Managment /> */}
+                      <Managment />
                     </div>
                   </div>
                 </div>
@@ -135,11 +137,6 @@ function Instalation() {
           Download MT5 version
         </button>
       </div>
-      <div className="mb-96">
-        <P1 className="mb-96"></P1>
-
-        <div className="mb-96"></div>
-      </div>
       <P1 className="!text-base mt-0">
         Once you have downloaded the EA, you need to copy the file, so just open
         the <span className="font-extrabold text-slate-300">Download</span>{" "}
@@ -149,7 +146,7 @@ function Instalation() {
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FDownloadExpertFile.gif?alt=media&token=7cbb799a-9872-47f1-aa1b-87b2b9b75996"
         alt="Copy EA to clipboard"
       />
 
@@ -165,7 +162,7 @@ function Instalation() {
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FOpenDataFolder.gif?alt=media&token=345e930d-18be-4741-9a3f-3559fee5f3e2"
         alt="Copy EA to clipboard"
       />
 
@@ -185,7 +182,7 @@ function Instalation() {
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FPastFile.gif?alt=media&token=a3291b25-c57f-420b-bc45-499a2e0e8245"
         alt="Copy EA to clipboard"
       />
 
@@ -197,7 +194,7 @@ function Instalation() {
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FRefreshExpertSection.gif?alt=media&token=17d839e3-b3d6-4fe3-ab1b-38f248b26498"
         alt="Copy EA to clipboard"
       />
 
@@ -227,21 +224,38 @@ function Setup() {
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FAllowAutoTrading.gif?alt=media&token=6dd4248e-8838-425f-b985-41172948b7db"
         alt="Copy EA to clipboard"
       />
 
       <P1 className="!text-base mt-0">
-        Everything is good now you can go back to your MT4 or MT5 terminal, and
-        refresh the expert tab. If you didn&apos;t see the EA for some reason,
-        just close the terminal and open it again and you should be good.
+        At this point everything is ready to start running the EA, Go back to
+        the navigation tab and add the EA to the chart, you can do that by
+        double-clicking on the EA or just drag it to the chart.
+      </P1>
+
+      <P1 className="!text-base mt-0">
+        Once you&rsquo;ve done that you will see the input section.
       </P1>
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FAddingEAtoChart.gif?alt=media&token=2d0ad9f2-37d6-4a2f-853a-22a5b600f34c"
         alt="Copy EA to clipboard"
       />
+
+      <P1 className="!text-base mt-0">
+        The final step is to type your email and click OK.{" "}
+        <span className="font-extrabold text-slate-300">
+          Notice that to run the EA on a live chart you need to be subscribed to
+          at least one of our plans.
+        </span>
+      </P1>
+
+      <P1 className="!text-base mt-0">
+        If you don&rsquo;t have any active subscription, click{" "}
+        <LinkT4 label="here" href={paths.membership} /> here to get one.
+      </P1>
     </React.Fragment>
   );
 }
@@ -250,33 +264,25 @@ function Managment() {
   return (
     <React.Fragment>
       <P1 className="!text-base mt-0">
-        Setup is also just a simple step that you need to follow. First make
-        sure that you have installed the EA and you have it in your MT4 or MT5
-        platform.
-      </P1>
-      <P1 className="!text-base mt-0">
-        the first step is to open the options tab and make sure that you allow
-        autmaic trading also allow the EA to use the DLL. DLL is imortant for
-        the connection between the EA and our servers.
+        Managment your accounts is also simple, once you have got a subscription
+        plan and you have setup the EA, go back to the accounts page and click
+        the refresh button.
       </P1>
 
       <img
         className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FAddingEAtoChart.gif?alt=media&token=2d0ad9f2-37d6-4a2f-853a-22a5b600f34c"
         alt="Copy EA to clipboard"
       />
 
       <P1 className="!text-base mt-0">
-        Everything is good now you can go back to your MT4 or MT5 terminal, and
-        refresh the expert tab. If you didn&apos;t see the EA for some reason,
-        just close the terminal and open it again and you should be good.
+        You will see the list of the accounts that you are using, you can enable
+        or disable any account.{" "}
+        <span className="font-extrabold text-slate-300">
+          Notice that when you disable an account, you cannot use it until you
+          enable it.
+        </span>
       </P1>
-
-      <img
-        className="my-6 rounded"
-        src="/images/CopyEAFile.gif"
-        alt="Copy EA to clipboard"
-      />
     </React.Fragment>
   );
 }

@@ -34,7 +34,13 @@ function MyApp({ Component, pageProps }) {
         if (!user) Router.push(paths.home);
         else Router.push(paths.dashboard);
       }
-      if (pathname !== paths.home && !user) Router.push(paths.home);
+      if (
+        pathname !== paths.home &&
+        pathname !== paths.howtouse &&
+        pathname !== paths.membership &&
+        !user
+      )
+        Router.push(paths.home);
       else if (pathname === paths.home && user) Router.push(paths.dashboard);
     }
   }, [user, done]);
