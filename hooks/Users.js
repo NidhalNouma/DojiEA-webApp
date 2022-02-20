@@ -69,6 +69,11 @@ function User() {
         setError(err);
         return { err };
       }
+      if (password.length < 6) {
+        const err = "Password should be at least 6 characters";
+        setError(err);
+        return { err };
+      }
       if (password !== cpassword) {
         const err = "Password not valid";
         setError(err);

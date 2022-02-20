@@ -22,6 +22,8 @@ export default async function handler(req, res) {
       customer: user.customerId,
     });
 
+    if (!user) return res.status(200).json({ error: "User doesn't exist" });
+
     const intents = await stripe.paymentIntents.list({
       customer: user.customerId,
     });
@@ -35,7 +37,7 @@ export default async function handler(req, res) {
     if (ac <= user.accounts.length)
       return res
         .status(200)
-        .json({ error: "You reach the maximum of acoounts" });
+        .json({ error: "You reach the maximum number of acoounts" });
 
     if (!findAccount(accountNumber, accountServer, user.accounts))
       await addAccount(

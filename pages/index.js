@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import Router from "next/router";
 import Header from "../components/Header";
 import Pricing from "../components/Pricing";
 import Overlay from "../components/utils/Overlay";
 import SignIn from "../components/SignIn";
 import { H4 } from "../components/utils/Titles";
+import { useUserContext } from "../hooks/Users";
 
 import {
   MailIcon,
@@ -18,10 +20,12 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import { files } from "../Constants";
+import { files, paths } from "../Constants";
 
 function Index() {
   const [open, setOpen] = useState(false);
+  const { user } = useUserContext();
+
   useEffect(() => {
     AOS.init({
       once: true,
@@ -43,10 +47,16 @@ function Index() {
         data-aos-delay="200"
         data-aos-duration="1000"
       >
-        <Pricing top={true} select={setOpen} />
+        <Pricing
+          top={true}
+          redirect={user ? true : false}
+          select={
+            user ? (i) => Router.push(paths.membership + `?sel=${i}`) : setOpen
+          }
+        />
       </div>
       <Overlay open={open} setOpen={setOpen}>
-        <SignIn start={1} />{" "}
+        <SignIn start={1} close={() => setOpen(false)} />{" "}
       </Overlay>
     </div>
   );

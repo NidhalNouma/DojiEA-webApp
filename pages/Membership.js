@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
+import { useRouter } from "next/router";
 
 import { useUserContext } from "../hooks/Users";
 
@@ -13,16 +14,26 @@ import MembershipList from "../components/MembershipList";
 import Overlay from "../components/utils/Overlay";
 import SignIn from "../components/SignIn";
 
-import { paths } from "../Constants";
+import { validSubscriptions, validLifeTime } from "../hooks/Stripe";
+import { paths, prices } from "../Constants";
 
 function Membership() {
   const { user } = useUserContext();
-  const data = user?.stripe?.subscription?.data;
-  const data1 = user?.stripe?.intent?.data;
+  const router = useRouter();
+  const data = validSubscriptions(user?.stripe?.subscription?.data);
+  const data1 = validLifeTime(user?.stripe?.intent?.data);
 
   const [selectedPricing, setSelected] = useState(null);
   const [done, setDone] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const sel = router.query?.sel;
+    if (sel)
+      prices.forEach((e) => {
+        if (e.name === sel) setSelected(e);
+      });
+  }, [router.query]);
 
   return (
     <div>

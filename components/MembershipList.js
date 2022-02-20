@@ -6,14 +6,17 @@ import { LinkT4 } from "./utils/Links";
 import { TrashIcon } from "@heroicons/react/outline";
 import CancelMessage from "./CancelMessage";
 import Overlay from "./utils/Overlay";
-import { cancelSubscription } from "../hooks/Stripe";
-import { getNameByPriceId } from "../Constants";
-import { paths } from "../Constants";
+import {
+  cancelSubscription,
+  validSubscriptions,
+  validLifeTime,
+} from "../hooks/Stripe";
+import { getNameByPriceId, paths } from "../Constants";
 
 export default function MembershipList({ hideDelete }) {
   const { user, setUser } = useUserContext();
-  const data = user?.stripe?.subscription?.data;
-  const data1 = user?.stripe?.intent?.data;
+  const data = validSubscriptions(user?.stripe?.subscription?.data);
+  const data1 = validLifeTime(user?.stripe?.intent?.data);
 
   return (
     <React.Fragment>
@@ -90,7 +93,6 @@ function Subscription({ i, user, setUser, hideDelete }) {
 }
 
 function Intent({ i }) {
-  console.log(i);
   return (
     <div className="py-2 px-1 border border-slate-500 rounded my-3 cursor cursor-pointer hover:bg-c1 flex items-center">
       <div className="flex flex-col mx-4 items-start w-full">

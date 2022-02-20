@@ -1,29 +1,32 @@
 import React from "react";
 import { prices } from "../Constants";
+import { useUserContext } from "../hooks/Users";
 
-export default function Pricing({ select, selected, top = false }) {
+export default function Pricing({ select, selected, top = false, redirect }) {
+  const { user } = useUserContext();
   return (
     <div className=" flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
       {prices.map((val, i) => (
         <Item
           key={i}
+          user={user}
           val={val}
           top={top}
           selected={
             val.id === selected?.id
               ? true
-              : val.expire && top && !selected
+              : val.expire && top && !selected && !user
               ? true
               : false
           }
-          onClick={() => select(top ? true : val)}
+          onClick={() => select(top && redirect ? val.name : top ? true : val)}
         />
       ))}
     </div>
   );
 }
 
-function Item({ val, selected, onClick, top }) {
+function Item({ val, selected, onClick, top, user }) {
   const {
     name: Title,
     Price,
@@ -90,7 +93,7 @@ function Item({ val, selected, onClick, top }) {
           onClick={onClick}
           className="px-8 py-3 rounded-full text-c2 font-medium bg-slate-100 w-full sm:w-auto sm:ml-4"
         >
-          {top ? "Sign Up" : selected ? "Selected" : "Select"}
+          {!user ? "Sign Up" : selected ? "Selected" : "Select"}
         </button>
       </div>
     </div>

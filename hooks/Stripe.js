@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccountsByPriceId } from "../Constants";
+import { getAccountsByPriceId, prices } from "../Constants";
 
 export const createSub = async (
   userId,
@@ -126,7 +126,12 @@ export const detachPaymentMethod = async (id, customerId) => {
 export function allowedAccounts(subscriptions) {
   let r = 0;
   subscriptions?.forEach((v) => {
-    r += getAccountsByPriceId(v.plan?.id);
+    if (
+      v?.metadata?.priceId === prices[0].id ||
+      v?.metadata?.priceId === prices[1].id ||
+      v?.metadata?.priceId === prices[2].id
+    )
+      r += getAccountsByPriceId(v.plan?.id);
   });
 
   return r;
@@ -135,7 +140,8 @@ export function allowedAccounts(subscriptions) {
 export function allowedAccountsLifeMember(intents) {
   let r = 0;
   intents?.forEach((v) => {
-    r += getAccountsByPriceId(v.metadata?.priceId);
+    if (v?.metadata?.priceId === prices[3].id)
+      r += getAccountsByPriceId(v.metadata?.priceId);
   });
 
   return r;
@@ -145,6 +151,29 @@ export function getNoStatus(accounts, status) {
   let r = 0;
   accounts?.forEach((v) => {
     if (v.isActive === status) r++;
+  });
+
+  return r;
+}
+
+export function validSubscriptions(sub) {
+  const r = [];
+  sub?.forEach((i) => {
+    if (
+      i?.metadata?.priceId === prices[0].id ||
+      i?.metadata?.priceId === prices[1].id ||
+      i?.metadata?.priceId === prices[2].id
+    )
+      r.push(i);
+  });
+
+  return r;
+}
+
+export function validLifeTime(int) {
+  const r = [];
+  int?.forEach((i) => {
+    if (i?.metadata?.priceId === prices[3].id) r.push(i);
   });
 
   return r;

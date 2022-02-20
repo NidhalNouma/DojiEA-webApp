@@ -36,7 +36,11 @@ const provider = new GoogleAuthProvider();
 export function checkUser(setUser, setDone, done) {
   const auth = getAuth();
   onAuthStateChanged(auth, async (user) => {
-    if (user && done === 0) {
+    if (typeof checkUser.counter == "undefined") {
+      checkUser.counter = 0;
+    }
+
+    if (user && checkUser.counter === 0) {
       const uid = user.uid;
       let usr = await getUser(uid);
 
@@ -51,6 +55,7 @@ export function checkUser(setUser, setDone, done) {
     }
 
     setDone((d) => (d === 0 ? 1 : d));
+    checkUser.counter++;
   });
 }
 
@@ -83,16 +88,18 @@ export async function signUp(email, password) {
       email,
       password
     );
-    const user = userCredential.user;
-    // await addUser(user);
+    const usr = userCredential.user;
+    await addUser(usr);
+
+    const user = await getUser(usr.uid);
     // await sendEmailVerification(auth.currentUser);
     return { user, error: null };
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
+    console.log("SignUp error => . ", error.message);
     return {
       user: null,
       error,
+      // err: errorMessage,
       err: "An error occurred while trying to sign up",
     };
   }
@@ -114,7 +121,7 @@ export async function signIn(email, password) {
     const errorMessage = error.message;
     return {
       user: null,
-      err: "User doesn't exists",
+      err: "Email or password incorrect",
       error,
     };
   }
@@ -172,7 +179,6 @@ export async function signOutf() {
 export async function changePassword(password) {
   const auth = getAuth();
   const user = auth.currentUser;
-  console.log(password, user);
   try {
     await updatePassword(user, password);
     return { user: null, error: null };
