@@ -8,7 +8,7 @@ import {
   resetPassword,
   checkUser,
   continueWithGoogle,
-} from "./firebase";
+} from "../model/User";
 
 export const UserContext = createContext(null);
 

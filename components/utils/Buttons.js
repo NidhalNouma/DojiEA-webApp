@@ -50,13 +50,42 @@ export function ButtonT4Spin({ className, classNameSpin, label, onClick }) {
   );
 }
 
-export function Button4Spin({ className, label, onClick }) {
+export function Button5Spin({ className, classNameSpin, label, onClick }) {
   const [spin, setSpin] = useState(false);
 
   return (
     <React.Fragment>
       {spin ? (
-        <Spinner4 className={className} />
+        <Spinner4
+          className={className}
+          classNameSpin={classNameSpin + " !fill-slate-600 !text-slate-100"}
+        />
+      ) : (
+        <button
+          className={
+            className +
+            " text-slate-600 bg-slate-100 font-medium text-sm px-5 py-2.5 text-center"
+          }
+          onClick={async () => {
+            setSpin(true);
+            await onClick();
+            setSpin(false);
+          }}
+        >
+          {label}
+        </button>
+      )}
+    </React.Fragment>
+  );
+}
+
+export function Button4Spin({ className, classNameSpin, label, onClick }) {
+  const [spin, setSpin] = useState(false);
+
+  return (
+    <React.Fragment>
+      {spin ? (
+        <Spinner4 className={className} classNameSpin={classNameSpin} />
       ) : (
         <button
           className={
@@ -82,7 +111,7 @@ export function Spinner4({ className, classNameSpin }) {
       <svg
         role="status"
         className={
-          classNameSpin + " inline h-8 w-8 animate-spin mr-2 text-c4 fill-white"
+          classNameSpin + " inline h-7 w-7 animate-spin mr-2 text-c4 fill-white"
         }
         viewBox="0 0 100 101"
         fill="none"

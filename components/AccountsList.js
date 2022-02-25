@@ -1,10 +1,21 @@
-import { RefreshIcon } from "@heroicons/react/outline";
 import { useState } from "react";
-import { useUserContext } from "../hooks/Users";
+import { RefreshIcon } from "@heroicons/react/outline";
 import { P1 } from "../components/utils/Text";
-import { ButtonT4Spin, Spinner4, Button4 } from "../components/utils/Buttons";
-import { disableOrEnableAccount, getAccounts } from "../hooks/firebase";
+import {
+  ButtonT4Spin,
+  Spinner4,
+  Button5Spin,
+} from "../components/utils/Buttons";
+import { LinkT4 } from "./utils/Links";
 import CardInfo from "./CardInfo";
+import CancelMessage from "./CancelMessage";
+import Overlay from "./utils/Overlay";
+import { ErrorI } from "./utils/Alert";
+
+import { paths } from "../Constants";
+import { useUserContext } from "../hooks/Users";
+import { AccountsHook } from "../hooks/Accounts";
+
 import {
   allowedAccounts,
   getNoStatus,
@@ -12,8 +23,14 @@ import {
 } from "../hooks/Stripe";
 
 export default function AccountsList() {
-  const { user } = useUserContext();
-  const accounts = user?.accounts;
+  const { user, setUser } = useUserContext();
+  const allowed =
+    allowedAccounts(user?.stripe?.subscription?.data) +
+    allowedAccountsLifeMember(user?.stripe?.intent?.data) -
+    getNoStatus(accounts, true);
+
+  const { accounts, error, addAccount, removeAccount, getAccounts } =
+    AccountsHook(user, setUser, allowed);
 
   return (
     <div className="flex flex-col">
@@ -24,9 +41,8 @@ export default function AccountsList() {
               <CardInfo
                 color="text-slate-100 bg-slate-400"
                 value={
-                  allowedAccounts(user?.stripe?.subscription?.data) +
-                  allowedAccountsLifeMember(user?.stripe?.intent?.data) -
-                  getNoStatus(accounts, true)
+                  allowed -
+                  (getNoStatus(accounts, true) + getNoStatus(accounts, false))
                 }
                 title="Availble to use"
               />
@@ -42,23 +58,38 @@ export default function AccountsList() {
                 title="Inactive account"
               />
             </div>
-            <Button4
-              className="!bg-slate-100 !text-slate-600 rounded"
-              label="Create Account"
-              onClick={() => {}}
+            <Button5Spin
+              className="rounded"
+              label="Generate new ID"
+              onClick={addAccount}
             />
           </div>
-          <Table />
+          {error && (
+            <ErrorI className="mb-4">
+              Unfortunately you don&rsquo;t have enough available to use
+              accounts, if you want to add a new accounts consider taking a new
+              plan, click{" "}
+              <LinkT4
+                className="text-2xl font-extrabold text-red-700"
+                label="here"
+                href={paths.membership}
+              />{" "}
+              to get one.
+            </ErrorI>
+          )}
+          <Table
+            accounts={accounts}
+            removeAccount={removeAccount}
+            getAccounts={getAccounts}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-function Table() {
+function Table({ accounts, removeAccount, getAccounts }) {
   const [spin, setSpin] = useState(false);
-  const { user, setUser } = useUserContext();
-  const accounts = user?.accounts;
 
   return (
     <div className="shadow overflow-hidden border-b border-c2 sm:rounded-lg">
@@ -69,19 +100,19 @@ function Table() {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
-              Name
+              ID
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
-              Number
+              NAME
             </th>
             <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
-              Server
+              NUMBER
             </th>
             <th
               scope="col"
@@ -101,8 +132,7 @@ function Table() {
                   aria-hidden="true"
                   onClick={async () => {
                     setSpin(true);
-                    const accounts = await getAccounts(user.uid);
-                    setUser({ ...user, accounts });
+                    await getAccounts();
                     setSpin(false);
                   }}
                 />
@@ -112,7 +142,7 @@ function Table() {
         </thead>
         <tbody className="bg-c1 divide-y divide-c2">
           {accounts?.map((val, i) => (
-            <Raw key={i} val={val} />
+            <Raw key={i} val={val} removeAccount={removeAccount} />
           ))}
         </tbody>
       </table>
@@ -123,23 +153,52 @@ function Table() {
   );
 }
 
-function Raw({ val }) {
-  const { user, setUser } = useUserContext();
+function Raw({ val, removeAccount }) {
+  const [open, setOpen] = useState(false);
+  const [copy, setCopy] = useState(0);
 
   return (
     <tr>
-      <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm font-medium text-slate-400">
-          {val.accountName}
+      <td className="px-4 py-2 whitespace-nowrap">
+        <div
+          onMouseEnter={() => setCopy(1)}
+          onMouseLeave={() => setCopy(0)}
+          onClick={() => {
+            navigator.clipboard.writeText(val.id).then(
+              function () {
+                console.log("Async: Copying to clipboard was successful!");
+                setCopy(2);
+              },
+              function (err) {
+                console.error("Async: Could not copy text: ", err);
+                setCopy(0);
+              }
+            );
+          }}
+          className="text-sm font-medium text-slate-400 px-1 py-1 bg-slate-600 rounded cursor-pointer"
+        >
+          {copy === 0 ? (
+            val.id
+          ) : copy === 1 ? (
+            <p className="text-center text-slate-200">Click to copy</p>
+          ) : (
+            <p className="text-center text-slate-200">Copied</p>
+          )}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <div className="text-sm font-medium text-slate-400">
-          {val.accountNumber}
+          {val.accountName ? val.accountName : <span className="ml-4">-</span>}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <div className="text-sm text-slate-400">{val.accountServer}</div>
+        <div className="text-sm text-slate-400">
+          {val.accountNumber ? (
+            val.accountNumber
+          ) : (
+            <span className="ml-5">-</span>
+          )}
+        </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         {val.isActive ? (
@@ -152,37 +211,34 @@ function Raw({ val }) {
           </span>
         )}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        {!val.isActive ? (
-          <ButtonT4Spin
-            label="Enable"
-            className="ml-auto"
-            classNameSpin="ml-auto !w-5 !h-5"
-            onClick={async () => {
-              const accounts = await disableOrEnableAccount(
-                user.uid,
-                val.id,
-                true
-              );
-              setUser({ ...user, accounts });
-            }}
-          />
-        ) : (
-          <ButtonT4Spin
-            label="Disable"
-            className="ml-auto !text-slate-500"
-            classNameSpin="ml-auto !text-slate-500 !w-5 !h-5"
-            onClick={async () => {
-              const accounts = await disableOrEnableAccount(
-                user.uid,
-                val.id,
-                false
-              );
-              setUser({ ...user, accounts });
-            }}
-          />
-        )}
+      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center">
+        {/* <ButtonT4Spin
+          label="Disable"
+          className="ml-auto !text-slate-500"
+          classNameSpin="ml-auto !w-5 !h-5 !text-slate-500"
+          onClick={() => setOpen(true)}
+        />
+        <span className="text-slate-300 mx-2">|</span> */}
+
+        <ButtonT4Spin
+          label="Delete"
+          className="ml-auto !text-slate-500"
+          classNameSpin="ml-auto !w-5 !h-5 !text-slate-500"
+          onClick={() => setOpen(true)}
+        />
       </td>
+
+      <Overlay open={open} setOpen={setOpen}>
+        <CancelMessage
+          title="Delete account"
+          message="Are you sure you want to remove this account? All of your data will be permanently removed. This action cannot be undone."
+          close={() => setOpen(false)}
+          onAgree={async () => {
+            await removeAccount(val.id);
+            setOpen(false);
+          }}
+        />
+      </Overlay>
     </tr>
   );
 }

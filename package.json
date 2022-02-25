@@ -2,7 +2,7 @@
   "name": "expertadvisor",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 80",
     "build": "next build",
     "start": "next start",
     "export": "next export",

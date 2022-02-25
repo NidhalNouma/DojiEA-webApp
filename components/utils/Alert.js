@@ -1,6 +1,8 @@
-export function ErrorI({ message }) {
+export function ErrorI({ message, children, className }) {
   return (
-    <div className="flex justify-start items-center m-0 font-medium py-3 px-2 rounded text-red-600 bg-red-200 border border-red-100 ">
+    <div
+      className={`${className} flex justify-start items-center m-0 font-medium py-3 px-2 rounded text-red-600 bg-red-200 border border-red-100`}
+    >
       <div slot="avatar">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -21,14 +23,17 @@ export function ErrorI({ message }) {
       </div>
       <div className="text-sm font-medium max-w-full flex-initial">
         {message}
+        {children}
       </div>
     </div>
   );
 }
 
-export function SuccessI({ message }) {
+export function SuccessI({ message, className, children }) {
   return (
-    <div className="flex justify-start items-center m-1 font-medium py-3 px-2 rounded text-green-600 bg-green-200 border border-green-100 ">
+    <div
+      className={`${className} flex justify-start items-center m-0 font-medium py-3 px-2 rounded text-red-600 bg-red-200 border border-red-100`}
+    >
       <div slot="avatar">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -48,6 +53,7 @@ export function SuccessI({ message }) {
       </div>
       <div className="text-sm font-medium  max-w-full flex-initial">
         {message}
+        {children}
       </div>
     </div>
   );
