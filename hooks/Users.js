@@ -40,9 +40,11 @@ function User() {
       const r = await signIn(email, password);
       if (r.err) {
         setError(r.err);
-      } else {
+      } else if (r.user) {
         setError("");
         setMsg("You successfully signed in, you will be redirect in a sec!");
+      } else {
+        setError("An error occurred. Please refresh the page and try again.");
       }
       return r;
     }
@@ -82,9 +84,11 @@ function User() {
       const r = await signUp(email, password);
       if (r.err) {
         setError(r.err);
-      } else {
+      } else if (r.user) {
         setError("");
         setMsg("You successfully signed up, you will be redirect in a sec!");
+      } else {
+        setError("An error occurred. Please refresh the page and try again.");
       }
       return r;
     }

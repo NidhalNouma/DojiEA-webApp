@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useUserContext } from "../hooks/Users";
 import { P1 } from "./utils/Text";
 import { ButtonT4 } from "./utils/Buttons";
 import { TrashIcon } from "@heroicons/react/outline";
 import AddPaymentCard from "./AddPaymentCard";
 import CancelMessage from "./CancelMessage";
 import Overlay from "./utils/Overlay";
-import { detachPaymentMethod } from "../hooks/Stripe";
+
+import { useUserContext } from "../hooks/Users";
+import { DetachPaymentMethod } from "../hooks/Payments";
 
 export default function PaymentMethods({
   onSelect = (e) => {},
@@ -60,6 +61,8 @@ export default function PaymentMethods({
 
 function Card({ i, onClick, pm, user, setUser, hideDelete }) {
   const [open, setOpen] = useState(false);
+  const { submit } = DetachPaymentMethod(user, setUser);
+
   return (
     <div
       onClick={() => onClick(i)}
@@ -99,19 +102,8 @@ function Card({ i, onClick, pm, user, setUser, hideDelete }) {
           message="Are you sure you want to detach your payment card? All of your data will be permanently removed. This action cannot be undone."
           close={() => setOpen(false)}
           onAgree={async () => {
-            let paymentMethods = await detachPaymentMethod(
-              i.id,
-              user.customerId
-            );
-
-            if (paymentMethods) {
-              const nu = {
-                ...user,
-                stripe: { ...user.stripe, paymentMethods },
-              };
-              setUser(nu);
-              setOpen(false);
-            }
+            await submit(i);
+            setOpen(false);
           }}
         />
       </Overlay>

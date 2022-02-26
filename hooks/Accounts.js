@@ -6,7 +6,7 @@ import {
 } from "../model/Accounts";
 
 export function AccountsHook(user, setUser, allowed) {
-  const [accounts, setAccounts] = useState(user.accounts);
+  const [accounts, setAccounts] = useState(user?.accounts ? user.accounts : []);
   const [error, setError] = useState("");
 
   async function addAccount() {
@@ -35,8 +35,17 @@ export function AccountsHook(user, setUser, allowed) {
   }
 
   useEffect(() => {
-    setUser((u) => ({ accounts, ...u }));
+    setUser({ ...user, accounts: accounts });
   }, [accounts]);
 
   return { accounts, error, addAccount, removeAccount, getAccounts };
+}
+
+export function getNoStatus(accounts, status) {
+  let r = 0;
+  accounts?.forEach((v) => {
+    if (v.isActive === status) r++;
+  });
+
+  return r;
 }

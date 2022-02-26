@@ -2,55 +2,24 @@ import React, { useEffect, useState } from "react";
 import { Button4Spin } from "./utils/Buttons";
 import { H4 } from "./utils/Titles";
 import PaymentMethods from "./PaymentCard";
+import { ErrorI } from "./utils/Alert";
 
 import { useUserContext } from "../hooks/Users";
-import { createSub } from "../hooks/Stripe";
-import { ErrorI } from "./utils/Alert";
+import { CreateSubscription } from "../hooks/Payments";
 
 export const Form = (props) => {
   const { user, setUser } = useUserContext();
   const { title, price, id, done, type, accounts } = props;
   const [pm, setPm] = useState(null);
   const [open, setOpen] = useState(0);
-  const [error, setError] = useState("");
 
-  const submit = async () => {
-    setError("");
-    if (!pm) {
-      setOpen(open + 1);
-      return;
-    }
-
-    const { subscriptions, intents, r, error } = await createSub(
-      user.uid,
-      user.customerId,
-      pm.id,
-      id,
-      price,
-      title,
-      type,
-      accounts
-    );
-
-    if (error) {
-      setError(error.message);
-      return;
-    } else if (r.error) {
-      setError(r.error.raw.message);
-      return;
-    } else {
-      const nu = {
-        ...user,
-        stripe: {
-          ...user.stripe,
-          subscription: subscriptions,
-          intent: intents,
-        },
-      };
-      setUser(nu);
-      done(false);
-    }
-  };
+  const { error, submit } = CreateSubscription(
+    { title, price, id, type, accounts },
+    pm,
+    user,
+    setUser,
+    done
+  );
 
   useEffect(() => {
     window.scroll({

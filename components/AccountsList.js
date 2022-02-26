@@ -12,22 +12,14 @@ import CancelMessage from "./CancelMessage";
 import Overlay from "./utils/Overlay";
 import { ErrorI } from "./utils/Alert";
 
-import { paths } from "../Constants";
 import { useUserContext } from "../hooks/Users";
-import { AccountsHook } from "../hooks/Accounts";
-
-import {
-  allowedAccounts,
-  getNoStatus,
-  allowedAccountsLifeMember,
-} from "../hooks/Stripe";
+import { AccountsHook, getNoStatus } from "../hooks/Accounts";
+import { getAvailableToUseAccounts } from "../hooks/Plans";
+import { paths } from "../Constants";
 
 export default function AccountsList() {
   const { user, setUser } = useUserContext();
-  const allowed =
-    allowedAccounts(user?.stripe?.subscription?.data) +
-    allowedAccountsLifeMember(user?.stripe?.intent?.data) -
-    getNoStatus(accounts, true);
+  const allowed = getAvailableToUseAccounts(user?.plans);
 
   const { accounts, error, addAccount, removeAccount, getAccounts } =
     AccountsHook(user, setUser, allowed);
@@ -98,7 +90,7 @@ function Table({ accounts, removeAccount, getAccounts }) {
           <tr>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
+              className="w-1/3 px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
               ID
             </th>
@@ -159,7 +151,7 @@ function Raw({ val, removeAccount }) {
 
   return (
     <tr>
-      <td className="px-4 py-2 whitespace-nowrap">
+      <td className="px-4 py-3 whitespace-nowrap">
         <div
           onMouseEnter={() => setCopy(1)}
           onMouseLeave={() => setCopy(0)}
@@ -175,23 +167,23 @@ function Raw({ val, removeAccount }) {
               }
             );
           }}
-          className="text-sm font-medium text-slate-400 px-1 py-1 bg-slate-600 rounded cursor-pointer"
+          className="w-full text-sm font-medium text-slate-400 px-1 py-1 bg-slate-600 rounded cursor-pointer"
         >
           {copy === 0 ? (
-            val.id
+            <span className="w-full">{val.id}</span>
           ) : copy === 1 ? (
-            <p className="text-center text-slate-200">Click to copy</p>
+            <p className="text-center text-slate-200 w-full">Click to copy</p>
           ) : (
-            <p className="text-center text-slate-200">Copied</p>
+            <p className="text-center text-slate-200 w-full">Copied</p>
           )}
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-2 whitespace-nowrap">
         <div className="text-sm font-medium text-slate-400">
           {val.accountName ? val.accountName : <span className="ml-4">-</span>}
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-2 whitespace-nowrap">
         <div className="text-sm text-slate-400">
           {val.accountNumber ? (
             val.accountNumber
@@ -200,7 +192,7 @@ function Raw({ val, removeAccount }) {
           )}
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
+      <td className="px-6 py-2 whitespace-nowrap">
         {val.isActive ? (
           <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-c1">
             Active
@@ -211,7 +203,7 @@ function Raw({ val, removeAccount }) {
           </span>
         )}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end items-center">
+      <td className="px-6 py-2 whitespace-nowrap">
         {/* <ButtonT4Spin
           label="Disable"
           className="ml-auto !text-slate-500"

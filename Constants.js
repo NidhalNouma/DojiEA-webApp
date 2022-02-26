@@ -84,9 +84,7 @@ export function getAccountsByPriceId(id) {
 }
 
 export const files = {
-  ex4: () =>
-    (window.location =
-      "https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/Experts%2FDojiBot.ex4?alt=media&token=f341729f-1949-4011-831f-f47ef8ebb46b"),
-
+  ex4: () => (window.location = process.env.NEXT_PUBLIC_MT4_FILE),
+  ex5: () => (window.location = process.env.NEXT_PUBLIC_MT5_FILE),
   // "/robot/DojiBot.ex4"
 };

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -15,9 +14,6 @@ import {
 import {
   getFirestore,
   doc,
-  addDoc,
-  writeBatch,
-  updateDoc,
   collection,
   query,
   where,
@@ -28,6 +24,9 @@ import {
 } from "firebase/firestore";
 import { firebaseConfig } from "../Constants";
 import { getAccountsByUserId } from "./Accounts";
+import { getPlans } from "./Plans";
+import { verifyPlans } from "../hooks/Plans";
+import { getCustomer, createCustomer } from "./Stripe";
 
 const collName = "users";
 const app = initializeApp(firebaseConfig);
@@ -171,7 +170,7 @@ export async function signOutf() {
     const errorMessage = error.message;
     return {
       user: null,
-      err: "User doesn't exists",
+      err: "an error occurred while trying to sign out!",
       error,
     };
   }
@@ -213,10 +212,7 @@ async function addUser(user) {
   console.log("Adding user ...");
 
   try {
-    const req = await axios.post("/api/stripe/createCustomer", {
-      email: user.email,
-    });
-    const customer = req.data.customer;
+    const customer = await createCustomer(user);
 
     const docRef = await setDoc(doc(db, collName, user.uid), {
       email: user.email,
@@ -234,29 +230,36 @@ async function getUser(uid) {
   const docRef = doc(db, collName, uid);
   const docSnap = await getDoc(docRef);
 
-  console.log("Getting user ...");
+  console.log("Getting user ...", uid);
+  if (!uid) return null;
 
   if (docSnap.exists()) {
-    //console.log("Document data:", docSnap.data());
     const user = docSnap.data();
-    if (user.customerId) {
-      try {
-        const stripe = await axios.post("/api/stripe/getCustomer", {
-          email: user.email,
-          customerId: user.customerId,
-        });
-        user["stripe"] = stripe.data;
-      } catch (e) {
-        console.log(e);
-      }
-    }
-    user["accounts"] = await getAccountsByUserId(uid);
-    // console.log(user);
+
+    const stripeP = getCustomer(user);
+    const plansP = getPlans(uid);
+    const accountsP = getAccountsByUserId(uid);
+
+    const [stripe, plans, accounts] = await Promise.all([
+      stripeP,
+      plansP,
+      accountsP,
+    ]);
+
+    user["stripe"] = stripe?.data;
+    user["plans"] = plans;
+    user["accounts"] = accounts;
+
+    const verify = await verifyPlans(user);
+    console.log(verify);
+    if (verify === true) user["plans"] = await getPlans(uid);
+
+    console.log(user);
     return user;
   } else {
-    // doc.data() will be undefined in this case
     console.log("No such document!");
-    return null;
+    const user = await addUser(uid);
+    return user;
   }
 }
 
@@ -277,14 +280,4 @@ export async function getUserByEmail(email, withAccounts = true) {
   if (withAccounts) user["accounts"] = await getAccountsByUserId(user.uid);
 
   return user;
-}
-
-export async function getAccounts(uid) {
-  const coll = collection(db, collName, uid, "accounts");
-  const querySnapshot = await getDocs(coll);
-  const r = [];
-  querySnapshot.forEach((doc) => {
-    r.push({ ...doc.data(), id: doc.id });
-  });
-  return r;
 }

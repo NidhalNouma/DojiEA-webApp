@@ -83,8 +83,7 @@ function SignIn({ start = 0, close }) {
                   label="Login to your account"
                   onClick={async () => {
                     const r = await submit();
-                    console.log(r);
-                    if (!r.err) {
+                    if (!r.err && r.user) {
                       setUser(r.user);
                       if (
                         pathname !== paths.membership &&
@@ -99,8 +98,7 @@ function SignIn({ start = 0, close }) {
                 <GoogleBtn
                   onClick={async () => {
                     const r = await continueWithGoogle();
-                    console.log(r);
-                    if (!r.err) {
+                    if (!r.err && r.user) {
                       setUser(r.user);
                       if (
                         pathname !== paths.membership &&

@@ -122,7 +122,6 @@ export async function disableOrEnableAccount(id, active) {
 
   const upd = await updateDoc(docRef, { isActive: active });
 
-  // const acc = await getAccount(id);
   return upd;
 }
 

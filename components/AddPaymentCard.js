@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -9,47 +9,15 @@ import {
 import { Button4Spin } from "./utils/Buttons";
 import { ErrorI } from "./utils/Alert";
 
-import { addPaymMethod } from "../hooks/Stripe";
+import { AttachPaymentMethod } from "../hooks/Payments";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
 export const CheckoutForm1 = ({ props }) => {
   const { user, setUser, close } = props;
+  const { submit, error } = AttachPaymentMethod(user, setUser);
   const stripe = useStripe();
   const elements = useElements();
-  const [error, setError] = useState("");
-
-  const submit = async (event) => {
-    if (elements == null) {
-      return;
-    }
-    setError("");
-
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement),
-    });
-
-    if (error) {
-      setError(error.message);
-      return;
-    }
-
-    const paymentMethods = await addPaymMethod(
-      paymentMethod.id,
-      user.customerId
-    );
-
-    if (paymentMethods) {
-      const nu = {
-        ...user,
-        stripe: { ...user.stripe, paymentMethods },
-      };
-      setUser(nu);
-      close();
-    } else
-      setError("Your card was declined. please try again with another card.");
-  };
 
   return (
     <React.Fragment>
@@ -61,7 +29,7 @@ export const CheckoutForm1 = ({ props }) => {
       <Button4Spin
         label="Add card"
         className="rounded-lg mt-3"
-        onClick={async () => await submit()}
+        onClick={async () => await submit(stripe, elements, CardElement, close)}
       />
     </React.Fragment>
   );

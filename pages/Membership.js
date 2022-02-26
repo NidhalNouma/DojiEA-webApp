@@ -14,14 +14,13 @@ import MembershipList from "../components/MembershipList";
 import Overlay from "../components/utils/Overlay";
 import SignIn from "../components/SignIn";
 
-import { validSubscriptions, validLifeTime } from "../hooks/Stripe";
+import { getAvailablePlans } from "../hooks/Plans";
 import { paths, prices } from "../Constants";
 
 function Membership() {
   const { user } = useUserContext();
+  const plans = getAvailablePlans(user.plans);
   const router = useRouter();
-  const data = validSubscriptions(user?.stripe?.subscription?.data);
-  const data1 = validLifeTime(user?.stripe?.intent?.data);
 
   const [selectedPricing, setSelected] = useState(null);
   const [done, setDone] = useState(false);
@@ -42,14 +41,10 @@ function Membership() {
         {/* Hero content */}
         <div className="pt-12 pb-12 md:pt-20 md:pb-20">
           <H1 label="Membership" />
-          {data?.length + data1?.length > 0 && (
+          {plans?.length > 0 && (
             <main>
               <div className="max-w-7xl mx-auto py-3 sm:px-6 lg:px-8">
-                <H4
-                  label={`You have ${
-                    data?.length + data1?.length
-                  } available plan`}
-                />
+                <H4 label={`You have ${plans.length} available plan`} />
                 <MembershipList hideDelete={true} />
                 <P1>Feel free to select and add more if you need</P1>
               </div>
