@@ -22,10 +22,11 @@ import { paths } from "../Constants";
 
 export default function AccountsList() {
   const { user, setUser } = useUserContext();
+  const allowed = getAvailableToUseAccounts(user?.plans);
+
   const { accounts, error, addAccount, removeAccount, getAccounts } =
     AccountsHook(user, setUser, allowed);
 
-  const allowed = getAvailableToUseAccounts(user?.plans);
   const availableToAdd =
     allowed - getNoStatus(accounts, false) - getNoStatus(accounts, true);
 
