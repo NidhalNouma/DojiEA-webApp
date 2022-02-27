@@ -25,7 +25,7 @@ export function getCanceledPlans(plans) {
 }
 
 export function getAvailableToUseAccounts(plans) {
-  const r = 0;
+  let r = 0;
   if (!plans || plans.length === 0) return r;
   plans.forEach((p) => {
     if (Date.now() < p.renew * 1000 || p.lifeTime) {
@@ -44,7 +44,7 @@ export async function verifyPlans(user) {
   const intents = user?.stripe?.intent?.data;
   const plans = user?.plans;
 
-  if (subscriptions.length > 0) {
+  if (subscriptions?.length > 0) {
     const l = subscriptions.length;
     for (let i = 0; i < l; i++) {
       const s = subscriptions[i];
@@ -70,7 +70,7 @@ export async function verifyPlans(user) {
     }
   }
 
-  if (intents.length > 0) {
+  if (intents?.length > 0) {
     const l = intents.length;
     for (let i = 0; i < l; i++) {
       const s = intents[i];
@@ -90,6 +90,7 @@ export async function verifyPlans(user) {
 }
 
 function getPlanById(id, plans) {
+  if (!plans) return null;
   for (let i = 0; i < plans.length; i++) {
     if (plans[i].id === id) return plans[i];
   }

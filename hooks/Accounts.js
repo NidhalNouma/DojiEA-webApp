@@ -52,7 +52,7 @@ export function getNoStatus(accounts, status) {
 }
 
 export function getAvailableToUseAccounts(plans) {
-  const r = 0;
+  let r = 0;
   if (!plans || plans.length === 0) return r;
   plans.forEach((p) => {
     if (Date.now() < p.renew * 1000 || p.lifeTime) {

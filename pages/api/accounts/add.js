@@ -19,13 +19,12 @@ export default async function handler(req, res) {
       .json({ error: "Id is not exist, please try again with a valid ID!!" });
 
   const user = await getUser(account.uid);
+  console.log(user);
   if (!user)
     return res.status(200).json({
       error:
         "User of the account is not exist, visit dojibot.com to check your accounts",
     });
-
-  console.log(user);
 
   if (isAllowToAdd(user.plans, user.accounts) === false)
     return res.status(200).json({
