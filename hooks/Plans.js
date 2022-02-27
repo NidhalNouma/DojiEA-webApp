@@ -6,7 +6,9 @@ export function getAvailablePlans(plans) {
   if (!plans || plans.length === 0) return [];
   const r = plans.filter(
     (p) =>
-      p && ((p.isActive && Date.now() < p.renew * 1000) || p.lifeTime === true)
+      p &&
+      verifyPriceId(p.metadata?.priceId) &&
+      ((p.isActive && Date.now() < p.renew * 1000) || p.lifeTime === true)
   );
 
   return r;
@@ -16,7 +18,7 @@ export function getCanceledPlans(plans) {
   //   console.log(plans);
   if (!plans || plans.length === 0) return [];
   const r = plans.filter(
-    (p) => p && !p.isActive // && Date.now() < p.renew * 1000)
+    (p) => p && !p.isActive && verifyPriceId(p.metadata?.priceId) // && Date.now() < p.renew * 1000)
   );
 
   return r;
