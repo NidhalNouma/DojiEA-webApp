@@ -4,6 +4,7 @@ import {
   deleteAccount,
   getAccountsByUserId,
 } from "../model/Accounts";
+import { getAccountsByPriceId } from "../Constants";
 
 export function AccountsHook(user, setUser, allowed) {
   const [accounts, setAccounts] = useState(user?.accounts ? user.accounts : []);
@@ -48,4 +49,26 @@ export function getNoStatus(accounts, status) {
   });
 
   return r;
+}
+
+export function getAvailableToUseAccounts(plans) {
+  const r = 0;
+  if (!plans || plans.length === 0) return r;
+  plans.forEach((p) => {
+    if (Date.now() < p.renew * 1000 || p.lifeTime) {
+      r += getAccountsByPriceId(p.metadata.priceId);
+      //   r += p.metadata?.accounts;
+    }
+  });
+
+  return r;
+}
+
+export function isAllowToAdd(plans, accounts) {
+  console.log("User isAllowToAdd new account ...");
+  const av = getAvailableToUseAccounts(plans);
+  const nu = getNoStatus(accounts, true);
+
+  if (nu >= av) return false;
+  return true;
 }

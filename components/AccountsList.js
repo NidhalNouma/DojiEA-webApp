@@ -13,8 +13,11 @@ import Overlay from "./utils/Overlay";
 import { ErrorI } from "./utils/Alert";
 
 import { useUserContext } from "../hooks/Users";
-import { AccountsHook, getNoStatus } from "../hooks/Accounts";
-import { getAvailableToUseAccounts } from "../hooks/Plans";
+import {
+  AccountsHook,
+  getNoStatus,
+  getAvailableToUseAccounts,
+} from "../hooks/Accounts";
 import { paths } from "../Constants";
 
 export default function AccountsList() {
@@ -36,7 +39,7 @@ export default function AccountsList() {
                   allowed -
                   (getNoStatus(accounts, true) + getNoStatus(accounts, false))
                 }
-                title="Availble to use"
+                title="Availble to add"
               />
               <CardInfo
                 color="bg-teal-400 text-teal-400"

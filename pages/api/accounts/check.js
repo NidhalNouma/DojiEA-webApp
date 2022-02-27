@@ -1,4 +1,6 @@
 import { getAccount } from "../../../model/Accounts";
+import { isAllowToAdd } from "../../../hooks/Accounts";
+import { getUser } from "../../../model/User";
 
 export default async function handler(req, res) {
   if (req.method !== "POST")
@@ -12,5 +14,19 @@ export default async function handler(req, res) {
       error: "Account was deleted, please try another ID!",
       valid: false,
     });
+
+  const user = await getUser(account.uid);
+  if (!user)
+    return res.status(200).json({
+      error:
+        "User of the account is not exist, visit dojibot.com to check your accounts",
+    });
+
+  if (isAllowToAdd(user.plans, user.accounts) === false)
+    return res.status(200).json({
+      error:
+        "User is not allowed to add a new account, please check your membership!!",
+    });
+
   return res.status(200).json({ error: "", valid: true });
 }

@@ -11,7 +11,7 @@ export const paths = {
 export const prices = [
   {
     name: "Basic",
-    Price: 97,
+    Price: 98,
     accounts: 2,
     id: process.env.NEXT_PUBLIC_PRICE_BASIC,
     limit: false,
@@ -19,7 +19,7 @@ export const prices = [
   },
   {
     name: "Advanced",
-    Price: 189,
+    Price: 198,
     accounts: 5,
     id: process.env.NEXT_PUBLIC_PRICE_ADVANCED,
     limit: false,
@@ -27,7 +27,7 @@ export const prices = [
   },
   {
     name: "Pro",
-    Price: 289,
+    Price: 358,
     accounts: 10,
     id: process.env.NEXT_PUBLIC_PRICE_PRO,
     limit: false,
@@ -35,8 +35,8 @@ export const prices = [
   },
   {
     name: "Life Time",
-    Price: 989,
-    OldPrice: 1589,
+    Price: 998,
+    OldPrice: 1888,
     accounts: 8,
     id: process.env.NEXT_PUBLIC_PRICE_LIFETIME,
     limit: true,
@@ -86,5 +86,4 @@ export function getAccountsByPriceId(id) {
 export const files = {
   ex4: () => (window.location = process.env.NEXT_PUBLIC_MT4_FILE),
   ex5: () => (window.location = process.env.NEXT_PUBLIC_MT5_FILE),
-  // "/robot/DojiBot.ex4"
 };

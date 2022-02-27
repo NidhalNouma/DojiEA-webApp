@@ -50,15 +50,17 @@ export async function verifyPlans(user) {
 
       // console.log(p, s);
       if (!p) {
-        const np = await addPlan(
-          user.uid,
-          s.id,
-          false,
-          s.current_period_end,
-          s.metadata
-        );
+        if (verifyPriceId(s.metadata?.priceId)) {
+          const np = await addPlan(
+            user.uid,
+            s.id,
+            false,
+            s.current_period_end,
+            s.metadata
+          );
 
-        updated = true;
+          updated = true;
+        }
       } else if (s.current_period_end !== p.renew) {
         await updateRenew(user.uid, p.id, s.current_period_end);
         updated = true;
@@ -90,4 +92,15 @@ function getPlanById(id, plans) {
     if (plans[i].id === id) return plans[i];
   }
   return null;
+}
+
+function verifyPriceId(id) {
+  if (!id) return false;
+  let r = false;
+
+  prices.forEach((v) => {
+    if (v.id === id) r = true;
+  });
+
+  return r;
 }

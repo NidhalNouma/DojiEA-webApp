@@ -226,7 +226,7 @@ async function addUser(user) {
   }
 }
 
-async function getUser(uid) {
+export async function getUser(uid) {
   const docRef = doc(db, collName, uid);
   const docSnap = await getDoc(docRef);
 
