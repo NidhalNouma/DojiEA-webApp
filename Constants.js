@@ -22,7 +22,7 @@ export const prices = {
     name: "Basic",
     Price: 98,
     accounts: 2,
-    demoAccounts: 2,
+    demoAccounts: 4,
     id: process.env.NEXT_PUBLIC_PRICE_BASIC,
     limit: false,
     type: "subscription",
@@ -31,7 +31,7 @@ export const prices = {
     name: "Advanced",
     Price: 198,
     accounts: 5,
-    demoAccounts: 2,
+    demoAccounts: 6,
     id: process.env.NEXT_PUBLIC_PRICE_ADVANCED,
     limit: false,
     type: "subscription",
@@ -40,7 +40,7 @@ export const prices = {
     name: "Pro",
     Price: 358,
     accounts: 10,
-    demoAccounts: 2,
+    demoAccounts: 10,
     id: process.env.NEXT_PUBLIC_PRICE_PRO,
     limit: false,
     type: "subscription",
@@ -50,13 +50,18 @@ export const prices = {
     Price: 998,
     OldPrice: 1888,
     accounts: 8,
-    demoAccounts: 2,
+    demoAccounts: 8,
     id: process.env.NEXT_PUBLIC_PRICE_LIFETIME,
     limit: true,
     expire: 10,
     lifetime: true,
     type: "intent",
   },
+};
+
+export const accountsTypes = {
+  real: "Real",
+  demo: "Demo",
 };
 
 export const firebaseConfig =
@@ -87,12 +92,16 @@ export function getNameByPriceId(id) {
   return r;
 }
 
-export function getAccountsByPriceId(id) {
+export function getAccountsByPriceId(id, type) {
   let r = null;
 
   for (const key in prices) {
     const v = prices[key];
-    if (v.id === id) r = v.accounts + v.demoAccounts;
+    if (v.id === id) {
+      if (!type) r = v.accounts + v.demoAccounts;
+      else if (type === accountsTypes.demo) r = v.demoAccounts;
+      else if (type === accountsTypes.real) r = v.accounts;
+    }
   }
 
   return r;

@@ -31,10 +31,12 @@ export default async function handler(req, res) {
       valid,
     });
 
-  if (isAllowToAdd(user.plans, user.accounts) === false)
+  if (isAllowToAdd(user.plans, user.accounts, type) === false)
     return res.status(200).json({
       error:
-        "User is not allowed to add a new account, please check your membership!!",
+        "User is not allowed to add a new " +
+        type +
+        " account, please check your membership!!",
       valid,
     });
 

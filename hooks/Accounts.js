@@ -4,7 +4,7 @@ import {
   deleteAccount,
   getAccountsByUserId,
 } from "../model/Accounts";
-import { getAccountsByPriceId } from "../Constants";
+import { getAccountsByPriceId, accountsTypes, prices } from "../Constants";
 
 export function AccountsHook(user, setUser, allowed) {
   const [accounts, setAccounts] = useState(user?.accounts ? user.accounts : []);
@@ -42,32 +42,42 @@ export function AccountsHook(user, setUser, allowed) {
   return { accounts, error, addAccount, removeAccount, getAccounts };
 }
 
-export function getNoStatus(accounts, status) {
+export function getNoStatus(accounts, status, type) {
   let r = 0;
   accounts?.forEach((v) => {
-    if (v.isActive === status) r++;
+    if (v.isActive === status && v.type === type) r++;
   });
 
   return r;
 }
 
-export function getAvailableToUseAccounts(plans) {
+export function getAccountsByType(accounts, type) {
   let r = 0;
-  if (!plans || plans.length === 0) return r;
-  plans.forEach((p) => {
+  accounts?.forEach((v) => {
+    if (v.type === type) r++;
+  });
+
+  return r;
+}
+
+export function getAvailableToUseAccounts(plans, type) {
+  let r = 0;
+  // if (!plans || plans.length === 0) return r;
+  plans?.forEach((p) => {
     if (Date.now() < p.renew * 1000 || p.lifeTime) {
-      r += getAccountsByPriceId(p.metadata.priceId);
+      r += getAccountsByPriceId(p.metadata.priceId, type);
       //   r += p.metadata?.accounts;
     }
   });
+  if (r === 0 && type === accountsTypes.demo) r = prices.free.demoAccounts;
 
   return r;
 }
 
-export function isAllowToAdd(plans, accounts) {
+export function isAllowToAdd(plans, accounts, type) {
   console.log("User isAllowToAdd new account ...");
-  const av = getAvailableToUseAccounts(plans);
-  const nu = getNoStatus(accounts, true);
+  const av = getAvailableToUseAccounts(plans, type);
+  const nu = getNoStatus(accounts, true, type);
 
   if (nu >= av) return false;
   return true;

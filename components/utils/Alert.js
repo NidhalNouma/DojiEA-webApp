@@ -32,7 +32,7 @@ export function ErrorI({ message, children, className }) {
 export function SuccessI({ message, className, children }) {
   return (
     <div
-      className={`${className} flex justify-start items-center m-0 font-medium py-3 px-2 rounded text-red-600 bg-red-200 border border-red-100`}
+      className={`${className} flex justify-start items-center m-0 font-medium py-3 px-2 rounded text-green-600 bg-teal-100 border border-teal-100`}
     >
       <div slot="avatar">
         <svg

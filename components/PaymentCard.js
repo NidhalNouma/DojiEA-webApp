@@ -20,7 +20,7 @@ export default function PaymentMethods({
   const data = user?.stripe?.paymentMethods?.data;
 
   useEffect(() => {
-    if (data?.length > 0) onSelect(data[data.length - 1]);
+    if (data?.length > 0) onSelect(data[0]);
   }, [data]);
 
   useEffect(() => {
@@ -30,17 +30,19 @@ export default function PaymentMethods({
   return (
     <React.Fragment>
       {data?.length > 0 ? (
-        data.map((paymentMethod, i) => (
-          <Card
-            key={i}
-            i={paymentMethod}
-            onClick={onSelect}
-            pm={selected}
-            user={user}
-            setUser={setUser}
-            hideDelete={hideDelete}
-          />
-        ))
+        data
+          .map((paymentMethod, i) => (
+            <Card
+              key={i}
+              i={paymentMethod}
+              onClick={onSelect}
+              pm={selected}
+              user={user}
+              setUser={setUser}
+              hideDelete={hideDelete}
+            />
+          ))
+          .reverse()
       ) : (
         <P1>You have no active payment method. </P1>
       )}

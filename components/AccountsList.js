@@ -15,20 +15,30 @@ import { ErrorI } from "./utils/Alert";
 import { useUserContext } from "../hooks/Users";
 import {
   AccountsHook,
-  getNoStatus,
+  getAccountsByType,
   getAvailableToUseAccounts,
 } from "../hooks/Accounts";
-import { paths } from "../Constants";
+import { paths, accountsTypes } from "../Constants";
 
 export default function AccountsList() {
   const { user, setUser } = useUserContext();
-  const allowed = getAvailableToUseAccounts(user?.plans);
+  const allowedReal = getAvailableToUseAccounts(
+    user?.plans,
+    accountsTypes.real
+  );
+  const allowedDemo = getAvailableToUseAccounts(
+    user?.plans,
+    accountsTypes.demo
+  );
+  const allowed = allowedReal + allowedDemo;
+
+  const real = getAccountsByType(accounts, accountsTypes.real);
+  const demo = getAccountsByType(accounts, accountsTypes.demo);
 
   const { accounts, error, addAccount, removeAccount, getAccounts } =
     AccountsHook(user, setUser, allowed);
 
-  const availableToAdd =
-    allowed - getNoStatus(accounts, false) - getNoStatus(accounts, true);
+  const availableToAdd = allowed - real - demo;
 
   return (
     <div className="flex flex-col">
@@ -46,14 +56,14 @@ export default function AccountsList() {
             <div className="flex">
               <CardInfo
                 color="bg-teal-400 text-teal-400"
-                value={getNoStatus(accounts, true)}
-                title="Active"
+                value={real + "/" + allowedReal}
+                title="Real account"
                 className="mr-4"
               />
               <CardInfo
-                color="text-red-400 bg-red-400"
-                value={getNoStatus(accounts, false)}
-                title="Inactive"
+                color="text-slate-400 bg-slate-400"
+                value={demo + "/" + allowedDemo}
+                title="Demo account"
               />
             </div>
             <Button5Spin

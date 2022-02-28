@@ -29,9 +29,10 @@ function Membership() {
   useEffect(() => {
     const sel = router.query?.sel;
     if (sel)
-      prices.forEach((e) => {
-        if (e.name === sel) setSelected(e);
-      });
+      for (const key in prices) {
+        const v = prices[key];
+        if (v.name === sel) setSelected(v);
+      }
   }, [router.query]);
 
   return (
@@ -39,7 +40,7 @@ function Membership() {
       <Header />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero content */}
-        <div className="pt-12 pb-6 md:pt-20">
+        <div className="py-12 pb-6 md:py-20">
           <H1 label="Membership" />
           {plans?.length > 0 && (
             <main>
@@ -50,22 +51,18 @@ function Membership() {
               </div>
             </main>
           )}
-        </div>
-      </div>
-      <Pricing
-        select={(e) => {
-          if (user) {
-            setSelected(e);
-            setDone(false);
-          } else {
-            setOpen(true);
-          }
-        }}
-        selected={selectedPricing}
-      />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-        {selectedPricing && !done && (
-          <div className="mb-20">
+          <Pricing
+            select={(e) => {
+              if (user) {
+                setSelected(e);
+                setDone(false);
+              } else {
+                setOpen(true);
+              }
+            }}
+            selected={selectedPricing}
+          />
+          {selectedPricing && !done && (
             <Form
               price={selectedPricing.Price}
               title={selectedPricing.name}
@@ -75,13 +72,13 @@ function Membership() {
               user={user}
               done={() => setDone(true)}
             />
-          </div>
-        )}
-        {done && selectedPricing && (
-          <div className="pt-20">
-            <Done title={selectedPricing.name} />{" "}
-          </div>
-        )}
+          )}
+          {done && selectedPricing && (
+            <div className="pt-20">
+              <Done title={selectedPricing.name} />{" "}
+            </div>
+          )}
+        </div>
       </div>
       <Overlay open={open} setOpen={setOpen}>
         <SignIn start={1} close={() => setOpen(false)} />

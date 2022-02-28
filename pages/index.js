@@ -20,7 +20,7 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import { files, paths } from "../Constants";
+import { paths } from "../Constants";
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -53,6 +53,7 @@ function Index() {
           select={
             user ? (i) => Router.push(paths.membership + `?sel=${i}`) : setOpen
           }
+          wfree={false}
         />
       </div>
       <Overlay open={open} setOpen={setOpen}>

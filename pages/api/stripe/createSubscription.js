@@ -83,6 +83,7 @@ async function createSubscription(
         expand: ["latest_invoice.payment_intent", "pending_setup_intent"],
         coupon: coupon,
         metadata: { priceId, name, price, accounts },
+        default_payment_method: paymentMethodId,
       });
     } else {
       intent = await stripe.paymentIntents.create({
