@@ -32,8 +32,8 @@ export default function AccountsList() {
   );
   const allowed = allowedReal + allowedDemo;
 
-  const real = getAccountsByType(accounts, accountsTypes.real);
-  const demo = getAccountsByType(accounts, accountsTypes.demo);
+  const real = getAccountsByType(user?.accounts, accountsTypes.real);
+  const demo = getAccountsByType(user?.accounts, accountsTypes.demo);
 
   const { accounts, error, addAccount, removeAccount, getAccounts } =
     AccountsHook(user, setUser, allowed);
