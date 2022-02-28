@@ -19,7 +19,7 @@ import { paths, prices } from "../Constants";
 
 function Membership() {
   const { user } = useUserContext();
-  const plans = getAvailablePlans(user.plans);
+  const plans = getAvailablePlans(user?.plans);
   const router = useRouter();
 
   const [selectedPricing, setSelected] = useState(null);

@@ -8,43 +8,56 @@ export const paths = {
   settings: "/Settings",
 };
 
-export const prices = [
-  {
-    name: "Basic",
-    Price: 98,
-    accounts: 2,
+export const prices = {
+  free: {
+    name: "Free",
+    Price: 0,
+    accounts: 0,
+    demoAccounts: 2,
     id: process.env.NEXT_PUBLIC_PRICE_BASIC,
     limit: false,
     type: "subscription",
   },
-  {
+  basic: {
+    name: "Basic",
+    Price: 98,
+    accounts: 2,
+    demoAccounts: 2,
+    id: process.env.NEXT_PUBLIC_PRICE_BASIC,
+    limit: false,
+    type: "subscription",
+  },
+  advanced: {
     name: "Advanced",
     Price: 198,
     accounts: 5,
+    demoAccounts: 2,
     id: process.env.NEXT_PUBLIC_PRICE_ADVANCED,
     limit: false,
     type: "subscription",
   },
-  {
+  pro: {
     name: "Pro",
     Price: 358,
     accounts: 10,
+    demoAccounts: 2,
     id: process.env.NEXT_PUBLIC_PRICE_PRO,
     limit: false,
     type: "subscription",
   },
-  {
+  lifetime: {
     name: "Life Time",
     Price: 998,
     OldPrice: 1888,
     accounts: 8,
+    demoAccounts: 2,
     id: process.env.NEXT_PUBLIC_PRICE_LIFETIME,
     limit: true,
     expire: 10,
     lifetime: true,
     type: "intent",
   },
-];
+};
 
 export const firebaseConfig =
   process.env.NEXT_PUBLIC_MODE === "Live"

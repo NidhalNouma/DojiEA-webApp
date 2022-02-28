@@ -18,7 +18,10 @@ export function getCanceledPlans(plans) {
   //   console.log(plans);
   if (!plans || plans.length === 0) return [];
   const r = plans.filter(
-    (p) => p && !p.isActive && verifyPriceId(p.metadata?.priceId) // && Date.now() < p.renew * 1000)
+    (p) =>
+      p &&
+      !p.isActive &&
+      verifyPriceId(p.metadata?.priceId && Date.now() < p.renew * 1000)
   );
 
   return r;
@@ -78,7 +81,7 @@ export async function verifyPlans(user) {
 
       // console.log(p, s);
       if (!p)
-        if (s.metadata?.priceId === prices[3].id) {
+        if (s.metadata?.priceId === prices.lifetime.id) {
           const np = await addPlan(user.uid, s.id, true, null, s.metadata);
 
           updated = true;
@@ -101,9 +104,10 @@ function verifyPriceId(id) {
   if (!id) return false;
   let r = false;
 
-  prices.forEach((v) => {
+  for (const key in prices) {
+    const v = prices[key];
     if (v.id === id) r = true;
-  });
+  }
 
   return r;
 }

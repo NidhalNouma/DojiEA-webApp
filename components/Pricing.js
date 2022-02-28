@@ -6,20 +6,31 @@ export default function Pricing({ select, selected, top = false, redirect }) {
   const { user } = useUserContext();
   return (
     <div className=" flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
-      {prices.map((val, i) => (
+      {/* <Item
+        user={user}
+        val={prices[0]}
+        top={top}
+        selected={false}
+        onClick={() => select(top && redirect ? val.name : top ? true : val)}
+      /> */}
+      {Object.keys(prices).map((val, i) => (
         <Item
           key={i}
           user={user}
-          val={val}
+          val={prices[val]}
           top={top}
           selected={
-            val.id === selected?.id
+            prices[val].id === selected?.id
               ? true
-              : val.expire && top && !selected && !user
+              : prices[val].expire && top && !selected && !user
               ? true
               : false
           }
-          onClick={() => select(top && redirect ? val.name : top ? true : val)}
+          onClick={() =>
+            select(
+              top && redirect ? prices[val].name : top ? true : prices[val]
+            )
+          }
         />
       ))}
     </div>
@@ -31,6 +42,7 @@ function Item({ val, selected, onClick, top, user }) {
     name: Title,
     Price,
     accounts: No,
+    demoAccounts: Nod,
     expire,
     show,
     lifetime,
@@ -62,8 +74,8 @@ function Item({ val, selected, onClick, top, user }) {
         <div className="text-teal-500 font-bold text-center border-0 border-slate-700 border-b border-solid py-4">
           {No} Real Account License
         </div>
-        <div className="text-slate-200 text-center border-0 border-slate-700 border-b border-solid py-4">
-          Unlimited Demo Account
+        <div className="text-slate-100 font-bold text-center border-0 border-slate-700 border-b border-solid py-4">
+          {Nod} Demo Account License
         </div>
         <div className="text-slate-200 text-center border-0 border-slate-700 border-b border-solid py-4">
           Free Update Forever
@@ -82,20 +94,26 @@ function Item({ val, selected, onClick, top, user }) {
           </h1>
         )}
         <span className="text-teal-500 border-slate-300 border-b-4 text-center text-xl px-2 py-4 pb-1 rounded">
-          ${Price}
-          <span className="ml-1 text-slate-300 text-base">
-            {!lifetime ? "/ Month" : "life time"}
-          </span>
+          {Price > 0 && (
+            <React.Fragment>
+              ${Price}
+              <span className="ml-1 text-slate-300 text-base">
+                {!lifetime ? "/ Month" : "life time"}
+              </span>
+            </React.Fragment>
+          )}
         </span>
       </div>
-      <div className="w-full text-center mb-8 mt-auto px-10 sm:px-0">
-        <button
-          onClick={onClick}
-          className="px-8 py-3 rounded-full text-c2 font-medium bg-slate-100 w-full sm:w-auto sm:ml-4"
-        >
-          {!user ? "Sign Up" : selected ? "Selected" : "Select"}
-        </button>
-      </div>
+      {user && Price > 0 && (
+        <div className="w-full text-center mb-8 mt-auto px-10 sm:px-0">
+          <button
+            onClick={onClick}
+            className="px-8 py-3 rounded-full text-c2 font-medium bg-slate-100 w-full sm:w-auto sm:ml-4"
+          >
+            {!user ? "Sign Up" : selected ? "Selected" : "Select"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
