@@ -19,7 +19,6 @@ export default async function handler(req, res) {
       .json({ error: "Id is not exist, please try again with a valid ID!!" });
 
   const user = await getUser(account.uid);
-  console.log(user);
   if (!user)
     return res.status(200).json({
       error:

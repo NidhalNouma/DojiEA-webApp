@@ -254,7 +254,7 @@ export async function getUser(uid) {
     console.log(verify);
     if (verify === true) user["plans"] = await getPlans(uid);
 
-    console.log(user);
+    // console.log(user);
     return user;
   } else {
     console.log("No such document!");
