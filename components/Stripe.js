@@ -62,7 +62,7 @@ export const Form = (props) => {
           label={pm ? "Pay" : "Add Payment Card"}
           className="rounded-lg mt-5"
           onClick={async () => {
-            if (!pm) setOpen(true);
+            if (!pm) setOpen(open + 1);
             else await submit();
           }}
         />

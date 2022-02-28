@@ -44,7 +44,8 @@ export async function setAccount(
   id,
   accountNumber,
   accountServer,
-  accountName
+  accountName,
+  type
 ) {
   console.log("Set an account ...", id);
 
@@ -55,6 +56,7 @@ export async function setAccount(
         accountNumber,
         accountServer,
         accountName,
+        type,
         isActive: true,
       },
       { merge: true }

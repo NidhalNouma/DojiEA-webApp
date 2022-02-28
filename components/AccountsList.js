@@ -116,6 +116,12 @@ function Table({ accounts, removeAccount, getAccounts }) {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
             >
+              TYPE
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-slate-100 uppercase tracking-wider"
+            >
               Status
             </th>
             <th
@@ -196,6 +202,11 @@ function Raw({ val, removeAccount }) {
           ) : (
             <span className="ml-5">-</span>
           )}
+        </div>
+      </td>
+      <td className="px-6 py-2 whitespace-nowrap">
+        <div className="text-sm text-slate-400">
+          {val.type ? val.type : <span className="ml-3">-</span>}
         </div>
       </td>
       <td className="px-6 py-2 whitespace-nowrap">

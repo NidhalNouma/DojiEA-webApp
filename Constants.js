@@ -14,7 +14,7 @@ export const prices = {
     Price: 0,
     accounts: 0,
     demoAccounts: 2,
-    id: process.env.NEXT_PUBLIC_PRICE_BASIC,
+    id: null,
     limit: false,
     type: "subscription",
   },
@@ -89,9 +89,11 @@ export function getNameByPriceId(id) {
 
 export function getAccountsByPriceId(id) {
   let r = null;
-  prices.forEach((v) => {
-    if (v.id == id) r = v.accounts;
-  });
+
+  for (const key in prices) {
+    const v = prices[key];
+    if (v.id === id) r = v.accounts + v.demoAccounts;
+  }
 
   return r;
 }

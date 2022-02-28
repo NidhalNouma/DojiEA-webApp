@@ -226,7 +226,7 @@ async function addUser(user) {
   }
 }
 
-export async function getUser(uid) {
+export async function getUser(uid, no) {
   const docRef = doc(db, collName, uid);
   const docSnap = await getDoc(docRef);
 
@@ -257,9 +257,9 @@ export async function getUser(uid) {
     // console.log(user);
     return user;
   } else {
-    console.log("No such document!");
-    const user = await addUser(uid);
-    return user;
+    console.log("No user id, ", uid);
+    //if (!no) return await getUser(uid, true);
+    return null;
   }
 }
 

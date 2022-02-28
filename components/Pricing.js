@@ -5,14 +5,7 @@ import { useUserContext } from "../hooks/Users";
 export default function Pricing({ select, selected, top = false, redirect }) {
   const { user } = useUserContext();
   return (
-    <div className=" flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
-      {/* <Item
-        user={user}
-        val={prices[0]}
-        top={top}
-        selected={false}
-        onClick={() => select(top && redirect ? val.name : top ? true : val)}
-      /> */}
+    <div className="flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
       {Object.keys(prices).map((val, i) => (
         <Item
           key={i}
@@ -93,18 +86,20 @@ function Item({ val, selected, onClick, top, user }) {
             ${OldPrice}
           </h1>
         )}
-        <span className="text-teal-500 border-slate-300 border-b-4 text-center text-xl px-2 py-4 pb-1 rounded">
-          {Price > 0 && (
+        {Price > 0 ? (
+          <span className="text-teal-500 border-slate-300 border-b-4 text-center text-xl px-2 py-4 pb-1 rounded">
             <React.Fragment>
               ${Price}
               <span className="ml-1 text-slate-300 text-base">
                 {!lifetime ? "/ Month" : "life time"}
               </span>
             </React.Fragment>
-          )}
-        </span>
+          </span>
+        ) : (
+          <span className="ml-1 text-teal-500 text-xl font-bold">Free</span>
+        )}
       </div>
-      {user && Price > 0 && (
+      {(user && Price > 0) || !user ? (
         <div className="w-full text-center mb-8 mt-auto px-10 sm:px-0">
           <button
             onClick={onClick}
@@ -113,6 +108,8 @@ function Item({ val, selected, onClick, top, user }) {
             {!user ? "Sign Up" : selected ? "Selected" : "Select"}
           </button>
         </div>
+      ) : (
+        <div className="md:py-5 "></div>
       )}
     </div>
   );

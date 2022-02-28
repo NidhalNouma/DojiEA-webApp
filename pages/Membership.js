@@ -37,9 +37,9 @@ function Membership() {
   return (
     <div>
       <Header />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero content */}
-        <div className="pt-12 pb-12 md:pt-20 md:pb-20">
+        <div className="pt-12 pb-6 md:pt-20">
           <H1 label="Membership" />
           {plans?.length > 0 && (
             <main>
@@ -50,18 +50,22 @@ function Membership() {
               </div>
             </main>
           )}
-          <Pricing
-            select={(e) => {
-              if (user) {
-                setSelected(e);
-                setDone(false);
-              } else {
-                setOpen(true);
-              }
-            }}
-            selected={selectedPricing}
-          />
-          {selectedPricing && !done && (
+        </div>
+      </div>
+      <Pricing
+        select={(e) => {
+          if (user) {
+            setSelected(e);
+            setDone(false);
+          } else {
+            setOpen(true);
+          }
+        }}
+        selected={selectedPricing}
+      />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
+        {selectedPricing && !done && (
+          <div className="mb-20">
             <Form
               price={selectedPricing.Price}
               title={selectedPricing.name}
@@ -71,11 +75,14 @@ function Membership() {
               user={user}
               done={() => setDone(true)}
             />
-          )}
-        </div>
-        {done && selectedPricing && <Done title={selectedPricing.name} />}
+          </div>
+        )}
+        {done && selectedPricing && (
+          <div className="pt-20">
+            <Done title={selectedPricing.name} />{" "}
+          </div>
+        )}
       </div>
-
       <Overlay open={open} setOpen={setOpen}>
         <SignIn start={1} close={() => setOpen(false)} />
       </Overlay>

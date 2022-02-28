@@ -12,9 +12,9 @@ export default async function handler(req, res) {
 
   let valid = false;
 
-  let { accountNumber, accountServer, accountName, ID: id } = req.body;
+  let { accountNumber, accountServer, accountName, type, ID: id } = req.body;
 
-  console.log(`${id} ${accountNumber} ${accountServer} ${accountName}`);
+  console.log(`${id} ${accountNumber} ${accountServer} ${accountName} ${type}`);
 
   const account = await getAccount(id);
   if (!account)
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     });
 
   if (!account.accountNumber)
-    await setAccount(id, accountNumber, accountServer, accountName);
+    await setAccount(id, accountNumber, accountServer, accountName, type);
   else if (
     account.accountNumber !== accountNumber ||
     account.accountServer !== accountServer
