@@ -81,7 +81,7 @@ function Subscription({ i, user, setUser, hideDelete, active = true }) {
           )}
         </div>
         <span className="text-slate-300 text-sm font-medium">
-          {active ? "Renew " : "Terminate on "}
+          {active ? "Renew " : "End on "}
           <span className="text-sm text-slate-400">
             {moment(i.renew * 1000).format("MMMM Do YYYY")}
           </span>

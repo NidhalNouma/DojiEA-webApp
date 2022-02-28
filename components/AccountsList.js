@@ -32,29 +32,32 @@ export default function AccountsList() {
 
   return (
     <div className="flex flex-col">
-      <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <div className="mb-6 flex w-full justify-between items-center">
+      <div className="-mb-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="pb-2 align-middle min-w-full sm:px-6 lg:px-8">
+          <div className="flex w-full justify-end text-center mb-2">
+            <CardInfo
+              color="text-slate-100 bg-slate-100"
+              value={availableToAdd > 0 ? availableToAdd : 0}
+              title="Availble to add"
+              className="bg-c1"
+            />
+          </div>
+          <div className="mb-5 flex w-full justify-between items-center">
             <div className="flex">
-              <CardInfo
-                color="text-slate-100 bg-slate-400"
-                value={availableToAdd > 0 ? availableToAdd : 0}
-                title="Availble to add"
-              />
               <CardInfo
                 color="bg-teal-400 text-teal-400"
                 value={getNoStatus(accounts, true)}
-                title="Active account"
-                className="mx-4"
+                title="Active"
+                className="mr-4"
               />
               <CardInfo
                 color="text-red-400 bg-red-400"
                 value={getNoStatus(accounts, false)}
-                title="Inactive account"
+                title="Inactive"
               />
             </div>
             <Button5Spin
-              className="rounded"
+              className="rounded ml-2"
               label="Generate new ID"
               onClick={addAccount}
             />
@@ -87,7 +90,7 @@ function Table({ accounts, removeAccount, getAccounts }) {
   const [spin, setSpin] = useState(false);
 
   return (
-    <div className="shadow overflow-hidden border-b border-c2 sm:rounded-lg">
+    <div className="shadow overflow-x-auto border-b border-c2 sm:rounded-lg">
       <table className="min-w-full divide-y divide-slate-600">
         <thead className="bg-c2">
           <tr>

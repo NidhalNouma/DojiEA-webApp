@@ -12,7 +12,7 @@ function Dashboard() {
         <div className="pt-12 pb-12 md:pt-20 md:pb-20">
           <H1 label="Accounts" />
           <main>
-            <div className="max-w-7xl mx-auto py-3 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto pb-3 sm:px-6 lg:px-8">
               <AccountsList />
             </div>
           </main>
