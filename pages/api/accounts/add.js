@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     version: ver,
   } = req.body;
 
-  if (ver > version) msg = "New version available. " + version;
+  if (version && version > ver) msg = "New version available. " + version;
 
   console.log(`${id} ${accountNumber} ${accountServer} ${accountName} ${type}`);
 

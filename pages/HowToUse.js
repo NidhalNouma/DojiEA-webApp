@@ -4,7 +4,9 @@ import Header from "../components/Header";
 import { files } from "../Constants";
 import { H1, H4 } from "../components/utils/Titles";
 import { P1 } from "../components/utils/Text";
+import Overlay from "../components/utils/Overlay";
 import { LinkT4 } from "../components/utils/Links";
+import { ButtonT4 } from "../components/utils/Buttons";
 import { paths } from "../Constants";
 
 function HowToUse() {
@@ -114,11 +116,14 @@ function Ha({ onClick, className, children, active }) {
 }
 
 function Instalation() {
+  const [open, setOpen] = useState(false);
+
   return (
     <React.Fragment>
       <P1 className="!text-base mt-0">
-        The instalation is very straightforward and simple click here to watch a
-        video of how to install any EA, or feel free to follow the steps bellow.
+        The instalation is very straightforward and simple click{" "}
+        <ButtonT4 label="here" onClick={() => setOpen(true)} /> to watch a video
+        of how to install any EA, or feel free to follow the steps bellow.
       </P1>
       <P1 className="!text-base mt-0">
         the frst step is to download the EA file by clicking on the button
@@ -205,6 +210,17 @@ function Instalation() {
         </span>
         , Now let&apos;s move to the setup section.
       </P1>
+
+      <Overlay open={open} setOpen={setOpen}>
+        <div className="relative pb-9/16">
+          <iframe
+            className="w-full h-96"
+            src="https://player.vimeo.com/video/174002812"
+            title="Video"
+            allowFullScreen
+          ></iframe>
+        </div>
+      </Overlay>
     </React.Fragment>
   );
 }
