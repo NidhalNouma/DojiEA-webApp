@@ -187,23 +187,27 @@ function Raw({ val, removeAccount }) {
     <tr>
       <td className="px-4 py-3 whitespace-nowrap">
         <div
-          onMouseEnter={() => setCopy(1)}
-          onMouseLeave={() => setCopy(0)}
+          onMouseEnter={() => copy > -1 && setCopy(1)}
+          onMouseLeave={() => copy > -1 && setCopy(0)}
           onClick={() => {
-            navigator.clipboard.writeText(val.id).then(
+            if (!navigator.clipboard?.writeText) {
+              setCopy(-1);
+              return;
+            }
+            navigator.clipboard.writeText(val.id)?.then(
               function () {
                 console.log("Async: Copying to clipboard was successful!");
                 setCopy(2);
               },
               function (err) {
                 console.error("Async: Could not copy text: ", err);
-                setCopy(0);
+                setCopy(-1);
               }
             );
           }}
           className="w-full text-sm font-medium text-slate-400 px-1 py-1 bg-slate-600 rounded cursor-pointer"
         >
-          {copy === 0 ? (
+          {copy <= 0 ? (
             <span className="w-full">{val.id}</span>
           ) : copy === 1 ? (
             <p className="text-center text-slate-200 w-full">Click to copy</p>

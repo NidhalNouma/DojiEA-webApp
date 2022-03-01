@@ -12,12 +12,11 @@ export default async function handler(req, res) {
     return res.status(405).end(`Method ${req.method} Not Allowed`);
 
   let valid = false;
+
+  const { accountNumber, accountServer, accountName, type, ID: id } = req.body;
+
   let msg = "";
-
-  let { accountNumber, accountServer, accountName, type, ID: id } = req.body;
-
-  const ver = req.body.vesion;
-
+  const ver = req.body.version;
   if (version && version > ver) msg = "New version available. " + version;
   if (message) msg = message;
 

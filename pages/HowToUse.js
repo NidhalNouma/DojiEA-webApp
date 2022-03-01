@@ -212,7 +212,7 @@ function Instalation() {
         , Now let&apos;s move to the setup section.
       </P1>
 
-      <Overlay open={open} setOpen={setOpen} className="sm:max-w-7xl ">
+      <Overlay open={open} setOpen={setOpen} className="sm:!max-w-6xl ">
         <div className="flex m-3">
           <video className="my-auto mx-auto w-full h-full" controls>
             <source
