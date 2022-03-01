@@ -14,14 +14,9 @@ export default async function handler(req, res) {
   let valid = false;
   let msg = "";
 
-  let {
-    accountNumber,
-    accountServer,
-    accountName,
-    type,
-    ID: id,
-    version: ver,
-  } = req.body;
+  let { accountNumber, accountServer, accountName, type, ID: id } = req.body;
+
+  const ver = req.body.vesion;
 
   if (version && version > ver) msg = "New version available. " + version;
   if (message) msg = message;
