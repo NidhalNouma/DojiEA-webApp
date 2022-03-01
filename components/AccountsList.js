@@ -16,6 +16,7 @@ import { useUserContext } from "../hooks/Users";
 import {
   AccountsHook,
   getAccountsByType,
+  getNoStatus,
   getAvailableToUseAccounts,
 } from "../hooks/Accounts";
 import { paths, accountsTypes } from "../Constants";
@@ -38,7 +39,10 @@ export default function AccountsList() {
   const { accounts, error, addAccount, removeAccount, getAccounts } =
     AccountsHook(user, setUser, allowed);
 
-  const availableToAdd = allowed - real - demo;
+  const availableToAdd =
+    allowed -
+    getNoStatus(user?.accounts, true) -
+    getNoStatus(user?.accounts, false);
 
   return (
     <div className="flex flex-col">

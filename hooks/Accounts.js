@@ -45,7 +45,9 @@ export function AccountsHook(user, setUser, allowed) {
 export function getNoStatus(accounts, status, type) {
   let r = 0;
   accounts?.forEach((v) => {
-    if (v.isActive === status && v.type === type) r++;
+    if (v.isActive === status) {
+      if (v.type === type || type === undefined) r++;
+    }
   });
 
   return r;
@@ -74,11 +76,15 @@ export function getAvailableToUseAccounts(plans, type) {
   return r;
 }
 
-export function isAllowToAdd(plans, accounts, type) {
+export function isAllowToAdd(plans, accounts, type, add) {
   console.log("User isAllowToAdd new account ...");
   const av = getAvailableToUseAccounts(plans, type);
   const nu = getNoStatus(accounts, true, type);
 
-  if (nu >= av) return false;
+  console.log("type ", type, " available ", av, " used ", nu);
+
+  if (add) if (nu >= av) return false;
+  if (!add) if (nu > av) return false;
+
   return true;
 }

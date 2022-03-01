@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       valis: false,
     });
 
-  if (isAllowToAdd(user.plans, user.accounts) === false)
+  if (isAllowToAdd(user.plans, user.accounts, type, false) === false)
     return res.status(200).json({
       error:
         "User is not allowed to add a new " +

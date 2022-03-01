@@ -107,6 +107,8 @@ export function getAccountsByPriceId(id, type) {
   return r;
 }
 
+export const version = process.env.NEXT_PUBLIC_VERSION;
+
 export const files = {
   ex4: () => (window.location = process.env.NEXT_PUBLIC_MT4_FILE),
   ex5: () => (window.location = process.env.NEXT_PUBLIC_MT5_FILE),
