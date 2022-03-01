@@ -8,6 +8,7 @@ import Overlay from "../components/utils/Overlay";
 import { LinkT4 } from "../components/utils/Links";
 import { ButtonT4 } from "../components/utils/Buttons";
 import { paths } from "../Constants";
+import { min } from "moment";
 
 function HowToUse() {
   const [etap, setEtap] = useState(0);
@@ -211,14 +212,15 @@ function Instalation() {
         , Now let&apos;s move to the setup section.
       </P1>
 
-      <Overlay open={open} setOpen={setOpen}>
-        <div className="relative pb-9/16">
-          <iframe
-            className="w-full h-96"
-            src="https://player.vimeo.com/video/174002812"
-            title="Video"
-            allowFullScreen
-          ></iframe>
+      <Overlay open={open} setOpen={setOpen} className="sm:max-w-7xl ">
+        <div className="flex m-3">
+          <video className="my-auto mx-auto w-full h-full" controls>
+            <source
+              src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/2022-02-28-02-14-57.mp4?alt=media&token=f6d24997-1291-4fb0-b309-379e8e7d42f6"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </Overlay>
     </React.Fragment>

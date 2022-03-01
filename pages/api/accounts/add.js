@@ -5,7 +5,7 @@ import {
 } from "../../../model/Accounts";
 import { isAllowToAdd } from "../../../hooks/Accounts";
 import { getUser } from "../../../model/User";
-import { version } from "../../../Constants";
+import { version, message } from "../../../Constants";
 
 export default async function handler(req, res) {
   if (req.method !== "POST")
@@ -24,6 +24,7 @@ export default async function handler(req, res) {
   } = req.body;
 
   if (version && version > ver) msg = "New version available. " + version;
+  if (message) msg = message;
 
   console.log(`${id} ${accountNumber} ${accountServer} ${accountName} ${type}`);
 

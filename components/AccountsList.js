@@ -48,7 +48,14 @@ export default function AccountsList() {
     <div className="flex flex-col">
       <div className="-mb-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="pb-2 align-middle min-w-full sm:px-6 lg:px-8">
-          <div className="flex w-full justify-end text-center mb-2">
+          <div className="flex w-full justify-between items-center text-center mb-2">
+            <CardInfo
+              color="text-slate-400 bg-slate-400"
+              value={demo + "/" + allowedDemo}
+              title="Demo account"
+              className="sm:hidden"
+            />
+            <div className="hidden sm:block"></div>
             <CardInfo
               color="text-slate-100 bg-slate-100"
               value={availableToAdd > 0 ? availableToAdd : 0}
@@ -68,6 +75,7 @@ export default function AccountsList() {
                 color="text-slate-400 bg-slate-400"
                 value={demo + "/" + allowedDemo}
                 title="Demo account"
+                className="hidden sm:block pb-0"
               />
             </div>
             <Button5Spin

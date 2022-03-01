@@ -2,7 +2,7 @@
 import { Fragment, useRef, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-export default function Overlay({ children, open, setOpen }) {
+export default function Overlay({ children, open, setOpen, className }) {
   const cancelButtonRef = useRef(null);
 
   return (
@@ -44,7 +44,12 @@ export default function Overlay({ children, open, setOpen }) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block align-bottom bg-c1 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+            <div
+              className={
+                className +
+                " inline-block align-bottom bg-c1 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-xl w-full"
+              }
+            >
               <div className="flex justify-end p-2 pb-0">
                 <button
                   type="button"
