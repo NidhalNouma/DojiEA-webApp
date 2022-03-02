@@ -40,19 +40,19 @@ export const createSubscription = async (
   name,
   type,
   accounts,
+  demoAccounts,
   coupon = ""
 ) => {
   console.log("Create Subscription ...");
+  const metadata = { priceId, name, price, accounts, demoAccounts, type };
+
   try {
     const r = await axios.post("/api/stripe/createSubscription", {
       userId,
       customerId,
       paymentMethodId,
-      priceId,
       coupon,
-      price,
-      name,
-      accounts,
+      metadata,
       type,
     });
     return {

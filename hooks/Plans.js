@@ -15,7 +15,7 @@ export function getAvailablePlans(plans) {
 }
 
 export function getCanceledPlans(plans) {
-  console.log(plans);
+  // console.log(plans);
   if (!plans || plans.length === 0) return [];
   const r = plans.filter(
     (p) =>

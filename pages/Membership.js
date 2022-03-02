@@ -40,7 +40,7 @@ function Membership() {
       <Header />
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero content */}
-        <div className="py-12 pb-6 md:py-20">
+        <div className="pt-12 md:pt-20">
           <H1 label="Membership" />
           {plans?.length > 0 && (
             <main>
@@ -51,33 +51,32 @@ function Membership() {
               </div>
             </main>
           )}
-          <Pricing
-            select={(e) => {
-              if (user) {
-                setSelected(e);
-                setDone(false);
-              } else {
-                setOpen(true);
-              }
-            }}
-            selected={selectedPricing}
-          />
-          {selectedPricing && !done && (
-            <Form
-              price={selectedPricing.Price}
-              title={selectedPricing.name}
-              type={selectedPricing.type}
-              accounts={selectedPricing.accounts}
-              id={selectedPricing.id}
-              user={user}
-              done={() => setDone(true)}
+          <div className="pb-14">
+            <Pricing
+              select={(e) => {
+                if (user) {
+                  setSelected(e);
+                  setDone(false);
+                } else {
+                  setOpen(true);
+                }
+              }}
+              selected={selectedPricing}
             />
-          )}
-          {done && selectedPricing && (
-            <div className="pt-20">
-              <Done title={selectedPricing.name} />{" "}
-            </div>
-          )}
+            {selectedPricing && !done && (
+              <Form
+                price={selectedPricing.Price}
+                title={selectedPricing.name}
+                type={selectedPricing.type}
+                accounts={selectedPricing.accounts}
+                demoAccounts={selectedPricing.demoAccounts}
+                id={selectedPricing.id}
+                user={user}
+                done={() => setDone(true)}
+              />
+            )}
+          </div>
+          {done && selectedPricing && <Done title={selectedPricing.name} />}
         </div>
       </div>
       <Overlay open={open} setOpen={setOpen}>
@@ -92,8 +91,8 @@ export default Membership;
 function Done({ title = "Membership" }) {
   return (
     <React.Fragment>
-      <div className="">
-        <div className="mb-20 bg-c2 rounded-lg p-4">
+      <div className="mb-14 mt-8">
+        <div className="bg-c2 rounded-lg p-4">
           <div className="mt8">
             <H4 label="Congratulations!!" />
             <P1 className="!text-slate-300 font-bold text-medium">

@@ -8,27 +8,15 @@ export default async function handler(req, res) {
   let r = null;
   let subscriptions = null;
   let intents = null;
-  const {
-    paymentMethodId,
-    customerId,
-    priceId,
-    coupon,
-    name,
-    type,
-    price,
-    accounts,
-  } = req.body;
+  const { paymentMethodId, customerId, coupon, type, metadata } = req.body;
 
   try {
     r = await createSubscription(
       paymentMethodId,
       customerId,
-      priceId,
-      coupon,
-      name,
+      metadata,
       type,
-      price,
-      accounts
+      coupon
     );
 
     subscriptions = await stripe.subscriptions.list({
@@ -50,12 +38,9 @@ export default async function handler(req, res) {
 async function createSubscription(
   paymentMethodId,
   customerId,
-  priceId,
-  coupon,
-  name,
+  metadata,
   type,
-  price,
-  accounts
+  coupon
 ) {
   let r = null;
 
@@ -64,14 +49,14 @@ async function createSubscription(
       customer: customerId,
     });
 
-    let updateCustomerDefaultPaymentMethod = await stripe.customers.update(
-      customerId,
-      {
-        invoice_settings: {
-          default_payment_method: paymentMethodId,
-        },
-      }
-    );
+    // let updateCustomerDefaultPaymentMethod = await stripe.customers.update(
+    //   customerId,
+    //   {
+    //     invoice_settings: {
+    //       default_payment_method: paymentMethodId,
+    //     },
+    //   }
+    // );
 
     // Create the subscription
     let subscription = null;
@@ -79,26 +64,25 @@ async function createSubscription(
     if (type === "subscription") {
       subscription = await stripe.subscriptions.create({
         customer: customerId,
-        items: [{ price: priceId }],
+        items: [{ price: metadata.priceId }],
         expand: ["latest_invoice.payment_intent", "pending_setup_intent"],
         coupon: coupon,
-        metadata: { priceId, name, price, accounts },
+        metadata,
         default_payment_method: paymentMethodId,
       });
     } else {
       intent = await stripe.paymentIntents.create({
-        amount: price * 100,
+        amount: metadata.price * 100,
         currency: "usd",
         customer: customerId,
         confirm: true,
         payment_method: paymentMethodId,
-        metadata: { priceId, name, price, accounts },
+        metadata,
       });
     }
 
     r = { subscription, intent };
   } catch (error) {
-    // return res.status("402").send({ error: { message: error.message } });
     console.log(error);
     r = { error };
   }

@@ -9,12 +9,12 @@ import { CreateSubscription } from "../hooks/Payments";
 
 export const Form = (props) => {
   const { user, setUser } = useUserContext();
-  const { title, price, id, done, type, accounts } = props;
+  const { title, price, id, done, type, accounts, demoAccounts } = props;
   const [pm, setPm] = useState(null);
   const [open, setOpen] = useState(0);
 
   const { error, submit } = CreateSubscription(
-    { title, price, id, type, accounts },
+    { title, price, id, type, accounts, demoAccounts },
     pm,
     user,
     setUser,

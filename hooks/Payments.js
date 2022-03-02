@@ -27,7 +27,8 @@ export function CreateSubscription(data, paymentMethod, user, setUser, done) {
       data.price,
       data.title,
       data.type,
-      data.accounts
+      data.accounts,
+      data.demoAccounts
     );
 
     if (error) {
