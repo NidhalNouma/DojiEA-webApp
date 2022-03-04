@@ -80,7 +80,7 @@ function Header({ copen = false }) {
                         <LinkT4 href={paths.membership} label="Membership" />
                       </li>
                       <li className="px-8 hidden sm:block">
-                        <LinkT4 href={paths.howtouse} label="How to use" />
+                        <LinkT4 href={paths.howtouse} label="Docs" />
                       </li>
                       <li>
                         <Button4

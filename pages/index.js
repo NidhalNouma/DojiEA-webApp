@@ -66,13 +66,14 @@ function Index() {
 export default Index;
 
 function HeroHome() {
+  const [open, setOpen] = useState(false);
   return (
     <section className="relative">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero content */}
-        <div className="pt-28 pb-4 md:pt-36 md:pb-8">
+        <div className="pt-24 pb-4 md:pt-28 md:pb-8">
           {/* Section header */}
-          <div className="text-center pt-20 pb-12 md:pb-16">
+          <div className="text-center pt-16 pb-12 md:pb-16">
             <h1
               className="text-white text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
               data-aos="zoom-y-out"
@@ -82,7 +83,7 @@ function HeroHome() {
                 wonderful
               </span>
             </h1>
-            <div className="max-w-3xl mx-auto">
+            <div className="mt-12 max-w-3xl mx-auto">
               <p
                 className="text-xl mb-0 text-slate-500 md:px-14 pt-6"
                 data-aos="zoom-y-out"
@@ -101,18 +102,40 @@ function HeroHome() {
                 month for you.
               </p>
 
-              <iframe
-                className="rounded m-auto w-full h-96 shadow-xl shadow-slate-500 border border-slate-600"
-                src="//www.fxblue.com/fxbluechart.aspx?c=ch_cumulativeprofit&id=30895597"
-                frameBorder="0"
-                data-aos="fade-up"
-              >
-                <a href="//www.fxblue.com">
-                  FX Blue - free tools and services for FX and CFD traders
-                </a>
-              </iframe>
               <div
-                className="mt-14"
+                data-aos="fade-up"
+                className="relative mt-12 flex items-center justify-center rounded-xl m-auto w-full h-96 shadow-xl shadow-slate-500 border border-slate-600"
+              >
+                <button
+                  className="absolute z-10 top-full flex items-center transform -translate-y-1/2 bg-white rounded-full font-medium group p-4 shadow-lg"
+                  onClick={(e) => setOpen(true)}
+                >
+                  <svg
+                    className="w-6 h-6 fill-current text-slate-700 flex-shrink-0"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm0 2C5.373 24 0 18.627 0 12S5.373 0 12 0s12 5.373 12 12-5.373 12-12 12z" />
+                    <path d="M10 17l6-5-6-5z" />
+                  </svg>
+                  <span className="ml-3 text-slate-700">
+                    Watch the full video (2 min)
+                  </span>
+                </button>
+
+                <iframe
+                  className="rounded-xl w-full h-full"
+                  src="//www.fxblue.com/fxbluechart.aspx?c=ch_cumulativeprofit&id=30895597"
+                  frameBorder="0"
+                  // data-aos="fade-up"
+                >
+                  <a href="//www.fxblue.com">
+                    FX Blue - free tools and services for FX and CFD traders
+                  </a>
+                </iframe>
+              </div>
+              <div
+                className="mt-16"
                 // className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center"
                 data-aos="zoom-y-out"
                 data-aos-delay="300"
@@ -148,6 +171,17 @@ function HeroHome() {
           </div>
         </div>
       </div>
+      <Overlay open={open} setOpen={setOpen} className="sm:!max-w-6xl ">
+        <div className="flex m-3">
+          <video className="my-auto mx-auto w-full h-full" controls>
+            <source
+              src="https://firebasestorage.googleapis.com/v0/b/dojibot-29cb7.appspot.com/o/videos%2FInstalation.mp4?alt=media&token=ed300bd2-130a-4473-b2f1-263b4b651c09"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </Overlay>
     </section>
   );
 }

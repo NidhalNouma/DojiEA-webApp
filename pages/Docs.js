@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Header from "../components/Header";
 // import Image from "next/image";
 import { files } from "../Constants";
-import { H1, H4 } from "../components/utils/Titles";
+import { H1, H2 } from "../components/utils/Titles";
 import { P1 } from "../components/utils/Text";
 import Overlay from "../components/utils/Overlay";
 import { LinkT4 } from "../components/utils/Links";
@@ -118,7 +118,7 @@ function HowToUse() {
                       <QandAs />
                     </div>
                     <div className="mb-20" ref={contactRef}>
-                      <QandAs />
+                      <ContactUs />
                     </div>
                   </div>
                 </div>
@@ -156,6 +156,7 @@ function Instalation() {
 
   return (
     <React.Fragment>
+      <H2 label="Instalation" className="!pl-0 pt-0" />
       <P1 className="!text-base mt-0">
         The instalation is very straightforward and simple click{" "}
         <ButtonT4 label="here" onClick={() => setOpen(true)} /> to watch a video
@@ -252,11 +253,19 @@ function Instalation() {
         <div className="flex m-3">
           <video className="my-auto mx-auto w-full h-full" controls>
             <source
-              src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/2022-02-28-02-14-57.mp4?alt=media&token=f6d24997-1291-4fb0-b309-379e8e7d42f6"
+              src="https://firebasestorage.googleapis.com/v0/b/dojibot-29cb7.appspot.com/o/videos%2FInstalation.mp4?alt=media&token=ed300bd2-130a-4473-b2f1-263b4b651c09"
               type="video/mp4"
             />
             Your browser does not support the video tag.
           </video>
+          {/* <iframe
+            // className="w-full h-full"
+            src="https://player.vimeo.com/video/684646634?h=531e6e4cb9"
+            style={{
+              height: "80vh",
+              width: "100%",
+            }}
+          ></iframe> */}
         </div>
       </Overlay>
     </React.Fragment>
@@ -266,6 +275,7 @@ function Instalation() {
 function Setup() {
   return (
     <React.Fragment>
+      <H2 label="Setup" className="!pl-0 pt-0" />
       <P1 className="!text-base mt-0">
         Setup is also just a few simple steps that you need to follow. First
         make sure that you have installed the EA and you have it in your MT4 or
@@ -320,6 +330,7 @@ function Setup() {
 function Managment() {
   return (
     <React.Fragment>
+      <H2 label="Accounts" className="!pl-0 pt-0" />
       <P1 className="!text-base mt-0">
         Managment your accounts is also simple, once you have downloaded and
         setup the EA, go back to the{" "}
@@ -368,6 +379,32 @@ function Managment() {
 export function QandAs() {
   return (
     <React.Fragment>
+      <H2 label="Q&As" className="!pl-0 pt-0" />
+      <img
+        className="my-6 rounded"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
+        alt="Copy EA to clipboard"
+      />
+
+      <P1 className="!text-base mt-0">
+        Once that done you can check if the account is active by clicking the
+        refresh icon, and if you set everything right you will see that your
+        account is active and running.
+      </P1>
+
+      <img
+        className="my-6 rounded"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
+        alt="Copy EA to clipboard"
+      />
+    </React.Fragment>
+  );
+}
+
+export function ContactUs() {
+  return (
+    <React.Fragment>
+      <H2 label="Contact us" className="!pl-0 pt-0" />
       <img
         className="my-6 rounded"
         src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
