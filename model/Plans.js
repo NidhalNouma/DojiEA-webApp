@@ -20,7 +20,7 @@ const subCollName = "plans";
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 
-export async function addPlan(uid, planId, lifeTime, renew, metadata) {
+export async function addPlan(uid, planId, lifeTime, renew, metadata, status) {
   console.log("Creating a new Plan ...", uid);
   const data = {
     id: planId,
@@ -29,6 +29,7 @@ export async function addPlan(uid, planId, lifeTime, renew, metadata) {
     uid,
     renew,
     metadata,
+    status,
     created_at: serverTimestamp(),
   };
 
@@ -84,11 +85,11 @@ export async function desactivePlan(uid, id) {
   return upd;
 }
 
-export async function updateRenew(uid, id, renew) {
+export async function updateRenew(uid, id, renew, status) {
   console.log("Update renew ...", id);
   const docRef = doc(db, collName, uid, subCollName, id);
 
-  const upd = await updateDoc(docRef, { renew });
+  const upd = await updateDoc(docRef, { renew, status });
 
   return upd;
 }

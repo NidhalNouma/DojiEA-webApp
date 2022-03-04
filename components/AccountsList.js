@@ -173,7 +173,11 @@ function Table({ accounts, removeAccount, getAccounts }) {
         </tbody>
       </table>
       {accounts.length === 0 && (
-        <P1 className="text-center py-3">No account are being used</P1>
+        <P1 className="text-center py-3">
+          No account are being used, click{" "}
+          <LinkT4 label="here" href={paths.howtouse} /> to download the expert
+          and see how to use it.
+        </P1>
       )}
     </div>
   );

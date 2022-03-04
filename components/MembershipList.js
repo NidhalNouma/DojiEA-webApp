@@ -68,7 +68,11 @@ function Subscription({ i, user, setUser, hideDelete, active = true }) {
         <div className="flex items-center justify-between min-w-full">
           <span
             className={`${
-              active ? "text-teal-400 " : "text-red-400 "
+              i.status === "past_due" && active
+                ? "text-yellow-100"
+                : active
+                ? "text-teal-400 "
+                : "text-red-400 "
             } text-lg font-bold py-1`}
           >
             {i.metadata?.name} Membership
@@ -80,8 +84,14 @@ function Subscription({ i, user, setUser, hideDelete, active = true }) {
             />
           )}
         </div>
+        {i.status === "past_due" && active && (
+          <p className="w-full my-1 p-0 text-red-500">
+            We found an issue with making a payment. please try to add a new
+            payment card
+          </p>
+        )}
         <span className="text-slate-300 text-sm font-medium">
-          {active ? "Renew " : "End on "}
+          {i.status === "past_due" ? "Retry " : active ? "Renew " : "End on "}
           <span className="text-sm text-slate-400">
             {moment(i.renew * 1000).format("MMMM Do YYYY")}
           </span>

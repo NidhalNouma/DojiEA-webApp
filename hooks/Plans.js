@@ -62,13 +62,14 @@ export async function verifyPlans(user) {
             s.id,
             false,
             s.current_period_end,
-            s.metadata
+            s.metadata,
+            s.status
           );
 
           updated = true;
         }
-      } else if (s.current_period_end !== p.renew) {
-        await updateRenew(user.uid, p.id, s.current_period_end);
+      } else if (s.current_period_end !== p.renew || s.status !== p.status) {
+        await updateRenew(user.uid, p.id, s.current_period_end, s.status);
         updated = true;
       }
     }

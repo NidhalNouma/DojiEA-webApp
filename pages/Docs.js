@@ -8,13 +8,14 @@ import Overlay from "../components/utils/Overlay";
 import { LinkT4 } from "../components/utils/Links";
 import { ButtonT4 } from "../components/utils/Buttons";
 import { paths } from "../Constants";
-import { min } from "moment";
 
 function HowToUse() {
   const [etap, setEtap] = useState(0);
   const instalationRef = useRef(null);
   const setupRef = useRef(null);
   const managmentRef = useRef(null);
+  const qandasRef = useRef(null);
+  const contactRef = useRef(null);
   const [scroll, setScroll] = useState(0);
 
   const handleScroll = (ref) => {
@@ -28,10 +29,26 @@ function HowToUse() {
     if (instalationRef.current && setupRef.current) {
       const { clientHeight: ih } = instalationRef.current;
       const { clientHeight: sh } = setupRef.current;
+      const { clientHeight: ah } = managmentRef.current;
+      const { clientHeight: qh } = qandasRef.current;
+      const { clientHeight: ch } = contactRef.current;
 
       if (scroll < ih && etap !== 0) setEtap(0);
       else if (scroll > ih && scroll < sh + ih && etap !== 1) setEtap(1);
-      else if (scroll > sh + ih && etap !== 2) setEtap(2);
+      else if (scroll > sh + ih && scroll < sh + ih + ah && etap !== 2)
+        setEtap(2);
+      else if (
+        scroll > sh + ih + ah &&
+        scroll < sh + ih + ah + qh &&
+        etap !== 3
+      )
+        setEtap(3);
+      else if (
+        scroll > sh + ih + ah + qh &&
+        scroll < sh + ih + ah + qh + ch &&
+        etap !== 4
+      )
+        setEtap(4);
     }
 
     const onScroll = (e) => {
@@ -48,7 +65,7 @@ function HowToUse() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Hero content */}
         <div className="pt-12 pb-12 md:pt-20 md:pb-20">
-          <H1 label="How to use" />
+          <H1 label="Documentation" />
 
           <main>
             <div className="max-w-7xl mx-auto py-3 sm:px-6 lg:px-8">
@@ -73,6 +90,18 @@ function HowToUse() {
                     >
                       Accounts
                     </Ha>
+                    <Ha
+                      active={etap === 3}
+                      onClick={() => handleScroll(qandasRef)}
+                    >
+                      Q&As
+                    </Ha>
+                    <Ha
+                      active={etap === 4}
+                      onClick={() => handleScroll(contactRef)}
+                    >
+                      Contact us
+                    </Ha>
                   </div>
 
                   <div className="ml-12 col-span-4 w-full">
@@ -84,6 +113,12 @@ function HowToUse() {
                     </div>
                     <div className="mb-20" ref={managmentRef}>
                       <Managment />
+                    </div>
+                    <div className="mb-20" ref={qandasRef}>
+                      <QandAs />
+                    </div>
+                    <div className="mb-20" ref={contactRef}>
+                      <QandAs />
                     </div>
                   </div>
                 </div>
@@ -124,7 +159,7 @@ function Instalation() {
       <P1 className="!text-base mt-0">
         The instalation is very straightforward and simple click{" "}
         <ButtonT4 label="here" onClick={() => setOpen(true)} /> to watch a video
-        of how to install any EA, or feel free to follow the steps bellow.
+        of how to install our EA, or feel free to follow the steps bellow.
       </P1>
       <P1 className="!text-base mt-0">
         the frst step is to download the EA file by clicking on the button
@@ -145,10 +180,11 @@ function Instalation() {
         </button>
       </div>
       <P1 className="!text-base mt-0">
-        Once you have downloaded the EA, you need to copy the file, so just open
-        the <span className="font-extrabold text-slate-300">Download</span>{" "}
-        folder, right click on the file and click copy or select the file and
-        hit ctr+c.
+        Once you have downloaded the EA, you need to extract and copy the file,
+        so just open the{" "}
+        <span className="font-extrabold text-slate-300">Download</span> folder,
+        extract the zip file then right click on the file and click copy or
+        select the file and hit ctr+c.
       </P1>
 
       <img
@@ -183,7 +219,7 @@ function Instalation() {
       <P1 className="!text-base mt-0">
         Then <span className="font-extrabold text-slate-300">past</span> the EA
         file that you have downloaded, for that you can right click and click
-        past or just click the top left cornor and then selct{" "}
+        past or just click{" "}
         <span className="font-extrabold text-slate-300">Ctr+v</span>.
       </P1>
 
@@ -231,9 +267,9 @@ function Setup() {
   return (
     <React.Fragment>
       <P1 className="!text-base mt-0">
-        Setup is also just a simple step that you need to follow. First make
-        sure that you have installed the EA and you have it in your MT4 or MT5
-        platform.
+        Setup is also just a few simple steps that you need to follow. First
+        make sure that you have installed the EA and you have it in your MT4 or
+        MT5 platform.
       </P1>
       <P1 className="!text-base mt-0">
         the first step is to open the options tab and make sure that you allow
@@ -264,7 +300,9 @@ function Setup() {
       />
 
       <P1 className="!text-base mt-0">
-        The final step is to type your email and click OK.{" "}
+        The final step is to get an ID from our{" "}
+        <LinkT4 label="Accounts" href={paths.accounts} /> and start using the
+        EA.{" "}
         <span className="font-extrabold text-slate-300">
           Notice that to run the EA on a live chart you need to be subscribed to
           at least one of our plans.
@@ -283,9 +321,16 @@ function Managment() {
   return (
     <React.Fragment>
       <P1 className="!text-base mt-0">
-        Managment your accounts is also simple, once you have got a subscription
-        plan and you have setup the EA, go back to the accounts page and click
-        the refresh button.
+        Managment your accounts is also simple, once you have downloaded and
+        setup the EA, go back to the{" "}
+        <LinkT4 label="Accounts" href={paths.accounts} /> page and click the{" "}
+        <span className="font-extrabold text-slate-300">Generate new ID</span>{" "}
+        button.
+      </P1>
+
+      <P1 className="!text-base mt-0">
+        You will get a new ID that you can use in the EA, so the next step will
+        be to copy the new ID.
       </P1>
 
       <img
@@ -295,12 +340,44 @@ function Managment() {
       />
 
       <P1 className="!text-base mt-0">
-        You will see the list of the accounts that you are using, you can enable
-        or disable any account.{" "}
-        <span className="font-extrabold text-slate-300">
-          Notice that when you disable an account, you cannot use it until you
-          enable it.
-        </span>
+        Now the last step is to go back to your MT4 or MT5 platfor and past the
+        ID, and click OK.
+      </P1>
+
+      <img
+        className="my-6 rounded"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
+        alt="Copy EA to clipboard"
+      />
+
+      <P1 className="!text-base mt-0">
+        Once that done you can check if the account is active by clicking the
+        refresh icon, and if you set everything right you will see that your
+        account is active and running.
+      </P1>
+
+      <img
+        className="my-6 rounded"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
+        alt="Copy EA to clipboard"
+      />
+    </React.Fragment>
+  );
+}
+
+export function QandAs() {
+  return (
+    <React.Fragment>
+      <img
+        className="my-6 rounded"
+        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
+        alt="Copy EA to clipboard"
+      />
+
+      <P1 className="!text-base mt-0">
+        Once that done you can check if the account is active by clicking the
+        refresh icon, and if you set everything right you will see that your
+        account is active and running.
       </P1>
 
       <img

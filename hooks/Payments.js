@@ -53,7 +53,8 @@ export function CreateSubscription(data, paymentMethod, user, setUser, done) {
           r.subscription.id,
           false,
           r.subscription.current_period_end,
-          r.subscription.metadata
+          r.subscription.metadata,
+          r.subscription.status
         );
 
       const plans = [...user.plans, nplan];

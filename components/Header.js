@@ -13,7 +13,7 @@ const navigation = [
   // { name: "Dashboard", href: paths.dashboard, current: false },
   { name: "Accounts", href: paths.accounts, current: false },
   { name: "Membership", href: paths.membership, current: false },
-  { name: "How to use", href: paths.howtouse, current: false },
+  { name: "Docs", href: paths.howtouse, current: false },
   { name: "Settings", href: paths.settings, current: false },
 ];
 

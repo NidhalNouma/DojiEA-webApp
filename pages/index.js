@@ -72,7 +72,7 @@ function HeroHome() {
         {/* Hero content */}
         <div className="pt-28 pb-4 md:pt-36 md:pb-8">
           {/* Section header */}
-          <div className="text-center pb-12 md:pb-16">
+          <div className="text-center pt-20 pb-12 md:pb-16">
             <h1
               className="text-white text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4"
               data-aos="zoom-y-out"

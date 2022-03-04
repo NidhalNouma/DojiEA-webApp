@@ -69,7 +69,7 @@ function Loading({ done, setDone }) {
   return (
     <div className="flex w-full h-full fixed top-0 left-0 bg-c1">
       <div className="mx-auto my-auto w-full text-center">
-        <div className="mb-14 text-center">
+        <div className="mb-10 text-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="60"
