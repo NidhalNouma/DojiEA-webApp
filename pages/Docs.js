@@ -2,12 +2,36 @@ import React, { useState, useRef, useEffect } from "react";
 import Header from "../components/Header";
 // import Image from "next/image";
 import { files } from "../Constants";
-import { H1, H2 } from "../components/utils/Titles";
+import { H1, H2, H4 } from "../components/utils/Titles";
 import { P1 } from "../components/utils/Text";
 import Overlay from "../components/utils/Overlay";
 import { LinkT4 } from "../components/utils/Links";
 import { ButtonT4 } from "../components/utils/Buttons";
-import { paths } from "../Constants";
+import { paths, questions, email, team, followUs } from "../Constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import {
+  ArrowCircleDownIcon,
+  ArrowCircleRightIcon,
+  CreditCardIcon,
+  UserGroupIcon,
+  LightBulbIcon,
+  AdjustmentsIcon,
+  DownloadIcon,
+  DotsHorizontalIcon,
+} from "@heroicons/react/solid";
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  fab,
+  faYoutube,
+  faFacebook,
+  faTelegram,
+  faDiscord,
+} from "@fortawesome/free-brands-svg-icons";
+// import { faCheckSquare, faCoffee } from "@fortawesome/free-solid-svg-icons";
+
+library.add(fab, faYoutube, faFacebook, faTelegram, faDiscord);
 
 function HowToUse() {
   const [etap, setEtap] = useState(0);
@@ -71,7 +95,7 @@ function HowToUse() {
             <div className="max-w-7xl mx-auto py-3 sm:px-6 lg:px-8">
               <div className="px-4 py-3 sm:px-0">
                 <div className="relative flex">
-                  <div className="sticky top-24 h-96 block flex-col justify-start items-start">
+                  <div className="sticky top-24 h-96 sm:block hidden flex-col justify-start items-start">
                     <Ha
                       active={etap === 0}
                       onClick={() => handleScroll(instalationRef)}
@@ -104,7 +128,7 @@ function HowToUse() {
                     </Ha>
                   </div>
 
-                  <div className="ml-12 col-span-4 w-full">
+                  <div className="sm:ml-12 col-span-4 w-full">
                     <div className="mb-20" ref={instalationRef}>
                       <Instalation />
                     </div>
@@ -377,51 +401,161 @@ function Managment() {
 }
 
 export function QandAs() {
+  function Qa({ question, answer }) {
+    const [show, setShow] = useState(false);
+    return (
+      <div className="px-4 py-2 bg-c2 rounded-lg mb-4">
+        <div
+          className="flex justify-between items-center cursor-pointer"
+          onClick={() => setShow((e) => !e)}
+        >
+          <H4 label={question} className="ml-0" />
+          {show ? (
+            <ArrowCircleDownIcon className="w-5 h-5 text-slate-300" />
+          ) : (
+            <ArrowCircleRightIcon className="w-5 h-5 text-slate-300" />
+          )}
+        </div>
+        {show && <P1>{answer}</P1>}
+      </div>
+    );
+  }
+
   return (
     <React.Fragment>
       <H2 label="Q&As" className="!pl-0 pt-0" />
-      <img
-        className="my-6 rounded"
-        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
-        alt="Copy EA to clipboard"
-      />
 
-      <P1 className="!text-base mt-0">
-        Once that done you can check if the account is active by clicking the
-        refresh icon, and if you set everything right you will see that your
-        account is active and running.
-      </P1>
-
-      <img
-        className="my-6 rounded"
-        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
-        alt="Copy EA to clipboard"
-      />
+      {questions?.map((q, i) => (
+        <Qa key={i} question={q.question} answer={q.answer} />
+      ))}
     </React.Fragment>
   );
 }
 
 export function ContactUs() {
+  function Card({ label, children, onClick }) {
+    return (
+      <div
+        onClick={() => {
+          window.open(
+            "https://mail.google.com/mail/?view=cm&fs=1&to=" +
+              email.address +
+              "&su=" +
+              label +
+              "&body="
+          );
+        }}
+        className="px-6 py-10 rounded-lg bg-c2 transition hover:bg-c3 flex flex-col justify-center items-center cursor-pointer"
+      >
+        <div className="">{children}</div>
+        <H4 label={label} className="" />
+      </div>
+    );
+  }
+
+  function A({ className, href, children }) {
+    return href ? (
+      <a
+        className={className}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {children}
+      </a>
+    ) : (
+      <React.Fragment></React.Fragment>
+    );
+  }
+
   return (
     <React.Fragment>
       <H2 label="Contact us" className="!pl-0 pt-0" />
-      <img
-        className="my-6 rounded"
-        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
-        alt="Copy EA to clipboard"
-      />
 
       <P1 className="!text-base mt-0">
-        Once that done you can check if the account is active by clicking the
-        refresh icon, and if you set everything right you will see that your
-        account is active and running.
+        Feel free to contact us if you find any bugs or questions, if you have
+        any idea to improve our service we will be happy to hear from you
       </P1>
+      <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4">
+        <Card label="Instalation and setup">
+          <DownloadIcon className="h-10 w-10 text-slate-200" />
+        </Card>
+        <Card label="Membership">
+          <CreditCardIcon className="h-10 w-10 text-slate-200" />
+        </Card>
+        <Card label="Accounts">
+          <UserGroupIcon className="h-10 w-10 text-slate-200" />
+        </Card>
+        <Card label="Have an idea?">
+          <LightBulbIcon className="h-10 w-10 text-slate-200" />
+        </Card>
+        <Card label="Settings">
+          <AdjustmentsIcon className="h-10 w-10 text-slate-200" />
+        </Card>
+        <Card label="Other">
+          <DotsHorizontalIcon className="h-10 w-10 text-slate-200" />
+        </Card>
+      </div>
+      {team?.length > 0 && (
+        <div className="mt-8">
+          <P1 className="!text-base mt-0">
+            Want to make a custom robot? contact our team
+          </P1>
+          {team?.map((t, i) => (
+            <div key={i} className="p-4 border-2 border-c3 rounded-lg mb-4">
+              <h1 className="text-slate-200 font-bold">{t.name}</h1>
+              <A className="text-slate-500 block mt-2" href={t.freelancer}>
+                Hire me on freelancer
+              </A>
+              <A className="text-slate-500 block mt-2" href={t.upwork}>
+                Hire me on upwork
+              </A>
+              <A className="text-slate-500 block mt-2" href={t.fiver}>
+                Hire me on Fiver
+              </A>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="mt-6">
+        <P1 className="!text-base mt-0">Follow us on</P1>
+        <div className="flex items-center">
+          <A className="mr-5" href={followUs.youtube}>
+            <FontAwesomeIcon
+              icon="fa-brands fa-youtube"
+              className="h-12 w-12 text-slate-50"
+            />
+          </A>
 
-      <img
-        className="my-6 rounded"
-        src="https://firebasestorage.googleapis.com/v0/b/ea-website-5968a.appspot.com/o/gifs%2FEnableDisable.gif?alt=media&token=d8137fa9-0836-4db0-a675-52dc1638da7f"
-        alt="Copy EA to clipboard"
-      />
+          <A className="mr-5" href={followUs.facebook}>
+            <FontAwesomeIcon
+              icon="fa-brands fa-facebook"
+              className="h-10 w-10 text-slate-50"
+            />
+          </A>
+
+          <A className="mr-5" href={followUs.twitter}>
+            <FontAwesomeIcon
+              icon="fa-brands fa-twitter"
+              className="h-10 w-10 text-slate-50"
+            />
+          </A>
+
+          <A className="mr-5" href={followUs.discord}>
+            <FontAwesomeIcon
+              icon="fa-brands fa-discord"
+              className="h-10 w-10 text-slate-50"
+            />
+          </A>
+
+          <A className="mr-5" href={followUs.telegram}>
+            <FontAwesomeIcon
+              icon="fa-brands fa-telegram"
+              className="h-10 w-10 text-slate-50"
+            />
+          </A>
+        </div>
+      </div>
     </React.Fragment>
   );
 }

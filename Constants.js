@@ -114,3 +114,69 @@ export const files = {
   ex4: () => (window.location = process.env.NEXT_PUBLIC_MT4_FILE),
   ex5: () => (window.location = process.env.NEXT_PUBLIC_MT5_FILE),
 };
+
+export const email = {
+  address: "dojibot1@gmail.com",
+};
+
+export const questions = [
+  {
+    question: "What's the minimum balance to start using our bot?",
+    answer:
+      "Our recommended balance to use Irins Expert Advisor is $5000. You can start as low as $200 to start EA and make profit in cent account. Our client divide it on many cent account and still get best result.",
+  },
+  {
+    question: "What's the minimum balance to start using our bot?",
+    answer:
+      "Our recommended balance to use Irins Expert Advisor is $5000. You can start as low as $200 to start EA and make profit in cent account. Our client divide it on many cent account and still get best result.",
+  },
+  {
+    question: "What's the minimum balance to start using our bot?",
+    answer:
+      "Our recommended balance to use Irins Expert Advisor is $5000. You can start as low as $200 to start EA and make profit in cent account. Our client divide it on many cent account and still get best result.",
+  },
+  {
+    question: "What's the minimum balance to start using our bot?",
+    answer:
+      "Our recommended balance to use Irins Expert Advisor is $5000. You can start as low as $200 to start EA and make profit in cent account. Our client divide it on many cent account and still get best result.",
+  },
+  {
+    question: "What's the minimum balance to start using our bot?",
+    answer:
+      "Our recommended balance to use Irins Expert Advisor is $5000. You can start as low as $200 to start EA and make profit in cent account. Our client divide it on many cent account and still get best result.",
+  },
+  {
+    question: "What's the minimum balance to start using our bot?",
+    answer:
+      "Our recommended balance to use Irins Expert Advisor is $5000. You can start as low as $200 to start EA and make profit in cent account. Our client divide it on many cent account and still get best result.",
+  },
+];
+
+export const team = [
+  {
+    name: "Nidhal Nouma",
+    freelancer: "https://www.freelancer.com/u/nidhalnouma",
+    upwork: "https://www.upwork.com/freelancers/~01768cb96edce5aa4c",
+    fiver: "",
+    skype: "",
+    whatsapp: "",
+    email: "",
+  },
+  {
+    name: "Hamdi Garraz",
+    freelancer: "https://www.freelancer.com/u/hamdigarraz",
+    upwork: "",
+    fiver: "https://www.fiverr.com/hamdi_g",
+    skype: "",
+    whatsapp: "",
+    email: "",
+  },
+];
+
+export const followUs = {
+  youtube: "https://www.youtube.com/channel/UC-TYTy9aMvJbUz6lW89aLlA",
+  facebook: "https://www.facebook.com/",
+  telegram: "https://www.telegram.com/",
+  twitter: "https://twitter.com/",
+  discord: "https://discordapp.com",
+};

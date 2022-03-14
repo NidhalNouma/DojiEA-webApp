@@ -20,7 +20,7 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import { paths } from "../Constants";
+import { paths, email } from "../Constants";
 
 function Index() {
   const [open, setOpen] = useState(false);
@@ -328,7 +328,11 @@ function FeaturesBlocks() {
             </div>
             <div className="flex w-full justify-center mb-20">
               <a
-                href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=dojibot@gmail.com&amp;su=Asking%20Question&amp;body=My%20Question%20is%20:"
+                href={
+                  "https://mail.google.com/mail/?view=cm&fs=1&to=" +
+                  email.address +
+                  "&su=Asking%20Question&body="
+                }
                 className="flex justify-center items-center mx-auto px-10 py-4 rounded-full text-slate-100 font-medium bg-slate-600"
                 target="_blank"
                 rel="noreferrer"
