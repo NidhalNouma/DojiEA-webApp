@@ -68,7 +68,7 @@ export const firebaseConfig =
   process.env.NEXT_PUBLIC_MODE === "Live"
     ? {
         apiKey: "AIzaSyD4MgfC1xAiy8w57ppsh4I0QRRXNH62u2U",
-        authDomain: "dojibot-29cb7.firebaseapp.com",
+        authDomain: "auth.dojibot.com",
         projectId: "dojibot-29cb7",
         storageBucket: "dojibot-29cb7.appspot.com",
         messagingSenderId: "496467423343",
